@@ -1,0 +1,60 @@
+@import 'variables';
+@import 'mixins';
+
+.auth-container {
+  min-height: 100vh;
+  height: 100%;
+  margin: 0;
+  padding: 1rem;
+  background-color: $primary-red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .outer-container {
+    .signup-form {
+      display: block;
+      border: 2px solid $primary-text;
+      background-color: transparent;
+      color: $primary-text;
+      border-radius: 1rem;
+      .embed {
+        display: flex;
+        justify-content: space-between;
+        .form-group {
+          width: 45%;
+        }
+        .row {
+          margin-right: 0px;
+          margin-left: 0px;
+        }
+        .small-textbox {
+          width: 70px;
+          text-align: center;
+        }
+        .phone-control {
+          display: inline-block;
+          width: auto;
+        }
+      }
+      fa { 
+        @include fontawesomeBig(120px);
+      }
+      .fa {
+        margin-top: .8rem;
+      }
+      form {
+        margin: .75rem;
+        padding: .75rem;
+        label span {
+          font-size: 1.4rem;
+        }
+      }
+      .form-control {
+        @include formControl();
+      }
+      select option {
+        background: darken($primary-red, 15%);
+      }
+    }
+  }
+}

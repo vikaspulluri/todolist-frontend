@@ -1,0 +1,41 @@
+@import 'variables';
+
+.outer-container {
+  display: inline-block;
+  position: absolute;
+  right: 1%;
+  width: 30%;
+  .inner-container {
+    margin: 2rem;
+    border: 2px solid;
+    .head {
+      padding: .75rem;
+      background: $primary-red;
+      text-align: center;
+      color: $primary-text;
+    }
+    .body {
+      padding: .5rem;
+      background: #fff;
+    }
+    .users {
+      .user {
+        display: flex;
+        justify-content: space-between;
+        font-weight: 700;
+        &.online {
+          color: #28a745;
+          h4 {
+            font-size: 1.25rem;
+          }
+        }
+        &.offline {
+          color: orangered;
+          h4{
+            font-size: 1rem;
+          }
+        }
+      }
+    }
+  }
+}

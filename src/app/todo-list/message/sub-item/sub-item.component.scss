@@ -1,0 +1,130 @@
+@import 'variables';
+
+.message {
+    padding: .63rem .5rem;
+    margin: 1.5rem 0;
+    border-radius: .5rem;
+    max-width: 75%;
+    position: relative;
+    &.own {
+      text-align: right;
+      background: lighten($secondary-red, 25%);
+      margin-left: 24%;
+      &.has-subitems::after {
+        width: 0;
+        height: 0;
+        border-top: 30px solid lighten($secondary-red, 25%);
+        border-left: 30px solid transparent;
+        content: '';
+        position: absolute;
+        bottom: -.75rem;
+        right: 1.25rem;
+        transform: rotateZ(135deg);
+      }
+      .footer {
+        left: 0;
+      }
+      span.timestamp {
+        float: left;
+      }
+    }
+    &.other {
+      text-align: left;
+      background: lightgreen;
+      &.has-subitems::after {
+        width: 0;
+        height: 0;
+        border-top: 30px solid lightgreen;
+        border-right: 30px solid transparent;
+        content: '';
+        position: absolute;
+        bottom: -.75rem;
+        right: 1.25rem;
+        transform: rotateZ(225deg);
+      }
+      .footer {
+        right: 0;
+      }
+    }
+    &:hover:not(.active) .footer {
+      opacity: 1;
+    }
+    &.main-item {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      max-width: 98%;
+    }
+    
+    .textbox-container {
+      input {
+        background: $primary-red;
+        border: none;
+        border-bottom: 1px solid $primary-text;
+        color: $primary-text;
+        padding: .5rem;
+        width: 75%;
+      }
+      .main-btn {
+        width: 20%;
+        margin-left: 2.5%;
+      }
+    }
+    span.sender {
+      color: darken($primary-text,10%);
+      display: inline-block;
+      padding: 0 .5rem;
+    }
+    span.timestamp {
+      float: right;
+      color: darken($primary-text,10%);
+    }
+    p {
+      margin-bottom: .25rem;
+      display: block;
+    }
+  }
+  .footer {
+    position: absolute;
+    bottom: 0;
+    opacity: 0;
+    ul {
+      list-style: none;
+      display: flex;
+      background: transparent;
+      margin-bottom: 0;
+      padding-left: 0;
+      li {
+        display: inline;
+        padding: 0 5px;
+      }
+      fa {
+        color: $primary-text;
+      }
+    }
+  }
+  .modal {
+    display: block;
+    .human-check {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+    }
+    input {
+      max-width: 50px;
+      text-align: center;
+    }
+    p {
+      padding-left: 0;
+    }
+  }
+  .status {
+    margin-bottom: 0;
+    height: 0;
+    transition: 0.2s all ease-in-out;
+    position: absolute;
+    bottom: 0;
+    background: #000;
+    color: #fff;
+    font-size: .7rem;
+    left: 0;
+  }

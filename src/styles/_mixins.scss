@@ -1,0 +1,58 @@
+@import 'variables';
+
+@mixin fontawesomeBig($width) {
+    color: $primary-text;
+    display: inline-block;
+    border: 2px solid $primary-text;
+    width: $width;
+    height: $width;
+    border-radius: 50%;
+    margin-top: .5rem;
+}
+
+@mixin formControl() {
+    background-color: transparent;
+    border: 1px solid $primary-text;
+    color: $placeholder;
+    &:focus {
+    border-color: $secondary-red;
+    box-shadow: $form-box-shadow;
+    }
+}
+
+@mixin mainBtn() {
+    -webkit-appearance: none;
+    width: 150px;
+    border: 1px solid $primary-text;
+    color: $primary-text;
+    padding: .5rem;
+    background: darken($primary-red, 5%);
+    -webkit-box-shadow: $form-box-shadow;
+    -moz-box-shadow: $form-box-shadow;
+    box-shadow: $form-box-shadow;
+    transition: 0.2s all ease-in;
+    &:hover {
+        background: $primary-text;
+        color: darken($primary-red, 5%);
+        border: 1px solid darken($primary-red, 5%);
+    }
+}
+
+@mixin centerDiv() {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@mixin horizontalCenterDiv() {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+@mixin verticalCenterDiv() {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}

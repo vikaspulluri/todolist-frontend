@@ -1,0 +1,16 @@
+.contact-container {
+  left: 8%;
+  position: relative;
+  max-width: 90%;
+  text-align: center;
+  .wrapper {
+    display: inline-block;
+    margin: 2.5rem .5rem;
+    .form-group {
+      text-align: left;
+      label {
+        font-weight: 700;
+      }
+    }
+  }
+}

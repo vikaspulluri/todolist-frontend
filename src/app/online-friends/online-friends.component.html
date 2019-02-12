@@ -1,0 +1,15 @@
+<div class="outer-container">
+  <div class="inner-container">
+    <div class="head">
+      <h2>Friends</h2>
+    </div>
+    <div class="body">
+      <div class="users">
+        <div class="user" [ngClass]="user.status" *ngFor="let user of onlineFriends"><h4>{{ user.name }}</h4><h6>{{ user.status }}</h6></div>
+        <div class="no-friends" *ngIf="onlineFriends?.length === 0">
+          <p>You don't have friends here yet. <a [routerLink]="['/friends']">Check out here</a> to make some friends...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+<app-mini-sidebar></app-mini-sidebar>
+<div class="friends-container">
+  <div class="all-users full-height">
+    <div class="header"><h2>All Users</h2></div>
+    <div class="body">
+      <li *ngFor="let user of allUsers">
+        {{ user.firstName }} {{ user.lastName }}
+        <span ngSwitch="{{user.class}}">
+          <div *ngSwitchCase="'sent'">
+            <button class="btn btn-success" [ngClass]="user.class">{{ user.friendStatus }}</button>
+          </div>
+          <div *ngSwitchCase="'received'">
+            <button class="btn btn-warning" [ngClass]="user.class">{{ user.friendStatus }}</button>
+          </div>
+          <div *ngSwitchDefault>
+            <button class="btn btn-primary" (click)="onAddFriend(user)" [ngClass]="user.class">{{ user.friendStatus }}</button>
+          </div>
+        </span>
+      </li>
+    </div>
+  </div>
+  <div class="friends full-height">
+    <div class="header"><h2>Friends</h2></div>
+    <div class="body">
+      <li *ngFor="let friend of friends">
+        {{ friend.name }}
+      </li>
+    </div>
+  </div>
+  <div class="sent-requests full-height">
+    <div class="header"><h2>Sent Requests</h2></div>
+    <div class="body">
+      <li *ngFor="let request of sentRequests">
+        {{ request.receiverName }}
+        <span ngSwitch="{{request.status}}">
+          <div *ngSwitchCase="'Pending'">
+            <button class="btn btn-danger" [ngClass]="'pending'">{{ request.status }}</button>
+          </div>
+          <div *ngSwitchCase="'Accepted'">
+            <button class="btn btn-success" [ngClass]="'accepted'">{{ request.status }}</button>
+          </div>
+          <div *ngSwitchDefault>
+            <button class="btn btn-danger" [ngClass]="'pending'">{{ request.status }}</button>
+          </div>
+        </span>
+      </li>
+    </div>
+  </div>
+  <div class="received-requests full-height">
+    <div class="header"><h2>Received Requests</h2></div>
+    <div class="body">
+      <li *ngFor="let request of receivedRequests">
+        {{ request.requesterName }}
+        <span ngSwitch="{{request.status}}">
+          <div *ngSwitchCase="'Pending'">
+            <button class="btn btn-primary" [ngClass]="'pending'" (click)="onAcceptFriendRequest(request)">Accept</button>
+          </div>
+          <div *ngSwitchCase="'Accepted'">
+            <button class="btn btn-success" [ngClass]="'accepted'">{{ request.status }}</button>
+          </div>
+          <div *ngSwitchDefault>
+            <button class="btn btn-danger" [ngClass]="'pending'">{{ request.status }}</button>
+          </div>
+        </span>
+      </li>
+    </div>
+  </div>
+</div>

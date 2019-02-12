@@ -1,0 +1,61 @@
+@import 'variables';
+@import 'mixins';
+
+.auth-container {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-color: $primary-red;
+  .outer-container {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    max-width: 100%;
+    display: flex;
+    padding: 0 2rem;
+    justify-content: center;
+    .intro-text {
+      width: 50%;
+      color: $primary-text;
+      padding: 0 .5rem;
+      border-right: 2px solid $primary-text;
+      margin-right: .5rem;
+      text-align: center;
+      position: relative;
+      h1 {
+        font-family: 'Carrois Gothic SC', sans-serif;
+        font-style: normal;
+        font-weight: normal;
+      }
+      .intro-wrapper {
+        top: 50%;
+        position: relative;
+        transform: translateY(-50%);
+      }
+    }
+    .form {
+      display: block;
+      background-color: transparent;
+      border-radius: 2px;
+      width: 40%;
+      color: $primary-text;
+      fa {
+        @include fontawesomeBig(100px);
+      }
+      label span {
+        font-size: 1.4rem;
+      }
+      form {
+        margin: .75rem;
+        padding: .75rem;
+      }
+    }
+    .form-control {
+      @include formControl();
+    }
+    .submit-btn-group {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}

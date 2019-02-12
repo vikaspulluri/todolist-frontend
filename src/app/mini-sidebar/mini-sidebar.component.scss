@@ -1,0 +1,139 @@
+@import 'variables';
+@import 'mixins';
+
+.mini-sidebar {
+  display: inline-block;
+  height: 100vh;
+  position: fixed;
+  background-color: $primary-red;
+  padding: 0;
+  text-align: center;
+  width: 6%;
+  z-index: 6;
+  .site-links {
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    ul {
+      padding: 0;
+      &:last-child {
+        position: absolute;
+        bottom: 1.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+      }
+      li {
+        list-style: none;
+        margin: 0 auto;
+        a {
+          position: relative;
+        }
+        fa {
+          font-size: 1.5rem;
+          color: $primary-icons;
+        }
+        .badger{
+          display: inline-block;
+          width: 15px;
+          height: 15px;
+          position: absolute;
+          background: deepskyblue;
+          border-radius: 50%;
+          right: 0;
+        }
+      }
+    }
+    .profile-links {
+      a > label {
+        color: $primary-icons;
+        text-transform: uppercase;
+        font-size: 1rem;
+        display: block;
+        cursor: pointer;
+        font-family: 'Carrois Gothic SC', sans-serif;
+      }
+      input {
+        display: none;
+        &:checked + .dropdown-content {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+.dropdown {
+  display: inline-block;
+  position: relative;
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    top: 0px;
+    left: 75px;
+    background: darken($primary-red, 15%);
+    min-width: 160px;
+    box-shadow: 0px .5rem 1rem 0px rgba(0,0,0,0.2);
+    z-index: 10;
+    &::before {
+      width: 0;
+      height: 0;
+      border-top: 20px solid darken($primary-red, 15%);
+      border-right: 20px solid transparent;
+      content: '';
+      position: absolute;
+      top: 0px;
+      left: -20px;
+      transform: rotateZ(90deg);
+    }
+    a {
+      padding: .75rem 1rem;
+      text-decoration: none;
+      display: block;
+      z-index: inherit;
+      text-transform: uppercase;
+      color: $placeholder;
+      cursor: pointer;
+    }
+  }
+}
+
+.item-creation-container {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  z-index: 1000;
+  background: rgba(0,0,0,.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .inner-container {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 2.5rem;
+    border: 2px solid darken($primary-red, 15%);
+    background: $primary-red;
+    img {
+      position: absolute;
+      top: -2rem;
+      right: -2rem;
+      width: 35px;
+      cursor: pointer;
+    }
+    h2, label {
+      color: $primary-text;
+    }
+    .form-control {
+      @include formControl();
+    }
+    button {
+      margin: 0 .3rem;
+    }
+    .warning {
+      color: $error-text;
+      margin: 5px;
+    }
+  }
+}

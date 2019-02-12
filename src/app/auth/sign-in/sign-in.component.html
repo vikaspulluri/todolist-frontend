@@ -1,0 +1,33 @@
+<div class="auth-container col-12">
+  <div class="outer-container">
+    <div class="intro-text">
+      <div class="intro-wrapper">
+          <h1>Good {{ greeting }} Mate!!!</h1>
+          <p>Welcome to Real time TODO List application. You can make friends here and discuss
+            about your task in a group chat with them. Perfect choice to complete combined tasks.</p>
+      </div>
+    </div>
+    <div class="login-form form">
+      <div class="profile icon text-center rounded-circle">
+          <span><fa name="user" size="5x"></fa></span>
+      </div>
+      <form #loginForm="ngForm" (submit)="onLogin(loginForm)">
+        <div class="form-group">
+          <label>Email<span>*</span></label>
+          <input class="form-control" type="text" name="email" placeholder="Email" ngModel required email>
+        </div>
+        <div class="form-group">
+          <label>Password<span>*</span></label>
+          <input class="form-control" type="password" name="password" placeholder="Password" ngModel required>
+        </div>
+        <div class="form-group submit-btn-group">
+          <button class="btn main-btn" type="submit" name="login-btn">Sign in</button>
+          <a [routerLink]="['/forgot-password']" alt="Forgor your password?">Forgot your password?</a>
+        </div>
+        <div class="additional-links">
+          <a title="Sign up" [routerLink]="['/register']">Don't have an account? Sign up here</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

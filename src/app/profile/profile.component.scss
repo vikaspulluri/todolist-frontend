@@ -1,0 +1,12 @@
+.user-profile-container {
+  width: 90%;
+  position: relative;
+  left: 8%;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-around;
+  form {
+    width: 50%;
+    padding: 0 .5rem;
+  }
+}

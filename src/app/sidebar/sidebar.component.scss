@@ -1,0 +1,64 @@
+@import 'variables';
+
+aside {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  .sidebar {
+    background-color: $primary-red;
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    width: 100%;
+    ul {
+      margin: .75rem;
+      width: 100%;
+      font-size: 1.25rem;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      li {
+        list-style: none;
+        display: inline-block;
+        position: relative;
+        left: 1.75rem;
+        padding: 10px;
+        color: $primary-icons;
+        a {
+          color: $primary-icons;
+        }
+        fa {
+          margin-right: .75rem;
+        }
+      }
+      &:last-child {
+        position: absolute;
+        bottom: 1.5rem;
+        color: $primary-icons;
+        width: auto;
+        left: 42%;
+        transform: translateX(-50%);
+        li {
+          left: 0;
+          display: inline-block;
+        }
+        span {
+          .fa-user {
+            &::before {
+              width: 75px;
+              height: 75px;
+              border: 2px solid;
+              padding: .5rem;
+              border-radius: 50%;
+            }
+          }
+          &:last-child{
+            display: block;
+          }
+        }
+      }
+    }
+  }
+}

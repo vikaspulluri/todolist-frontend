@@ -1,0 +1,57 @@
+<div class="auth-container col-12">
+  <div class="outer-container">
+    <div class="signup-form form">
+      <div class="profile icon text-center rounded-circle">
+          <span><fa name="user-plus" size="5x"></fa></span>
+      </div>
+      <form (submit)="onSignup(signupForm)" #signupForm="ngForm">
+        <div class="embed">
+          <div class="form-group">
+            <label>First Name<span>*</span></label>
+            <input class="form-control" type="text" name="firstname" required ngModel placeholder="First name">
+          </div>
+          <div class="form-group">
+            <label>Last Name<span>*</span></label>
+            <input class="form-control" type="text" name="lastname" ngModel required placeholder="Last name">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Email<span>*</span></label>
+          <input class="form-control" type="email" name="email" ngModel required email placeholder="Email">
+        </div>
+        <div class="embed">
+          <div class="form-group">
+            <label>Password<span>*</span></label>
+            <input class="form-control" type="password" name="password" ngModel required placeholder="Password">
+          </div>
+          <div class="form-group">
+            <label>Confirm Password<span>*</span></label>
+            <input class="form-control" type="password" name="cpassword" ngModel required placeholder="Confirm Password">
+          </div>
+        </div>
+        <div class="embed">
+          <div class="form-group">
+            <label for="country">Country<span>*</span></label>
+            <select class="form-control" name="country" id="country" required [(ngModel)]="selectedCountry && selectedCountry.code" (ngModelChange)="onCountryChange($event)">
+              <option *ngFor="let country of countries" [value]="country.code">{{country.name}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Phone Number<span>*</span></label>
+            <div class="row">
+              <input class="form-control small-textbox" type="text" disabled name="phoneCode" [(ngModel)]="selectedCountry && selectedCountry.pcode">
+            <input class="form-control phone-control" type="text" name="phone" ngModel required placeholder="Phone Number">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <button class="btn main-btn" type="submit" name="signup-btn">Sign up</button>
+        </div>
+        <div class="additional-links">
+          <a title="Login" [routerLink]="['/login']">Already have an account? Login here</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

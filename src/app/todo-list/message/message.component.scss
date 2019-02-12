@@ -1,0 +1,57 @@
+@import 'variables';
+
+.chat-wrapper {
+  position: relative;
+  h2 {
+    text-align: center;
+    color: $primary-red;
+  }
+  hr {
+    border-top: 2px solid $primary-text;
+  }
+  .body {
+    overflow-y: scroll;
+    min-height: 70vh;
+    max-height: 70vh;
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+    &::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: $primary-red;
+      outline: 1px solid $secondary-red;
+    }
+  }
+ 
+}
+.no-selected-item {
+  top: 50%;
+  position: relative;
+  transform: translateY(-50%);
+}
+
+.chat-box {
+  position: fixed;
+  bottom: 7vh;
+  width: calc(32.0625% - 1rem);
+  display: flex;
+  input {
+    width: 85%;
+    background: darken($primary-red, 5%);
+    border: none;
+    border-bottom: 1px solid $primary-text;
+    color: $primary-text;
+    padding: 1px .5rem;
+    &::placeholder {
+      color: darken($primary-text, 15%);
+      opacity: 1;
+    }
+  }
+  .main-btn {
+    width: 14%;
+    margin-left: 1%;
+    border: none;
+  }
+}

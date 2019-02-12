@@ -1,0 +1,20 @@
+<app-mini-sidebar></app-mini-sidebar>
+<div class="contact-container">
+  <div class="wrapper">
+      <h1>Feedback/Suggestions</h1>
+      <p>Thanks for your time here. Let us know your suggestions/problems with the app:</p>
+      <form #contactForm="ngForm" (submit)="onContactFormSubmit(contactForm)">
+        <div class="form-group">
+          <label for="experience">Your experience with the app:</label>
+          <select class="form-control" id="experience" required [(ngModel)]="rating" name="experience">
+            <option [value]="option" *ngFor="let option of experience">{{option|uppercase}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="feedback">Feedback/Suggestions:</label>
+          <textarea name="feedback" rows="8" class="form-control" id="feedback" required [(ngModel)]="feedback"></textarea>
+        </div>
+        <button class="btn btn-success" name="submit-btn" type="submit">submit</button>
+      </form>
+  </div>
+</div>

@@ -1,0 +1,90 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css?family=Carrois+Gothic+SC|Lora:400,400i');
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
+@import '~ngx-toastr/toastr-bs4-alert';
+@import 'variables';
+@import 'mixins';
+
+html, body {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  background-color: #f8f8f8;
+  min-height: 100vh;
+  font-family: 'Lora', serif;
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-weight: 700;
+  }
+  p, a {
+    font-family: 'Lora', serif;
+    padding: 0 .5rem;
+  }
+  a {
+    color: $primary-text;
+    &:hover {
+      color: darken($primary-text, 10%);
+    }
+  }
+  input.form-control::placeholder {
+    color: darken($primary-text, 15%);
+    opacity: 1;
+  }
+  .main-btn {
+    @include mainBtn();
+  }
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: $secondary-red;
+    outline: 1px solid $secondary-red;
+  }
+  input, textarea {
+    &:focus, &:active {
+      outline: 1px solid $primary-red;
+    }
+  }
+  input[disabled], textarea[disabled] {
+    &:focus, &:active {
+      outline: none;
+    }
+  }
+  .toast {
+    color: #fff;
+    font-family: 'Carrois Gothic SC', sans-serif;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .toast-success {
+    background-color: green;
+  }
+  .toast-error {
+    background-color: orangered;
+  }
+  .toast-info {
+    background-color: $placeholder;
+    font-weight: normal;
+    color: #000;
+  }
+  .toast-title {
+    font-size: 1.1rem;
+    text-transform: none;
+  }
+  .toast-container.toast-top-center .custom-toast, .toast-container.toast-bottom-center .custom-toast {
+    width: 50%;
+    margin: .5rem auto;
+    display: block;
+    text-align: center;
+    @media screen and (max-width: 767px) {
+      width: 98%;
+    }
+  }
+}

@@ -1,0 +1,10 @@
+<app-mini-sidebar></app-mini-sidebar>
+<div class="notifications-container">
+  <div *ngFor="let notification of notifications" class="notification">
+    <li>{{ notification.message }}</li>
+    <li>{{ notification.arrived }}</li>
+  </div>
+  <div *ngIf="notifications.length === 0" class="no-notifications">
+    <p>You don't have any notifications yet. . .</p>
+  </div>
+</div>

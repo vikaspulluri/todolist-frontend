@@ -1,0 +1,57 @@
+<div id="{{msg.id}}" *ngFor="let msg of items">
+  <div class="message" [ngClass]="{'own': msg.creator == currentUserId, 
+                                    'other': msg.creator != currentUserId, 
+                                    'active': isSubitemActive == true && msg.id == msgid && subitemOperation !== 'delete', 
+                                    'done': msg.status == 'done',
+                                    'sub-item': itemType == 'sub-item',
+                                    'main-item': itemType == 'main-item',
+                                    'has-subitems': msg.children?.length > 0
+                                  }">
+    <div>
+      <span class="sender">{{ msg.creator == currentUserId ? 'You' : msg.creatorName }}</span>
+      <span class="timestamp">{{ msg.addedOn }}</span>
+      <p>{{ msg.title }}</p>
+    </div>
+    <div class="footer">
+      <ul class="list">
+        <li *ngIf="itemType != 'sub-item'"><fa name="plus" title="Add Sub item" (click)="onAddMessage(msg)"></fa></li>
+        <li><fa name="edit" title="Edit" (click)="onEditMessage(msg)"></fa></li>
+        <li><fa name="trash" title="Delete" (click)="onDeleteMessage(msg)"></fa></li>
+        <li *ngIf="msg.status != 'done'"><fa name="check" title="Done" (click)="onUpdateStatus(msg)"></fa></li>
+      </ul>
+    </div>
+    <div class="textbox-container" *ngIf="isSubitemActive == true && msg.id == msgid && subitemOperation != 'delete'">
+      <input type="text" id="subitem" placeholder="Add Subitem" [(ngModel)]="subitemPlaceholder">
+      <button class="btn main-btn" (click)="onItemSend()">{{subitemOperation == 'edit' ? 'Update' : 'Add'}}</button>
+    </div>
+
+    <span class="status" *ngIf="msg.status == 'done'">Marked as complete by {{msg.completedBy}}</span>
+  </div>
+  <app-sub-item *ngIf="msg.children?.length > 0" [items]="msg.children" [selectedList]="selectedList" [itemType]="'sub-item'"></app-sub-item>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" *ngIf="isSubitemActive == true && subitemOperation == 'delete'">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Are you sure to delete this item?</h5>
+        <button type="button" class="close" aria-label="Close" (click)="onCancelDelete()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5>{{ subitemPlaceholder }}</h5>
+      </div>
+      <div class="modal-footer">
+        <div class="human-check">
+          <p>Solve below math to confirm</p>
+          <div class="wrap">
+            <span>{{math1}}</span> + <span>{{math2}}</span> = <input name="humancheck" [(ngModel)]="roboCheckAnswer">
+          </div>
+        </div>
+        <button type="button" class="btn btn-success" (click)="onCancelDelete()">Cancel</button>
+        <button type="button" class="btn btn-danger" (click)="onConfirmDelete()">Yes, Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<div class="chat-wrapper" *ngIf="showChatRoom();else noSelectedItem">
+  <div class="head">
+    <h2>{{ selectedList?.title }}</h2>
+    <hr/>
+  </div>
+  <div class="body">
+    <div class="messages-wrapper">
+      <app-sub-item [items]="items" [selectedList]="selectedList" [itemType]="'main-item'"></app-sub-item>
+    </div>
+  </div>
+  <form #msgForm="ngForm" (submit)="onSendMessage()">
+    <div class="chat-box">
+      <input type="text" name="message" placeholder="Your message" required [(ngModel)]="message">
+      <button class="btn main-btn" type="submit">Send</button>
+    </div>
+  </form>
+</div>
+
+<ng-template #noSelectedItem>
+  <div class="no-selected-item">
+    <h4>Select any list to view it's messages and chat with your friends!!!</h4>
+  </div>
+</ng-template>

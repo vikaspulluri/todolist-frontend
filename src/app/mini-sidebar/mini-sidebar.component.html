@@ -1,0 +1,67 @@
+<div class="mini-sidebar col-1">
+  <div class="site-links">
+    <ul class="nav-links">
+      <li>
+        <a [routerLink]="['/dashboard']" routerLinkActive="active" title="Dashboard">
+          <fa name="dashcube"></fa>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/notifications']" title="Notifications">
+          <fa name="bell"></fa>
+          <span class="badger" *ngIf="notificationBadge === true"></span>
+        </a>
+      </li>
+      <li>
+        <a title="Create Todo List" appToggleModal>
+            <fa name="plus"></fa>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/friends']" title="Friends">
+            <fa name="users"></fa>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/contact']">
+          <fa name="envelope"></fa>
+        </a>
+      </li>
+    </ul>
+    <ul class="profile-links">
+      <li>
+        <a title="profile" class="dropdown">
+          <fa name="user-circle"></fa>
+          <label for="profile-dropdown">{{username}}</label>
+          <input type="checkbox" id="profile-dropdown">
+          <div class="dropdown-content">
+            <a [routerLink]="[ '/user/profile']">Profile</a>
+            <a (click)="onLogout()">Logout</a>
+          </div>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="item-creation-container d-none">
+  <div class="inner-container">
+    <img src="assets/images/close.png" (click)="onCloseModal()">
+    <h2>Create a TODO list item:</h2>
+    <form #listForm="ngForm" (submit)="onListCreated(listForm)">
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" class="form-control" name="title" placeholder="Title" ngModel title required>
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea name="description" class="form-control" ngModel description required></textarea>
+      </div>
+      <button class="btn btn-success" name="create-btn">Create</button>
+      <button class="btn btn-danger" name="cancel-btn" (click)="onCloseModal()">Cancel</button>
+      <div class="warning">
+        <i>*Note that all your friends can view this list</i>
+      </div>
+    </form>
+  </div>
+</div>
