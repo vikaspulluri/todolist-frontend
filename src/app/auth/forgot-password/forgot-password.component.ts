@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class ForgotPasswordComponent implements OnInit {
 
-  private email;
+  public email;
   constructor(private authService: AuthService, private toastrService: ToastrService,
     private spinnerService: NgxSpinnerService, private router: Router) { }
   ngOnInit() {
@@ -23,9 +23,10 @@ export class ForgotPasswordComponent implements OnInit {
     }
     this.spinnerService.show();
     this.authService.requestPassword(this.email).subscribe(response => {
+      this.email = '';
       this.spinnerService.hide();
       this.router.navigate(['/reset-password']).then(() => this.toastrService.success(response.message));
-    });
+    }, err => this.spinnerService.hide());
   }
 
 }

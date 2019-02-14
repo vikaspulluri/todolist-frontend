@@ -2,11 +2,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AppHttpService } from '../shared/http.service';
 import { UtilService } from '../shared/util.service';
 import { ToastrService } from 'ngx-toastr';
-import { NgForm } from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
 import { Subscription, Subject } from 'rxjs';
 import { SocketService } from '../shared/socket.service';
 import { ListModel } from '../shared/models/list.model';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-todo-list',
@@ -29,8 +29,8 @@ export class TodoListComponent implements OnInit, OnDestroy {
   selectedList: ListModel;
   currentUsername = this.authService.getUsername();
   currentUserId = this.authService.getUserId();
-  private isListActive = false;
-  private listItemOperation = ''; // possible values are edit, delete
+  isListActive = false;
+  listItemOperation = ''; // possible values are edit, delete
   private listItemPlaceholder = '';
   private listItemDescriptionPlaceholder = '';
   private listItemId = '';
@@ -42,9 +42,11 @@ export class TodoListComponent implements OnInit, OnDestroy {
               private utilService: UtilService,
               private toastrService: ToastrService,
               private authService: AuthService,
-              private socketService: SocketService) { }
+              private socketService: SocketService,
+              private spinnerService: NgxSpinnerService) { }
 
   ngOnInit() {
+    this.showSpinner();
     // Subscribe to get todolists created by user
     this.getOwnTodoLists();
 
@@ -121,6 +123,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
   // function to retrieve lists created by self
   getOwnTodoLists() {
     this.appHttpService.getOwnTodoLists().subscribe(response => {
+      this.hideSpinner();
       this.lists = response.data.map(list => {
         const obj: ListModel =  {
           title: list.title,
@@ -138,7 +141,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
         }
         return obj;
       });
-    });
+    }, error => this.hideSpinner());
   }
 
   // function to retrieve lists created by friends. Need to wait until friends ids get fetched in online-friends component
@@ -197,6 +200,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
       this.toastrService.info('Please answer correctly to delete!!!');
       return;
     }
+    this.showSpinner();
     this.appHttpService.deleteTodoList(this.listItemId).subscribe(data => {
       // tslint:disable-next-line:max-line-length
       this.socketService.deleteList(this.currentUserId, {title: this.listItemPlaceholder, lastModifiedByName: this.currentUsername, id: this.listItemId});
@@ -210,7 +214,8 @@ export class TodoListComponent implements OnInit, OnDestroy {
       this.math2 = '';
       this.roboCheckAnswer = '';
       this.correctAnswer = '';
-    });
+      this.hideSpinner();
+    }, err => this.hideSpinner());
   }
 
   onCancelDelete() {
@@ -283,6 +288,19 @@ export class TodoListComponent implements OnInit, OnDestroy {
     this.listItemPlaceholder = '';
   }
 
+  showSpinner() {
+    this.spinnerService.show();
+  }
+
+  hideSpinner() {
+    this.spinnerService.hide();
+  }
+
+  onChatBoxBackBtnClick() {
+    this.isListSelected = !this.isListSelected;
+    this.isListActive = false;
+    this.selectedList = null;
+  }
   // unsubscribe to all subscriptions once the component gets destroyed
   ngOnDestroy() {
     this.subscription.unsubscribe();

@@ -43,35 +43,25 @@ export class AuthService {
     return this.userId;
   }
 
+  setAuthInfo(response) {
+    const expiresInDuration = response.data.expiryDuration;
+    this.token = response.data.token;
+    this.isAuthenticated = true;
+    this.username = response.data.username;
+    this.userId = response.data.userId;
+    this.setAuthTimer(expiresInDuration);
+    const now = new Date();
+    const expiration = new Date(now.getTime() + expiresInDuration * 1000);
+    this.saveAuthData(this.token, expiration, response.data.userId, response.data.username);
+    this.authStatusListener.next(true);
+  }
+
   createUser(user: User) {
     return this.http.post(`${config.apiUrl}/api/user/create`, user);
   }
   login(email: string, password: string) {
     const authData: AuthData = {email: email, password: password};
-    this.http.post<SignUpResponse>(`${config.apiUrl}/api/user/login`, authData)
-              .subscribe(response => {
-                if (response && response.data) {
-                  this.toastrService.success(response.message);
-                  const expiresInDuration = response.data.expiryDuration;
-                  this.token = response.data.token;
-                  this.isAuthenticated = true;
-                  this.username = response.data.username;
-                  this.userId = response.data.userId;
-                  this.setAuthTimer(expiresInDuration);
-                  const now = new Date();
-                  const expiration = new Date(now.getTime() + expiresInDuration * 1000);
-                  this.saveAuthData(this.token, expiration, response.data.userId, response.data.username);
-                  this.authStatusListener.next(true);
-                  const userData = {
-                    authToken: this.getToken(),
-                    friendsList: []
-                  };
-                  this.socketService.setUser(userData);
-                  this.router.navigate(['/dashboard']);
-                }
-              }, error => {
-                this.authStatusListener.next(false);
-              });
+    return this.http.post<SignUpResponse>(`${config.apiUrl}/api/user/login`, authData);
   }
   logout() {
     this.token = null;

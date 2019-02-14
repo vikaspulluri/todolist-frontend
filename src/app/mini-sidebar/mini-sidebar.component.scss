@@ -2,7 +2,7 @@
 @import 'mixins';
 
 .mini-sidebar {
-  display: inline-block;
+  display: none;
   height: 100vh;
   position: fixed;
   background-color: $primary-red;
@@ -135,5 +135,24 @@
       color: $error-text;
       margin: 5px;
     }
+  }
+}
+
+@media screen and (max-width: 990px) {
+  #navbarNav .navbar-nav {
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+  .navbar-dark {
+    background: $primary-red;
+  }
+  .navbar-toggler-icon {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .navbar-toggler-icon {
+    display: inline-block;
   }
 }

@@ -1,11 +1,13 @@
 <div class="chat-wrapper" *ngIf="showChatRoom();else noSelectedItem">
   <div class="head">
+    <span class="float-left" class="back-btn d-sm-block" (click)="onBackButtonClick()">Back</span>
     <h2>{{ selectedList?.title }}</h2>
+    <fa name="backward" title="Undo" class="float-right undo-btn" (click)="onUndoClick()"></fa>
     <hr/>
   </div>
   <div class="body">
     <div class="messages-wrapper">
-      <app-sub-item [items]="items" [selectedList]="selectedList" [itemType]="'main-item'"></app-sub-item>
+    <app-sub-item [items]="items" [selectedList]="selectedList" [itemType]="'main-item'" [undoClickEvent]="undoClickEvent"></app-sub-item>
     </div>
   </div>
   <form #msgForm="ngForm" (submit)="onSendMessage()">

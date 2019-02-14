@@ -1,13 +1,13 @@
-import { Component, OnInit, Input, OnDestroy, Output, EventEmitter,
-  HostListener, ViewChild, ElementRef, AfterViewInit, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { SocketService } from 'src/app/shared/socket.service';
 import { AuthService } from 'src/app/auth/auth.service';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Observable, Subject } from 'rxjs';
 import { UtilService } from 'src/app/shared/util.service';
 import { AppHttpService } from 'src/app/shared/http.service';
 import { MessageModel } from 'src/app/shared/models/message.model';
 import { ItemHistoryModel } from 'src/app/shared/models/item-history.model';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-message',
@@ -20,6 +20,8 @@ export class MessageComponent implements OnInit, OnDestroy {
   @Input() isListSelected;
   @Input() listSelectEvent: Observable<void>;
   @Output() incomingMessageAlert = new EventEmitter();
+  @Output() backBtnClick = new EventEmitter(); // for mobile screens back button in chat window
+  undoClickEvent: Subject<any> = new Subject();
   message = '';
   msgid = '';
   activeItem = null;
@@ -44,7 +46,8 @@ export class MessageComponent implements OnInit, OnDestroy {
     private socketService: SocketService,
     private authService: AuthService,
     private utilService: UtilService,
-    private appHttpService: AppHttpService) { }
+    private appHttpService: AppHttpService,
+    private spinnerService: NgxSpinnerService) { }
 
   ngOnInit() {
     this.onItemAddedSubscription();
@@ -53,6 +56,7 @@ export class MessageComponent implements OnInit, OnDestroy {
     this.onItemDoneSubscription();
     // subscribe to event from parent component, when user clicks on list, messages will be fetched for that list
     this.eventSubscription = this.listSelectEvent.subscribe((data) => {
+      this.showSpinner();
       this.selectedList = data;
       this.items = [];
       this.getItemsForSelectedList(0);
@@ -146,6 +150,7 @@ export class MessageComponent implements OnInit, OnDestroy {
    */
   getItemsForSelectedList(skip) {
     this.getItemsSubcription = this.appHttpService.getItemsByListId(this.selectedList.id, skip).subscribe(response => {
+      this.hideSpinner();
       if (!response || !response.data || response.data.items.length <= 0) {
         this.toastrService.info('No items to display!!!');
         return;
@@ -312,10 +317,24 @@ export class MessageComponent implements OnInit, OnDestroy {
       if (oldObject) {
         itemHistory.oldObject = oldObject;
       }
-      console.log(itemHistory);
       this.socketService.trackItemHistory(this.currentUserId, itemHistory);
   }
 
+  showSpinner() {
+    this.spinnerService.show();
+  }
+
+  hideSpinner() {
+    this.spinnerService.hide();
+  }
+
+  onUndoClick() {
+    this.undoClickEvent.next(true);
+  }
+
+  onBackButtonClick() {
+    this.backBtnClick.emit(true);
+  }
   ngOnDestroy() {
     this.itemAddedSubscription.unsubscribe();
     this.itemEditedSubscription.unsubscribe();

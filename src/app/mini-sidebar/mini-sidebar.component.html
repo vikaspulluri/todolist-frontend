@@ -1,4 +1,4 @@
-<div class="mini-sidebar col-1">
+<div class="mini-sidebar col-1 d-lg-block">
   <div class="site-links">
     <ul class="nav-links">
       <li>
@@ -43,6 +43,31 @@
     </ul>
   </div>
 </div>
+
+<nav class="navbar navbar-expand-lg navbar-dark d-lg-none">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" [routerLink]="['/dashboard']" routerLinkActive="active" title="Home">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/friends']" title="Friends">Friends</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" appToggleModal title="Create Todolist">Create List</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/notifications']" title="Notifications">Notifications</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/contact']" title="Contact me">Contact</a>
+      </li>
+    </ul>
+  </div>
+</nav>
 
 <div class="item-creation-container d-none">
   <div class="inner-container">

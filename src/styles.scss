@@ -1,8 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css?family=Carrois+Gothic+SC|Lora:400,400i');
+@import '~bootstrap/scss/bootstrap';
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins';
+@import '~font-awesome/css/font-awesome.min.css';
 @import '~ngx-toastr/toastr-bs4-alert';
 @import 'variables';
 @import 'mixins';
@@ -77,6 +79,13 @@ html, body {
   .toast-title {
     font-size: 1.1rem;
     text-transform: none;
+  }
+  .error-message {
+    font-size: 1rem;
+  }
+  .alert {
+    padding: .5rem;
+    text-align: center;
   }
   .toast-container.toast-top-center .custom-toast, .toast-container.toast-bottom-center .custom-toast {
     width: 50%;

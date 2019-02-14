@@ -6,6 +6,9 @@
   margin: 0;
   padding: 0;
   background-color: $primary-red;
+  @media screen and (max-width: 767px) {
+    height: auto;
+  }
   .outer-container {
     position: absolute;
     top: 50%;
@@ -14,6 +17,13 @@
     display: flex;
     padding: 0 2rem;
     justify-content: center;
+    @media screen and (max-width: 767px) {
+      position: relative;
+      top: auto;
+      transform: none;
+      flex-direction: column;
+      padding: 0 .25rem;
+    }
     .intro-text {
       width: 50%;
       color: $primary-text;
@@ -22,6 +32,12 @@
       margin-right: .5rem;
       text-align: center;
       position: relative;
+      @media screen and (max-width: 767px) {
+        width: auto;
+        margin: 1rem;
+        border-right: none !important;
+	      border-bottom: 2px solid;
+      }
       h1 {
         font-family: 'Carrois Gothic SC', sans-serif;
         font-style: normal;
@@ -31,6 +47,10 @@
         top: 50%;
         position: relative;
         transform: translateY(-50%);
+        @media screen and (max-width: 767px) {
+          transform: none;
+          top: auto;
+        }
       }
     }
     .form {
@@ -39,6 +59,14 @@
       border-radius: 2px;
       width: 40%;
       color: $primary-text;
+      @media screen and (max-width: 767px) {
+        width: auto;
+        margin: 1rem;
+        border-right: none !important;
+        a {
+          font-size: .8rem;
+        }
+      }
       fa {
         @include fontawesomeBig(100px);
       }

@@ -5,6 +5,9 @@
   position: absolute;
   right: 1%;
   width: 30%;
+  @media screen and (max-width: 990px) {
+    display:none;
+  }
   .inner-container {
     margin: 2rem;
     border: 2px solid;

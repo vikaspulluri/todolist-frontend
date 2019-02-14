@@ -20,8 +20,14 @@
       .embed {
         display: flex;
         justify-content: space-between;
+        @media screen and (max-width: 600px) {
+          display: block;
+        }
         .form-group {
           width: 45%;
+          @media screen and (max-width: 600px) {
+            width: auto;
+          }
         }
         .row {
           margin-right: 0px;
@@ -33,7 +39,8 @@
         }
         .phone-control {
           display: inline-block;
-          width: auto;
+          width: calc(100% - 90px);
+          margin-left: 10px;
         }
       }
       fa { 

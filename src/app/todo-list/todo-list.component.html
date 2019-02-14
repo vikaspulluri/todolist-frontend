@@ -1,5 +1,5 @@
 <div class="outer-container">
-    <div class="todo-items" *ngIf="lists?.length > 0;else noItems">
+    <div class="todo-items" *ngIf="lists?.length > 0;else noItems" [ngClass]="{'list-selected': isListSelected == true}">
       <div class="todo-item {{list.status}}" [ngClass]="{'active': selectedList?.id == list.id, 'active-operation': isListActive == true, 'own': list.type == 'own', 'friend': list.type == 'friend'}" id="{{ list.id }}" *ngFor="let list of lists;let i = index">
         <div class="wrap" (click)="onListSelected(list)">
           <div class="header">
@@ -28,8 +28,10 @@
   <app-message [isListSelected]="isListSelected"
                 *ngIf="showEmptyChatRoom()"
                 class="chat-room"
+                [ngClass]="{'list-selected': isListSelected == true}"
                 [listSelectEvent] = "onListSelectEvent.asObservable()"
-                (incomingMessageAlert)="onIncomingMessage($event)"></app-message>
+                (incomingMessageAlert)="onIncomingMessage($event)"
+                (backBtnClick)="onChatBoxBackBtnClick()"></app-message>
 </div>
 <ng-template #noItems>
   <div class="no-items" [ngClass]="friendsLists?.length > 0 ? '' : 'no-friend-items'">

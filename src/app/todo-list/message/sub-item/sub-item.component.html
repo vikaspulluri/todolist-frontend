@@ -27,7 +27,7 @@
 
     <span class="status" *ngIf="msg.status == 'done'">Marked as complete by {{msg.completedBy}}</span>
   </div>
-  <app-sub-item *ngIf="msg.children?.length > 0" [items]="msg.children" [selectedList]="selectedList" [itemType]="'sub-item'"></app-sub-item>
+  <app-sub-item *ngIf="msg.children?.length > 0" [items]="msg.children" [selectedList]="selectedList" [itemType]="'sub-item'" [undoClickEvent]="undoClickEvent"></app-sub-item>
 </div>
 
 <div class="modal" tabindex="-1" role="dialog" *ngIf="isSubitemActive == true && subitemOperation == 'delete'">

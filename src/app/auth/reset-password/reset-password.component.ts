@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-reset-password',
@@ -11,7 +12,9 @@ import { Router } from '@angular/router';
 })
 export class ResetPasswordComponent implements OnInit {
 
-  constructor(private authService: AuthService, private toastrService: ToastrService, private router: Router) { }
+  public isInvalidConfirmPassword = false;
+  constructor(private authService: AuthService, private toastrService: ToastrService,
+    private router: Router, private spinnerService: NgxSpinnerService) { }
 
   ngOnInit() {
   }
@@ -20,17 +23,27 @@ export class ResetPasswordComponent implements OnInit {
     if (form.invalid) {
       return;
     }
-    console.log(form.value);
+    this.spinnerService.show();
     const data = {
       verificationCode: form.value.verificationCode,
       newPassword: form.value.password
     };
     this.authService.resetPassword(data).subscribe(response => {
+      this.spinnerService.hide();
+      form.reset();
       if (response.error === false) {
-        form.reset();
         this.router.navigate(['/login']).then(() => this.toastrService.success(response.message));
       }
-    });
+    }, err => this.spinnerService.hide());
+  }
+
+  onConfirmPasswordEntry(password, cpassword) {
+    if (password !== cpassword) {
+      this.isInvalidConfirmPassword = true;
+      return;
+    } else {
+      this.isInvalidConfirmPassword = false;
+    }
   }
 
 }

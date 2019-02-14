@@ -5,6 +5,29 @@
   h2 {
     text-align: center;
     color: $primary-red;
+    display: inline;
+  }
+  .undo-btn {
+    position: relative;
+    font-size: 1.2rem;
+    color: $primary-red;
+    right: .75rem;
+    top: .75rem;
+    border: 1px solid;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
+  .back-btn {
+    display: none;
+    @media screen and (max-width: 600px) {
+      display: block;
+      float: left;
+      position: relative;
+      text-decoration: underline;
+      left: .75rem;
+      top: .75rem;
+    }
   }
   hr {
     border-top: 2px solid $primary-text;
@@ -34,9 +57,16 @@
 
 .chat-box {
   position: fixed;
-  bottom: 7vh;
-  width: calc(32.0625% - 1rem);
+  bottom: 5vh;
+  width: 30%;
   display: flex;
+  @media screen and (max-width: 990px) {
+    width: 45%;
+    bottom: 1rem;
+  }
+  @media screen and (max-width: 600px) {
+    width: 92%;
+  }
   input {
     width: 85%;
     background: darken($primary-red, 5%);

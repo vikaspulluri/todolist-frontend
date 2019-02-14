@@ -1,27 +1,30 @@
-import { Component, OnInit, Input, HostListener } from '@angular/core';
+import { Component, OnInit, Input, HostListener, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
 import { SocketService } from 'src/app/shared/socket.service';
 import { UtilService } from 'src/app/shared/util.service';
 import { MessageModel } from 'src/app/shared/models/message.model';
 import { ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { AppHttpService } from 'src/app/shared/http.service';
 import { ItemHistoryModel } from 'src/app/shared/models/item-history.model';
+import { SubjectSubscriber } from 'rxjs/internal/Subject';
 
 @Component({
   selector: 'app-sub-item',
   templateUrl: './sub-item.component.html',
   styleUrls: ['./sub-item.component.scss']
 })
-export class SubItemComponent implements OnInit {
+export class SubItemComponent implements OnInit, OnDestroy {
 
   @Input() items;
   @Input() selectedList;
   @Input() itemType;
+  @Input() undoClickEvent: Subject<any>;
+  undoClickListener: Subscription;
   private currentUserName = this.authService.getUsername();
   private currentUserId = this.authService.getUserId();
-  private isSubitemActive = false;
-  private subitemOperation = '';
+  public isSubitemActive = false;
+  public subitemOperation = '';
   private subitemPlaceholder = '';
   private math1;
   private math2;
@@ -38,6 +41,7 @@ export class SubItemComponent implements OnInit {
               private appHttpService: AppHttpService) { }
 
   ngOnInit() {
+    this.undoClickListener = this.undoClickEvent.subscribe(data => this.onUndoBtnClick());
   }
   /*###################### Listening for ctrl+z or cmd+z events #################### */
   @HostListener('document:keydown', ['$event'])
@@ -46,10 +50,7 @@ export class SubItemComponent implements OnInit {
           ($event.metaKey && $event.metaKey === true && $event.key === 'z')) {
             if (!this.isKeyPressed) {
               this.isKeyPressed = true;
-              this.appHttpService.getLastOperationOnList(this.selectedList.id).subscribe(response => {
-                console.log(response);
-                this.undoLastAction(response.data);
-              });
+              this.onUndoBtnClick();
             }
       }
   }
@@ -323,7 +324,11 @@ export class SubItemComponent implements OnInit {
     console.log(itemHistory);
     this.socketService.trackItemHistory(this.currentUserId, itemHistory);
   }
-
+  onUndoBtnClick() {
+    this.appHttpService.getLastOperationOnList(this.selectedList.id).subscribe(response => {
+      this.undoLastAction(response.data);
+    });
+  }
   undoLastAction(data: ItemHistoryModel) {
     if (data.operationName === 'add') {
       const postObj: MessageModel = {
@@ -386,5 +391,9 @@ export class SubItemComponent implements OnInit {
     }
     this.socketService.undoLastAction(this.currentUserId, data._id);
     this.isKeyPressed = false;
+  }
+
+  ngOnDestroy() {
+    this.undoClickListener.unsubscribe();
   }
 }

@@ -9,6 +9,7 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { RouterModule } from '@angular/router';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     FormsModule,
     ToastrModule.forRoot(),
     AngularFontAwesomeModule,
-    RouterModule
+    RouterModule,
+    NgxSpinnerModule
   ]
 })
 export class AuthModule {}

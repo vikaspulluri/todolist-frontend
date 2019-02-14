@@ -8,12 +8,25 @@
   width: 64%;
   justify-content: space-around;
   z-index: 1;
+  @media screen and (max-width: 990px) {
+    width: 98%;
+    margin-left: 1%;
+    left: 0;
+  }
   form {
     z-index: inherit;
   }
   .todo-items {
     width: 100%;
     max-width: 50%;
+    @media screen and (max-width: 600px) {
+      max-width: 100%;
+    }
+    &.list-selected {
+      @media screen and (max-width: 600px){
+        display: none;
+      }
+    }
   }
   .todo-items.friends.no-items {
     position: absolute;
@@ -162,13 +175,22 @@
   .chat-room {
     width: 50%;
     position: relative;
-    height: 90vh;
+    height: 95vh;
     max-height: 100vh;
     padding: .25rem;
-    margin: 2rem .25rem;
+    margin: .5rem .25rem;
     text-align: center;
     border: 2px solid $primary-red;
     background: $secondary-red;
+    @media screen and (max-width: 600px) {
+      display: none;
+    }
+    &.list-selected {
+      @media screen and (max-width: 600px){
+        display: block;
+        width: 100%;
+      }
+    }
   }
   .no-items {
     width: auto;
