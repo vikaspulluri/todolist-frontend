@@ -44,19 +44,51 @@
         }
       }
     }
-    .profile-links {
-      a > label {
-        color: $primary-icons;
-        text-transform: uppercase;
-        font-size: 1rem;
-        display: block;
-        cursor: pointer;
-        font-family: 'Carrois Gothic SC', sans-serif;
+  }
+}
+
+.profile-links {
+  a > label {
+    color: $primary-icons;
+    text-transform: uppercase;
+    font-size: 1rem;
+    display: block;
+    cursor: pointer;
+    font-family: 'Carrois Gothic SC', sans-serif;
+  }
+  input {
+    display: none;
+    &:checked + .dropdown-content {
+      display: block;
+    }
+  }
+  &.dropdown2 {
+    @media screen and (max-width: 600px) {
+      position: absolute;
+      top: 0;
+      right: 1rem;
+    }
+    fa {
+      color: $primary-icons;
+      margin-right: .5rem;
+    }
+    a > label {
+      display: inline-block;
+    }
+    .dropdown-content {
+      left: 0;
+      top: 60px;
+      &:before {
+        top: -20px;
+        left: 0;
+        transform: rotateZ(270deg);
       }
-      input {
-        display: none;
-        &:checked + .dropdown-content {
-          display: block;
+      @media screen and (max-width: 600px) {
+        top: 40px;
+        &:before {
+          border-top: 10px solid darken($primary-red, 15%);
+          border-right: 10px solid transparent;
+          top: -10px;
         }
       }
     }
@@ -108,6 +140,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media screen and (max-width: 700px) {
+    width: auto;
+    padding: 2rem;
+  }
   .inner-container {
     position: relative;
     top: 50%;
@@ -121,6 +157,11 @@
       right: -2rem;
       width: 35px;
       cursor: pointer;
+    }
+    h2 {
+      @media screen and (max-width: 700px) {
+        font-size: 1.3rem;
+      }
     }
     h2, label {
       color: $primary-text;
@@ -154,5 +195,16 @@
 @media screen and (max-width: 600px) {
   .navbar-toggler-icon {
     display: inline-block;
+  }
+  #navbarNav {
+    display: none;
+    .navbar-nav {
+      flex-direction: column;
+      justify-items: center;
+      text-align: center;
+    }
+  }
+  input#nav-toggler:checked + #navbarNav {
+    display: block;
   }
 }

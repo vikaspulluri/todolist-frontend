@@ -189,17 +189,23 @@
       @media screen and (max-width: 600px){
         display: block;
         width: 100%;
+        background: #e36b92;
       }
     }
   }
   .no-items {
     width: auto;
-    color: darken($primary-red, 10%);
+    color: $primary-text;
     text-align: center;
     h1 {
       font-family: 'Carrois Gothic SC', sans-serif;
       font-style: normal;
       font-size: 3.5rem;
+      display: inline-block;
+      border-bottom: 1px solid;
+      @media screen and (max-width: 767px) {
+        font-size: 2.5rem;
+      }
     }
     .no-friend-items {
       position: relative;
@@ -213,17 +219,17 @@
     }
     .instructions {
       text-align: left;
+      padding: 1rem 2.5rem;
+      margin: 1rem 1rem 0;
+      border: 2px solid;
       hr {
         border: 1px solid rgba(0,0,0,0.1);
         max-width: 95%;
       }
     }
-    h3 {
-      padding: .5rem 2.5rem;
-    }
     p {
       font-size: 1.1rem;
-      padding: .5rem 2.5rem;
+      color: darken($primary-red, 15%);
     }
   }
   p {

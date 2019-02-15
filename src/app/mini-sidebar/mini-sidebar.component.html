@@ -45,9 +45,8 @@
 </div>
 
 <nav class="navbar navbar-expand-lg navbar-dark d-lg-none">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+  <label for="nav-toggler" class="navbar-toggler-icon"></label>
+  <input class="d-none navbar-toggler" type="checkbox" id="nav-toggler">
   <div class="navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item active">
@@ -65,6 +64,17 @@
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['/contact']" title="Contact me">Contact</a>
       </li>
+      <li class="nav-item profile-links dropdown2">
+        <a title="profile" class="dropdown nav-link">
+          <fa name="user-circle"></fa>
+          <label for="profile-dropdown2">{{username}}</label>
+          <input type="checkbox" id="profile-dropdown2" class="d-none">
+          <div class="dropdown-content">
+            <a [routerLink]="[ '/user/profile']">Profile</a>
+            <a (click)="onLogout()">Logout</a>
+          </div>
+        </a>
+      </li>
     </ul>
   </div>
 </nav>
@@ -76,11 +86,17 @@
     <form #listForm="ngForm" (submit)="onListCreated(listForm)">
       <div class="form-group">
         <label for="title">Title</label>
-        <input type="text" class="form-control" name="title" placeholder="Title" ngModel title required>
+        <input type="text" class="form-control" name="title" placeholder="Title" ngModel required #title="ngModel">
+        <div *ngIf="title.invalid && (title.dirty || title.touched)" class="alert alert-danger mt-1">
+          <span *ngIf="title.errors.required" class="error-message">Title is required!!!</span>
+        </div>
       </div>
       <div class="form-group">
         <label for="description">Description</label>
-        <textarea name="description" class="form-control" ngModel description required></textarea>
+        <textarea name="description" class="form-control" ngModel required #description="ngModel"></textarea>
+        <div *ngIf="description.invalid && (description.dirty || description.touched)" class="alert alert-danger mt-1">
+          <span *ngIf="description.errors.required" class="error-message">Description is required!!!</span>
+        </div>
       </div>
       <button class="btn btn-success" name="create-btn">Create</button>
       <button class="btn btn-danger" name="cancel-btn" (click)="onCloseModal()">Cancel</button>

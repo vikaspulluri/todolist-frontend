@@ -5,8 +5,17 @@
   padding: 1rem;
   display: flex;
   justify-content: space-around;
+  @media screen and (max-width: 767px) {
+    flex-direction: column;
+    left: 0%;
+    width: 95%;
+    justify-content: center;
+  }
   form {
     width: 50%;
     padding: 0 .5rem;
+    @media screen  and (max-width: 767px) {
+      width: 100%;
+    }
   }
 }

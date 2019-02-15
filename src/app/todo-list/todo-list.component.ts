@@ -272,7 +272,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
 
   // function to receive incoming messages
   onIncomingMessage(data) {
-    console.log(data);
+    // console.log(data);
   }
 
   // function to decide whether to show empty box or not

@@ -70,7 +70,11 @@ export class MessageComponent implements OnInit, OnDestroy {
   onItemAddedSubscription() {
     this.itemAddedSubscription = this.socketService.onItemAdded().subscribe(data => {
       this.incomingMessageAlert.emit(data);
-      this.toastrService.info(`${data.creatorName} has added an item <strong>${data.title}</strong>`, '', {enableHtml: true});
+      if (data.isUndoAction && data.isUndoAction === true) {
+        this.toastrService.info(`${data.creatorName} has undone an item <strong>${data.title}</strong>`, '', {enableHtml: true});
+      } else {
+        this.toastrService.info(`${data.creatorName} has added an item <strong>${data.title}</strong>`, '', {enableHtml: true});
+      }
       if (this.selectedList && this.selectedList.id === data.listId) {
         const item = {
           title: data.title,
@@ -113,8 +117,13 @@ export class MessageComponent implements OnInit, OnDestroy {
           status: data.staus
         };
         this.updateItemsList(item, 'edit');
-        this.toastrService.info(`<strong>${data.editorName}</strong>
+        if (data.isUndoAction && data.isUndoAction === true) {
+          this.toastrService.info(`<strong>${data.editorName}</strong>
+          has undo an item in <strong>${this.selectedList.title}</strong>!!!`, '', {enableHtml: true});
+        } else {
+          this.toastrService.info(`<strong>${data.editorName}</strong>
           has updated an item in <strong>${this.selectedList.title}</strong>!!!`, '', {enableHtml: true});
+        }
       }
     });
   }
@@ -124,8 +133,13 @@ export class MessageComponent implements OnInit, OnDestroy {
       this.incomingMessageAlert.emit(data);
       if (this.selectedList && this.selectedList.id === data.listId) {
         this.updateItemsList(data, 'delete');
-        this.toastrService.info(`<strong>${data.editorName}</strong>
+        if (data.isUndoAction && data.isUndoAction === true) {
+          this.toastrService.info(`<strong>${data.editorName}</strong>
+          has undone an item in <strong>${this.selectedList.title}</strong>!!!`, '', {enableHtml: true});
+        } else {
+          this.toastrService.info(`<strong>${data.editorName}</strong>
           has deleted an item in <strong>${this.selectedList.title}</strong>!!!`, '', {enableHtml: true});
+        }
       }
     });
   }
@@ -135,8 +149,13 @@ export class MessageComponent implements OnInit, OnDestroy {
       this.incomingMessageAlert.emit(data);
       if (this.selectedList && this.selectedList.id === data.listId) {
         this.updateItemsList(data, 'status');
-        this.toastrService.info(`<strong>${data.editorName}</strong>
+        if (data.isUndoAction && data.isUndoneAction === true) {
+          this.toastrService.info(`<strong>${data.editorName}</strong>
+          has undone an item in <strong>${this.selectedList.title}</strong>!!!`, '', {enableHtml: true});
+        } else {
+          this.toastrService.info(`<strong>${data.editorName}</strong>
           has completed an item in <strong>${this.selectedList.title}</strong>!!!`, '', {enableHtml: true});
+        }
       }
     });
   }

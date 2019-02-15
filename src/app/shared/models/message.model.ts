@@ -15,4 +15,5 @@ export interface MessageModel {
     _id?: string;
     children?: Array<MessageModel>;
     completionDate?: string;
+    isUndoAction?: boolean;
 }

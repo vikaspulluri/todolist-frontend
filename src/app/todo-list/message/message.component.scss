@@ -14,9 +14,9 @@
     right: .75rem;
     top: .75rem;
     border: 1px solid;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
+    padding: .15rem .25rem;
+    color: #fff;
+    background: $primary-text;
   }
   .back-btn {
     display: none;
@@ -62,7 +62,7 @@
   display: flex;
   @media screen and (max-width: 990px) {
     width: 45%;
-    bottom: 1rem;
+    bottom: .5rem;
   }
   @media screen and (max-width: 600px) {
     width: 92%;
@@ -78,10 +78,16 @@
       color: darken($primary-text, 15%);
       opacity: 1;
     }
+    @media screen and (max-width: 700px) {
+      width: 80%;
+    }
   }
   .main-btn {
     width: 14%;
     margin-left: 1%;
     border: none;
+    @media screen and (max-width: 700px) {
+      width: 18%;
+    }
   }
 }

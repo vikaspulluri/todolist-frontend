@@ -321,7 +321,6 @@ export class SubItemComponent implements OnInit, OnDestroy {
     if (data.children) {
       itemHistory.children = data.children;
     }
-    console.log(itemHistory);
     this.socketService.trackItemHistory(this.currentUserId, itemHistory);
   }
   onUndoBtnClick() {
@@ -342,7 +341,8 @@ export class SubItemComponent implements OnInit, OnDestroy {
         creator: data.creator,
         creatorName: data.creatorName,
         addedOn: data.createdOn,
-        status: data.status
+        status: data.status,
+        isUndoAction: true
       };
       this.deleteItem(postObj, true);
     } else if (data.operationName === 'edit') {
@@ -358,6 +358,7 @@ export class SubItemComponent implements OnInit, OnDestroy {
         creatorName: data.creatorName,
         addedOn: data.createdOn,
         id: data.itemId,
+        isUndoAction: true
       };
       this.updateItem(postObj, true);
     } else if (data.operationName === 'edit-status') {
@@ -373,7 +374,8 @@ export class SubItemComponent implements OnInit, OnDestroy {
         editedOn: data.createdOn,
         creator: data.creator,
         creatorName: data.creatorName,
-        addedOn: data.createdOn
+        addedOn: data.createdOn,
+        isUndoAction: true
       };
       this.updateItemStatus(postObj);
     } else if (data.operationName === 'delete') {
@@ -385,7 +387,8 @@ export class SubItemComponent implements OnInit, OnDestroy {
         creator: data.creator,
         creatorName: data.creatorName,
         addedOn: data.createdOn,
-        status: data.status || 'open'
+        status: data.status || 'open',
+        isUndoAction: true
       };
       this.createItem(postObj, false);
     }
