@@ -3,8 +3,8 @@
     <span class="float-left" class="back-btn" (click)="onBackButtonClick()">Back</span>
     <h2>{{ selectedList?.title }}</h2>
     <button class="float-right undo-btn btn btn-danger" (click)="onUndoClick()">undo</button>
-    <hr/>
   </div>
+  <hr/>
   <div class="body">
     <div class="messages-wrapper">
     <app-sub-item [items]="items" [selectedList]="selectedList" [itemType]="'main-item'" [undoClickEvent]="undoClickEvent"></app-sub-item>

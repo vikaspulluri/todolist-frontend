@@ -8,12 +8,12 @@
     position: relative;
     &.own {
       text-align: right;
-      background: lighten($secondary-red, 25%);
+      background: #36c1f0;
       margin-left: 24%;
       &.has-subitems::after {
         width: 0;
         height: 0;
-        border-top: 30px solid lighten($secondary-red, 25%);
+        border-top: 30px solid #36c1f0;
         border-left: 30px solid transparent;
         content: '';
         position: absolute;
@@ -50,9 +50,9 @@
       opacity: 1;
     }
     &.main-item {
-      margin-left: 0 !important;
+      margin-left: 2% !important;
       margin-right: 0 !important;
-      max-width: 98%;
+      max-width: 96%;
     }
     
     .textbox-container {
@@ -124,7 +124,7 @@
     position: absolute;
     bottom: 0;
     background: #000;
-    color: #fff;
+    color: $primary-red;
     font-size: .7rem;
     left: 0;
   }

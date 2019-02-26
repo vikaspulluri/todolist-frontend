@@ -2,21 +2,25 @@
 
 .chat-wrapper {
   position: relative;
+  .head {
+    background: $primary-red;
+    padding: 1rem;
+  }
   h2 {
     text-align: center;
-    color: $primary-red;
+    color: $primary-text;
     display: inline;
   }
   .undo-btn {
     position: relative;
     font-size: 1.2rem;
-    color: $primary-red;
     right: .75rem;
-    top: .75rem;
+    top: .35rem;
     border: 1px solid;
     padding: .15rem .25rem;
     color: #fff;
-    background: $primary-text;
+    background: rgb(255,0,0);
+    outline: none;
   }
   .back-btn {
     display: none;
@@ -30,12 +34,13 @@
     }
   }
   hr {
-    border-top: 2px solid $primary-text;
+    border-top: 5px solid $primary-text;
+    margin: 0;
   }
   .body {
     overflow-y: scroll;
     min-height: 70vh;
-    max-height: 70vh;
+    max-height: 75vh;
     &::-webkit-scrollbar {
       width: 5px;
     }
@@ -60,6 +65,7 @@
   bottom: 5vh;
   width: 30%;
   display: flex;
+  margin-left: 12px;
   @media screen and (max-width: 990px) {
     width: 45%;
     bottom: .5rem;
@@ -68,6 +74,8 @@
     width: 92%;
   }
   input {
+    outline: none;
+    border-radius: .25rem;
     width: 85%;
     background: darken($primary-red, 5%);
     border: none;
