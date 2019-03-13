@@ -1,9 +1,9 @@
 @import 'variables';
 
 @mixin fontawesomeBig($width) {
-    color: $primary-text;
+    color: $primary-bg;
     display: inline-block;
-    border: 2px solid $primary-text;
+    border: 2px solid $primary-bg;
     width: $width;
     height: $width;
     border-radius: 50%;
@@ -12,47 +12,27 @@
 
 @mixin formControl() {
     background-color: transparent;
-    border: 1px solid $primary-text;
-    color: $placeholder;
+    border: 1px solid $primary-bg;
+    color: $secondary-text;
     &:focus {
-    border-color: $secondary-red;
-    box-shadow: $form-box-shadow;
+    border-color: $secondary-bg;
     }
+}
+
+@mixin formBoxShadow() {
+    box-shadow: -2px -2px 10px $white, 2px 2px 10px $white, 0 0 20px $secondary-bg, 0 0 40px $secondary-bg, 0 0 60px $secondary-bg, 0 0 80px $secondary-bg, 0 0 100px $secondary-bg;
 }
 
 @mixin mainBtn() {
     -webkit-appearance: none;
     width: 150px;
-    border: 1px solid $primary-text;
-    color: $primary-text;
+    border: 1px solid $primary-bg;
+    color: $primary-bg;
     padding: .5rem;
-    background: darken($primary-red, 5%);
-    -webkit-box-shadow: $form-box-shadow;
-    -moz-box-shadow: $form-box-shadow;
-    box-shadow: $form-box-shadow;
     transition: 0.2s all ease-in;
     &:hover {
-        background: $primary-text;
-        color: darken($primary-red, 5%);
-        border: 1px solid darken($primary-red, 5%);
+        background: $primary-bg;
+        border: 1px solid $secondary-bg;
+        color: $white;
     }
-}
-
-@mixin centerDiv() {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-}
-
-@mixin horizontalCenterDiv() {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-@mixin verticalCenterDiv() {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
 }

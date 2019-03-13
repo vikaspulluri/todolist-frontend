@@ -3,21 +3,21 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "todo-list": {
+    "issue-tracker-frontend": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
       "prefix": "app",
       "schematics": {
         "@schematics/angular:component": {
-          "styleext": "scss"
+          "style": "scss"
         }
       },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/todo-list",
+            "outputPath": "dist/issue-tracker-frontend",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -52,25 +52,32 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
             }
           }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "todo-list:build"
+            "browserTarget": "issue-tracker-frontend:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "todo-list:build:production"
+              "browserTarget": "issue-tracker-frontend:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "todo-list:build"
+            "browserTarget": "issue-tracker-frontend:build"
           }
         },
         "test": {
@@ -83,11 +90,6 @@
             "styles": [
               "src/styles.scss"
             ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "src/styles"
-              ]
-            },
             "scripts": [],
             "assets": [
               "src/favicon.ico",
@@ -109,15 +111,21 @@
         }
       }
     },
-    "todo-list-e2e": {
+    "issue-tracker-frontend-e2e": {
       "root": "e2e/",
       "projectType": "application",
+      "prefix": "",
       "architect": {
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "todo-list:serve"
+            "devServerTarget": "issue-tracker-frontend:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "issue-tracker-frontend:serve:production"
+            }
           }
         },
         "lint": {
@@ -132,5 +140,5 @@
       }
     }
   },
-  "defaultProject": "todo-list"
+  "defaultProject": "issue-tracker-frontend"
 }

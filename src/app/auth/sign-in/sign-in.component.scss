@@ -1,11 +1,20 @@
 @import 'variables';
 @import 'mixins';
 
+.flex-container {
+    display: flex;
+    .welcome-screen {
+        width: 65%;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    }
+}
 .auth-container {
   height: 100vh;
   margin: 0;
   padding: 0;
-  background-color: $primary-red;
   @media screen and (max-width: 767px) {
     height: auto;
   }
@@ -17,6 +26,10 @@
     display: flex;
     padding: 0 2rem;
     justify-content: center;
+    background: $white;
+    border-radius: 5px;
+    width: calc(100% - 65% - 2rem);
+    @include formBoxShadow();
     @media screen and (max-width: 767px) {
       position: relative;
       top: auto;
@@ -24,41 +37,10 @@
       flex-direction: column;
       padding: 0 .25rem;
     }
-    .intro-text {
-      width: 50%;
-      color: $primary-text;
-      padding: 0 .5rem;
-      border-right: 2px solid $primary-text;
-      margin-right: .5rem;
-      text-align: center;
-      position: relative;
-      @media screen and (max-width: 767px) {
-        width: auto;
-        margin: 1rem;
-        border-right: none !important;
-	      border-bottom: 2px solid;
-      }
-      h1 {
-        font-family: 'Carrois Gothic SC', sans-serif;
-        font-style: normal;
-        font-weight: normal;
-      }
-      .intro-wrapper {
-        top: 50%;
-        position: relative;
-        transform: translateY(-50%);
-        @media screen and (max-width: 767px) {
-          transform: none;
-          top: auto;
-        }
-      }
-    }
     .form {
       display: block;
       background-color: transparent;
-      border-radius: 2px;
-      width: 40%;
-      color: $primary-text;
+      color: $primary-bg;
       @media screen and (max-width: 767px) {
         width: auto;
         margin: 1rem;
@@ -66,6 +48,9 @@
         a {
           font-size: .8rem;
         }
+      }
+      a {
+          color: $primary-bg;
       }
       fa {
         @include fontawesomeBig(100px);

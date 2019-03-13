@@ -1,10 +1,12 @@
-$primary-red: #911945;
-$primary-icons: rgb(255,255,255);
-$big-icon-size: 100px;
-$border-color: #911945;
+$white: #fff;
+$black: #000;
+$primary-bg: #093e96;
+$primary-text: #f8f8f8;
 
-$placeholder: #52ddf5;
-$error-text: #00ff00;
-$secondary-red: #989799;
-$primary-text: #daa520;
-$form-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(255, 100, 255, 0.5);
+$secondary-bg: darken($primary-bg, 15%);
+$secondary-text: #000;
+
+// Font families
+$carrois: 'Carrois Gothic SC', sans-serif;
+$mont: 'Montserrat', sans-serif;
+$ubuntu: 'Ubuntu', sans-serif;

@@ -2,7 +2,7 @@
   <div class="sidebar">
     <ul class="main-links">
       <li>
-        <a [routerLink]="['/']" title="Dashboard">
+        <a [routerLink]="['/dashboard']" title="Dashboard">
           <fa name="dashcube"></fa>
           <span>Dashboard</span>
         </a>
@@ -14,29 +14,38 @@
         </a>
       </li>
       <li>
-        <a [routerLink]="['/']"  title="Projects">
+        <a [routerLink]="['/projects']"  title="Projects">
           <fa name="briefcase"></fa>
           <span>Projects</span>
         </a>
       </li>
       <li>
-        <a [routerLink]="['/']" title="Statistics">
+        <a [routerLink]="['/stats']" title="Statistics">
           <fa name="line-chart"></fa>
           <span>Statistics</span>
         </a>
       </li>
       <li>
-        <a [routerLink]="['/']"><fa name="plus"></fa></a>
-        <a [routerLink]="['/']" title="Issues">
+        <a href="/create"><fa name="plus"></fa></a>
+        <a href="/issues" title="Issues">
           <span>Issues</span>
           <span class="caret"></span>
         </a>
       </li>
     </ul>
-    <ul>
-      <li class="profile">
-        <span><fa name="user" size="3x"></fa></span>
-        <span>Vikas</span>
+    <ul class="profile-links">
+      <li>
+        <a title="profile" class="dropdown">
+          <label for="profile-dropdown">
+            <fa name="user-circle"></fa>
+            <label>Vikas Pulluri</label>
+          </label>
+          <input type="checkbox" id="profile-dropdown">
+          <div class="dropdown-content">
+            <a [routerLink]="['/user/profile']">Profile</a>
+            <a (click)="onLogout()">Logout</a>
+          </div>
+        </a>
       </li>
     </ul>
   </div>

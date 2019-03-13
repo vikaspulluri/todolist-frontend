@@ -1,53 +1,42 @@
 @import 'variables';
 @import 'mixins';
 
+.flex-container {
+    display: flex;
+    .welcome-screen {
+        width: 65%;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    }
+}
+
 .auth-container {
   min-height: 100vh;
   height: 100%;
   margin: 0;
   padding: 1rem;
-  background-color: $primary-red;
+  width: calc(100% - 65% - 2rem);
   display: flex;
-  justify-content: center;
   align-items: center;
   .outer-container {
+    width: 100%;
     .signup-form {
       display: block;
-      border: 2px solid $primary-text;
-      background-color: transparent;
-      color: $primary-text;
+      background-color: $white;
+      color: $primary-bg;
       border-radius: 1rem;
-      .embed {
-        display: flex;
-        justify-content: space-between;
-        @media screen and (max-width: 600px) {
-          display: block;
-        }
-        .form-group {
-          width: 45%;
-          @media screen and (max-width: 600px) {
-            width: auto;
-          }
-        }
-        .row {
-          margin-right: 0px;
-          margin-left: 0px;
-        }
-        .small-textbox {
-          width: 70px;
-          text-align: center;
-        }
-        .phone-control {
-          display: inline-block;
-          width: calc(100% - 90px);
-          margin-left: 10px;
-        }
-      }
+      @include formBoxShadow();
       fa { 
-        @include fontawesomeBig(120px);
+        @include fontawesomeBig(90px);
+        border: none;
       }
       .fa {
         margin-top: .8rem;
+      }
+      a {
+        color: $primary-bg;
       }
       form {
         margin: .75rem;
@@ -58,9 +47,6 @@
       }
       .form-control {
         @include formControl();
-      }
-      select option {
-        background: darken($primary-red, 15%);
       }
     }
   }
