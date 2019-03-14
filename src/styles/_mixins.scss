@@ -22,7 +22,16 @@
 @mixin formBoxShadow() {
     box-shadow: -2px -2px 10px $white, 2px 2px 10px $white, 0 0 20px $secondary-bg, 0 0 40px $secondary-bg, 0 0 60px $secondary-bg, 0 0 80px $secondary-bg, 0 0 100px $secondary-bg;
 }
-
+@mixin aside() {
+    display: inline-block;
+    position: absolute;
+    left: calc(100% / 6);
+    background: $primary-bg;
+    max-width: calc(100% - 100% / 6);
+    width: 90%;
+    padding: 4rem;
+    min-height: 100vh;
+}
 @mixin mainBtn() {
     -webkit-appearance: none;
     width: 150px;

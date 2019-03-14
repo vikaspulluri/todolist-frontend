@@ -35,6 +35,12 @@ aside {
         color: $white;
         a {
           color: $white;
+          &.active {
+            color: $orange;
+            fa {
+              color: $orange;
+            }
+          }
         }
         fa {
           margin-right: .75rem;

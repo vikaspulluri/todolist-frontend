@@ -13,7 +13,6 @@ import { RouterModule } from '@angular/router';
 import { AuthRoutingModule } from './auth-routing.module';
 import { ToastrModule } from 'ngx-toastr';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
-import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
     declarations: [
@@ -29,7 +28,6 @@ import { NgxSpinnerModule } from 'ngx-spinner';
         ToastrModule.forRoot(),
         AngularFontAwesomeModule,
         RouterModule,
-        NgxSpinnerModule,
         HttpClientModule,
         AuthRoutingModule
     ],

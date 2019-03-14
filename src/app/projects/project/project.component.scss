@@ -1,0 +1,18 @@
+@import 'variables';
+@import 'mixins';
+
+aside {
+    @include aside();
+    text-align: center;
+    padding: 2rem;
+}
+
+.short-name {
+    margin-bottom: 1rem;
+    h2 {
+        display: inline;
+        padding: .8rem;
+        border-radius: 50%;
+        background: linear-gradient(to bottom, #ef0cfdfa, #a5ff14);
+    }
+}

@@ -2,34 +2,45 @@
   <div class="sidebar">
     <ul class="main-links">
       <li>
-        <a [routerLink]="['/dashboard']" title="Dashboard">
+        <a [routerLink]="['/dashboard']" [routerLinkActive]="'active'" title="Dashboard">
           <fa name="dashcube"></fa>
           <span>Dashboard</span>
         </a>
       </li>
       <li>
-        <a href="#" title="Search">
-          <fa name="search"></fa>
-          <span>Search</span>
-        </a>
-      </li>
-      <li>
-        <a [routerLink]="['/projects']"  title="Projects">
+        <a [routerLink]="['/projects']" [routerLinkActive]="'active'" title="Projects">
           <fa name="briefcase"></fa>
           <span>Projects</span>
         </a>
       </li>
       <li>
-        <a [routerLink]="['/stats']" title="Statistics">
+        <a [routerLink]="['/stats']" [routerLinkActive]="'active'" title="Statistics">
           <fa name="line-chart"></fa>
           <span>Statistics</span>
         </a>
       </li>
       <li>
-        <a href="/create"><fa name="plus"></fa></a>
+        <a [routerLink]="['/notifications']" [routerLinkActive]="'active'" title="Notifications">
+          <fa name="bell"></fa>
+          <span>Notifications</span>
+        </a>
+      </li>
+      <li>
+        <a href="/create" title="Create Issue">
+          <fa name="plus"></fa>
+          <span>Create Issue</span>
+        </a>
+      </li>
+      <li>
         <a href="/issues" title="Issues">
+          <fa name="bolt"></fa>
           <span>Issues</span>
-          <span class="caret"></span>
+        </a>
+      </li>
+      <li>
+        <a href="/contact" title="Report problem?">
+          <fa name="envelope"></fa>
+          <span>Contact Me</span>
         </a>
       </li>
     </ul>
