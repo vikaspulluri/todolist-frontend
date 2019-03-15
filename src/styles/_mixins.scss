@@ -32,6 +32,57 @@
     padding: 4rem;
     min-height: 100vh;
 }
+
+@mixin shortName() {
+    margin-bottom: 1rem;
+    h2 {
+        display: inline;
+        padding: .8rem;
+        border-radius: 50%;
+        background: linear-gradient(to top, $primary-pink 0%, $secondary-pink 100%)
+    }
+}
+
+@mixin statBox() {
+    width: 35%;
+    text-align: center;
+    background-image: linear-gradient(to right, $primary-pink 0%, $secondary-pink 100%);
+    margin: 1rem;
+    border-radius: .5rem;
+    position: relative;
+    h1 { font-size: 4rem;}
+    a:hover {
+        text-decoration: none;
+        h6 {
+            color: $primary-bg;
+            transition: .3s ease-in-out;
+        }
+    }
+    .footer {
+        position: absolute;
+        padding: .3rem 0;
+        width: 100%;
+        background: $white;
+        border-bottom-left-radius: .5rem;
+        border-bottom-right-radius: .5rem;
+        bottom: 0;
+        h6 {
+            margin-bottom: 0;
+            font-size: 1.5rem;
+            color: $primary-pink;
+            align-content: center
+        }
+    }
+}
+
+@mixin addGradient($color1: null, $color2: null) {
+    @if ($color1 and $color2) {
+        background-image: linear-gradient(to right, $color1 0%, $color2 100%);
+    } @else {
+        background-image: linear-gradient(to right, $primary-pink 0%, $secondary-pink 100%);
+    }
+}
+
 @mixin mainBtn() {
     -webkit-appearance: none;
     width: 150px;

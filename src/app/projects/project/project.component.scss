@@ -3,16 +3,74 @@
 
 aside {
     @include aside();
-    text-align: center;
     padding: 2rem;
+    .header {
+        text-align: center;
+    }
+}
+.main-content {
+    display: flex;
+    width: 100%;
+    .info-container {
+        width: 35%;
+        color: #fff;
+        margin: 1rem;
+        border: 1px solid #fff;
+        height: auto;
+    }
+    .basic-info {
+        padding: 1rem;
+        &> div {
+            padding: .5rem;
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+    .members {
+        overflow: none;
+        overflow-y: auto;
+        .body {
+            padding: 0 .5rem;
+        }
+    }
+    .head {
+        text-align: center;
+        padding: .5rem;
+        background-color: #b8daff;
+        h4 {
+            color: $black;
+            margin-bottom: 0;
+        }
+    }
+    .stats-container {
+        width: 65%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+    }
+    
+    .stat-box {
+        background-image: $primary-pink; // fallback color
+       @include statBox();
+       &.done {
+           background-image: $primary-green; // fallback color
+           @include addGradient($primary-green, $secondary-green);
+       }
+       &.in-progress {
+           background-image: $primary-yellow; // fallback color
+           @include addGradient($primary-yellow, $secondary-yellow);
+       }
+       &.todo {
+        @include addGradient($primary-red, $secondary-red);
+       }
+
+       .head {
+           padding: 1rem;
+           background-color: transparent;
+       }
+    }
 }
 
 .short-name {
-    margin-bottom: 1rem;
-    h2 {
-        display: inline;
-        padding: .8rem;
-        border-radius: 50%;
-        background: linear-gradient(to bottom, #ef0cfdfa, #a5ff14);
-    }
+   @include shortName();
 }
