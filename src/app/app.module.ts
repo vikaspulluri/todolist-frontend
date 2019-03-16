@@ -12,6 +12,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { ProjectComponent } from './projects/project/project.component';
+import { UserComponent } from './user/user.component';
+import { IssuesComponent } from './issues/issues.component';
+import { IssueComponent } from './issues/issue/issue.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,10 @@ import { ProjectComponent } from './projects/project/project.component';
     DashboardComponent,
     ProjectsComponent,
     StatisticsComponent,
-    ProjectComponent
+    ProjectComponent,
+    UserComponent,
+    IssuesComponent,
+    IssueComponent
   ],
   imports: [
     BrowserModule,

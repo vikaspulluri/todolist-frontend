@@ -1,0 +1,155 @@
+@import 'variables';
+@import 'mixins';
+
+aside {
+    @include aside();
+    padding: 1rem;
+
+    a {
+        color: $orange;
+        &:hover {
+            color: darken($orange, 5%);
+        }
+        span:last-child {
+            margin-left: .25rem;
+        }
+    }
+    p { color: $white;}
+
+    h1 {
+        padding: 0 .5rem;
+    }
+
+    .btns-wrap .wrap {
+        display: flex;
+        max-width: 50%;
+        justify-content: space-around;
+    }
+    
+    .action-wrap {
+        margin-top: 2rem;
+    }
+    
+    button.action-btn {
+        min-width: 100px;
+        padding: .5rem;
+        margin: 0;
+        border: 1px solid;
+        background: $primary-pink;
+        color: $white;
+        &:hover {
+            background: $secondary-pink;
+        }
+    }
+    .content-wrap {
+        color: $white;
+        margin: 2rem;
+        display: flex;
+        flex-wrap: wrap;
+        &>div {
+            width: calc(50% - 2rem);
+            display: flex;
+            flex-direction: column;
+            div {
+                padding: .5rem;
+            }
+        }
+    }
+
+    .body-wrap {
+        display: flex;
+        &>div:first-child {
+            width: 49%;
+            margin-right: 1%;
+            h4 {
+                margin-left: .5rem;
+            }
+        }
+    }
+    .watchers-wrap {
+        max-width: 30%;
+    }
+
+    // Activity and comments styles
+    .activities-wrap {
+        display: flex;
+    }
+    .activities-wrap > div {
+        max-width: 49%;
+        margin-right: 1%;
+    }
+    
+    .comments-wrap {
+        padding: 1rem .5rem;
+    }
+    
+    .comments-wrap p {
+        padding: 0;
+    }
+    
+    .comments {
+        max-height: 500px;
+        overflow: hidden;
+        overflow-y: auto;
+        border: 2px solid $white;
+        padding: .5rem;
+        border-radius: .25rem;
+    }
+    
+    .comment {
+        padding: 1rem;
+        background: $white;
+        border-radius: .5rem;
+        margin-bottom: .5rem;
+        p {
+            color: $black;
+        }
+    }
+    
+    .comment .header {
+        display: flex;
+        justify-content: space-between;
+        color: $orange;
+    }
+    
+    textarea {
+        width: 75%;
+        margin-top: 1rem;
+        resize: none;
+        border-radius: .5rem;
+    }
+    
+    
+    .input-box {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+    }
+
+    .activity-wrap {
+        padding: 1rem .5rem;
+    }
+    .activity-wrap p {
+        padding: 0;
+        
+    }
+    
+    .activity-box {
+        padding: 1rem;
+        border: 2px solid $white;
+        border-radius: .25rem;
+        max-height: 500px;
+        overflow: hidden;
+        overflow-y: auto;
+    }
+    
+    .activity {
+        padding: .5rem;
+        background: $white;
+        margin-bottom: .5rem;
+        border-radius: .5rem;
+        p {
+            color: $black;
+        }
+    }
+}

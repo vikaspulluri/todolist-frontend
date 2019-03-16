@@ -3,11 +3,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { UtilService } from 'src/app/shared/util.service';
 
 @Component({
-  selector: 'app-project',
-  templateUrl: './project.component.html',
-  styleUrls: ['./project.component.scss', '../../../styles/_foundation-theme.scss']
+  selector: 'app-user',
+  templateUrl: './user.component.html',
+  styleUrls: ['./user.component.scss', '../../styles/_foundation-theme.scss']
 })
-export class ProjectComponent implements OnInit {
+export class UserComponent implements OnInit {
 
   public users;
   public user;

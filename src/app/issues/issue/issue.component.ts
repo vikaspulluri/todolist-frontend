@@ -1,18 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { UtilService } from 'src/app/shared/util.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UtilService } from '../../shared/util.service';
 
 @Component({
-  selector: 'app-project',
-  templateUrl: './project.component.html',
-  styleUrls: ['./project.component.scss', '../../../styles/_foundation-theme.scss']
+  selector: 'app-issue',
+  templateUrl: './issue.component.html',
+  styleUrls: ['./issue.component.scss', '../../../styles/_foundation-theme.scss']
 })
-export class ProjectComponent implements OnInit {
+export class IssueComponent implements OnInit {
 
   public users;
   public user;
-  public projectName$;
-  public projectShortName$;
   constructor(private route: ActivatedRoute,
     private router: Router,
     private utilService: UtilService) {
@@ -31,12 +29,7 @@ export class ProjectComponent implements OnInit {
 
   }
 
-    ngOnInit() {
-      this.route.paramMap.subscribe(params => {
-        // need to get project details from id
-        this.projectName$ = params.get('id');
-        this.projectShortName$ = this.utilService.getShortName(this.projectName$, 2);
-      });
-    }
+  ngOnInit() {
+  }
 
 }

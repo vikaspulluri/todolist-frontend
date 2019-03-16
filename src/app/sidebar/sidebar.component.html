@@ -1,4 +1,4 @@
-<aside class="col-2">
+<aside>
   <div class="sidebar">
     <ul class="main-links">
       <li>
@@ -32,7 +32,7 @@
         </a>
       </li>
       <li>
-        <a href="/issues" title="Issues">
+        <a [routerLink]="['/issues']" [routerLinkActive]="'active'" title="Issues">
           <fa name="bolt"></fa>
           <span>Issues</span>
         </a>

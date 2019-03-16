@@ -10,28 +10,31 @@
   <div class="main-content">
     <div class="info-container">
       <div class="head">
-        <h4>Basic Info</h4>
+        <h4>Contributions</h4>
       </div>
       <div class="basic-info">
         <div>
-          <span>Lead: </span> <span><a [routerLink]="['/user/user-id']" alt="Vikas Pulluri">Vikas Pulluri</a></span>
+          <span><fa name="free-code-camp"></fa></span>
+          <a [routerLink]="['/project/general']">General</a>
         </div>
         <div>
-          <span>Created On: </span><span>Jan 21, 2019 5:40PM</span>
-        </div>
-        <div>
-          <span>Status: </span> <span>Active</span>
+          <span><fa name="free-code-camp"></fa></span>
+          <a [routerLink]="['/project/UI-Development']">UI Development</a>
         </div>
       </div>
       <div class="members">
         <div class="head">
-          <h4>Members</h4>
+          <h4>Mutual Projects</h4>
         </div>
         <div class="body">
-            <tag-input [ngModel]="user" [placeholder]="'Add new member...'" [onlyFromAutocomplete]="true" theme="foundation-theme">
-                <tag-input-dropdown [autocompleteItems]="users" [showDropdownIfEmpty]="true">
-                  </tag-input-dropdown>
-            </tag-input>
+          <div>
+            <span><fa name="free-code-camp"></fa></span>
+            <a [routerLink]="['/project/general']">General</a>
+          </div>
+          <div>
+            <span><fa name="free-code-camp"></fa></span>
+            <a [routerLink]="['/project/UI-Development']">UI Development</a>
+          </div>
         </div>
       </div>
     </div>
@@ -77,9 +80,5 @@
         </a>
       </div>
     </div>
-  </div>
-  <div class="join-text">
-    <h5>Want to Join this project? You can make a request to project lead here.</h5>
-    <button class="main-btn">Join now</button>
   </div>
 </aside>
