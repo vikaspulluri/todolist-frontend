@@ -33,8 +33,20 @@ $foundation-icon-theme: (
     @include tag-theme($foundation-tag-theme);
     height: auto;
     font-size: 1.1rem;
+    font-family: $mont;
+    margin-bottom: .25rem;
 }
 
 /deep/ .ng2-tag-input.foundation-theme tag delete-icon {
     @include icon-theme($foundation-icon-theme);
+}
+
+/deep/ .ng2-dropdown-menu {
+    background: transparent !important;
+    text-align: center;
+    .ng2-menu-item {
+        background: $primary-pink !important;
+        font-size: 1rem !important;
+        font-family: $mont !important;
+    }
 }

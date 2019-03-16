@@ -1,9 +1,7 @@
 import { Injectable, Inject, Optional } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { AuthModule } from '../auth.module';
-@Injectable({
-    providedIn: AuthModule
-})
+
+@Injectable()
 export class AnimateTextService {
     counter: number;
     period: number;

@@ -13,6 +13,7 @@ import { RouterModule } from '@angular/router';
 import { AuthRoutingModule } from './auth-routing.module';
 import { ToastrModule } from 'ngx-toastr';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import { AnimateTextService } from './shared/animate-text.service';
 
 @NgModule({
     declarations: [
@@ -37,7 +38,8 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
         WelcomeComponent,
         ForgotPasswordComponent,
         ResetPasswordComponent
-    ]
+    ],
+    providers: [AnimateTextService]
 })
 
 export class AuthModule {}

@@ -6,10 +6,10 @@ import { StatisticsComponent } from './statistics/statistics.component';
 import { ProjectComponent } from './projects/project/project.component';
 
 const routes: Routes = [
-  {
-    path: 'auth',
-    loadChildren: './auth/auth.module#AuthModule'
-  },
+  // {
+  //   path: 'auth',
+  //   loadChildren: './auth/auth.module#AuthModule'
+  // },
   {
     path: 'dashboard',
     component: DashboardComponent
@@ -28,7 +28,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/auth',
+    redirectTo: '/login',
     pathMatch: 'full'
   }
 ];

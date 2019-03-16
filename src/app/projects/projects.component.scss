@@ -1,25 +1,31 @@
 @import 'variables';
 @import 'mixins';
 aside {
-    @include aside();
-    .projects-container {
-      .header {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
+  @include aside();
+  .projects-container {
+    .header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    .projects-list {
+      margin-top: 1rem;
+      th span, td span {
+        margin: 5px;
       }
-      .projects-list {
-        margin-top: 1rem;
-        th span, td span {
-          margin: 5px;
-        }
-        fa {
-          color: $orange;
-        }
-      }
-      a {
+      fa {
         color: $orange;
       }
     }
+    a {
+      color: $orange;
+    }
   }
+  .table-primary {
+    & > th, & > td {
+      background-color: $secondary-pink;
+      border: 2px solid $primary-pink;
+    }
+  }
+}
   

@@ -7,12 +7,8 @@ import { NgModule } from '@angular/core';
 
 const routes: Routes = [
     {
-        path: '',
-        component: SignInComponent
-    },
-    {
         path: 'login',
-        redirectTo: ''
+        component: SignInComponent
     },
     {
         path: 'register',
