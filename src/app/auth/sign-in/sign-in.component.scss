@@ -26,9 +26,9 @@
     display: flex;
     padding: 0 2rem;
     justify-content: center;
-    background: $white;
     border-radius: 5px;
     width: calc(100% - 65% - 2rem);
+    background: $secondary-bg;
     @include formBoxShadow();
     @media screen and (max-width: 767px) {
       position: relative;
@@ -40,7 +40,8 @@
     .form {
       display: block;
       background-color: transparent;
-      color: $primary-bg;
+      color: $primary-pink;
+      width: 100%;
       @media screen and (max-width: 767px) {
         width: auto;
         margin: 1rem;
@@ -59,16 +60,27 @@
         font-size: 1.4rem;
       }
       form {
-        margin: .75rem;
+        margin: .75rem auto;
         padding: .75rem;
       }
     }
     .form-control {
       @include formControl();
+      padding: 2rem 1rem;
     }
-    .submit-btn-group {
+    .main-btn {
+      @include mainBtn(100%);
+      padding: 1.2rem;
+    }
+    .additional-links {
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+      a {
+        color: $primary-pink;
+        &:hover {
+          color: $secondary-pink;
+        }
+      }
     }
   }
 }

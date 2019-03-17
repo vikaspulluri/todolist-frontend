@@ -8,6 +8,7 @@ import { IssuesComponent } from './issues/issues.component';
 import { IssueComponent } from './issues/issue/issue.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { NotificationsComponent } from './notifications/notifications.component';
+import { IssueFormComponent } from './issues/issue-form/issue-form.component';
 
 const routes: Routes = [
   {path: 'dashboard', component: DashboardComponent},
@@ -15,6 +16,7 @@ const routes: Routes = [
   {path: 'project/:id', component: ProjectComponent},
   {path: 'issues', component: IssuesComponent},
   {path: 'issue/:id', component: IssueComponent},
+  {path: 'issue-form', component: IssueFormComponent},
   {path: 'statistics', component: StatisticsComponent},
   {path: 'statistics/:user', component: StatisticsComponent},
   {path: 'notifications', component: NotificationsComponent},

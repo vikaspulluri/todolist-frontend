@@ -8,29 +8,31 @@
         <div class="filters">
             <form [formGroup]="filtersForm" (ngSubmit)="onUpdateFilters()">
                 <h4>Filters:</h4>
-                <div formGroupName="userGroup">
-                    <label for="user">User</label>
-                    <select class="form-control" id="user" formControlName="user">
-                        <option *ngFor="let user of filtersFormConfig.userGroup" [ngValue]="user.value">{{ user.name }}</option>
-                    </select>
-                </div>
-                <div formGroupName="issueGroup">
-                    <label for="issueType">Issue Type</label>
-                    <select class="form-control" id="issueType" formControlName="issueType">
-                        <option *ngFor="let issue of filtersFormConfig.issueGroup" [ngValue]="issue.value">{{ issue.name }}</option>
-                    </select>
-                </div>
-                <div formGroupName="priorityGroup">
-                    <label for="priority">Priority</label>
-                    <select class="form-control" id="priority" formControlName="priority">
-                        <option *ngFor="let priority of filtersFormConfig.priorityGroup" [ngValue]="priority.value">{{ priority.name }}</option>
-                    </select>
-                </div>
-                <div formGroupName="projectGroup">
-                    <label for="projectId">Project</label>
-                    <select class="form-control" id="projectId" formControlName="projectId">
-                        <option *ngFor="let project of filtersFormConfig.projectGroup" [ngValue]="project.value">{{ project.name }}</option>
-                    </select>
+                <div class="inputs-wrap">
+                    <div formGroupName="userGroup">
+                        <label for="user">User</label>
+                        <select class="form-control" id="user" formControlName="user">
+                            <option *ngFor="let user of filtersFormConfig.userGroup" [ngValue]="user.value">{{ user.name }}</option>
+                        </select>
+                    </div>
+                    <div formGroupName="issueGroup">
+                        <label for="issueType">Issue Type</label>
+                        <select class="form-control" id="issueType" formControlName="issueType">
+                            <option *ngFor="let issue of filtersFormConfig.issueGroup" [ngValue]="issue.value">{{ issue.name }}</option>
+                        </select>
+                    </div>
+                    <div formGroupName="priorityGroup">
+                        <label for="priority">Priority</label>
+                        <select class="form-control" id="priority" formControlName="priority">
+                            <option *ngFor="let priority of filtersFormConfig.priorityGroup" [ngValue]="priority.value">{{ priority.name }}</option>
+                        </select>
+                    </div>
+                    <div formGroupName="projectGroup">
+                        <label for="projectId">Project</label>
+                        <select class="form-control" id="projectId" formControlName="projectId">
+                            <option *ngFor="let project of filtersFormConfig.projectGroup" [ngValue]="project.value">{{ project.name }}</option>
+                        </select>
+                    </div>
                 </div>
                 <button type="submit" class="action-btn btn" [disabled]="!filtersForm.valid">Filter</button>
             </form>

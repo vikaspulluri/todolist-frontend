@@ -1,0 +1,50 @@
+<aside>
+  <form>
+    <div class="form-group">
+      <label>Title</label>
+      <input class="form-control" type="text" name="title" placeholder="title">
+    </div>
+    <div class="form-group">
+      <label>Issue Type</label>
+      <input class="form-control" type="text" name="issue-type" value="Task" disabled>
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea rows="4" title="Description" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="priority">Priority</label>
+      <select class="form-control" id="priority">
+        <option>Medium</option>
+        <option>Low</option>
+        <option>High</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Reporter</label>
+      <input class="form-control" type="text" name="reporter" value="Vikas Pulluri" disabled>
+    </div>
+    <div class="form-group">
+      <label>Project</label>
+      <tag-input [ngModel]="project" name="project" [placeholder]="'select project'" [onlyFromAutocomplete]="true" [maxItems]="1" theme="foundation-theme">
+        <tag-input-dropdown [autocompleteItems]="projects" [showDropdownIfEmpty]="true">
+          </tag-input-dropdown>
+      </tag-input>
+    </div>
+    <div class="form-group">
+      <label>Assignee</label>
+      <tag-input [ngModel]="user" name="assignee" [placeholder]="'Add assignee'" [onlyFromAutocomplete]="true" [maxItems]="1" theme="foundation-theme">
+        <tag-input-dropdown [autocompleteItems]="users" [showDropdownIfEmpty]="true">
+          </tag-input-dropdown>
+      </tag-input>
+    </div>
+    <div class="form-group">
+      <label>Watchers</label>
+      <tag-input [ngModel]="user" name="watchers" [placeholder]="'Add watcher'" [onlyFromAutocomplete]="true" theme="foundation-theme">
+        <tag-input-dropdown [autocompleteItems]="users" [showDropdownIfEmpty]="true">
+          </tag-input-dropdown>
+      </tag-input>
+    </div>
+
+  </form>
+</aside>

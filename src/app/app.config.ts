@@ -19,8 +19,15 @@ export const config = {
             {name: 'Low', value: 'low'}
         ],
         projectGroup: [
-            {name: '--None--', value: 'none'},
+            {name: 'General', value: 'general'},
             {name: 'Project-1', value: 'project-1'}
+        ]
+    },
+    contactUsForm: {
+        queryGroup: [
+            {name: 'Suggestion', value: 'suggestion'},
+            {name: 'Problem with app', value: 'problem'},
+            {name: 'Want to know something?', value: 'query'}
         ]
     }
 };

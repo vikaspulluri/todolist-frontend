@@ -24,9 +24,10 @@
     width: 100%;
     .signup-form {
       display: block;
-      background-color: $white;
-      color: $primary-bg;
+      background-color: $secondary-bg;
+      color: $primary-pink;
       border-radius: 1rem;
+      width: 100%;
       @include formBoxShadow();
       fa { 
         @include fontawesomeBig(90px);
@@ -36,10 +37,13 @@
         margin-top: .8rem;
       }
       a {
-        color: $primary-bg;
+        color: $primary-pink;
+        &:hover {
+          color: $secondary-pink;
+        }
       }
       form {
-        margin: .75rem;
+        margin: .75rem auto;
         padding: .75rem;
         label span {
           font-size: 1.4rem;
@@ -47,6 +51,11 @@
       }
       .form-control {
         @include formControl();
+        padding: 2rem 1rem;
+      }
+      .main-btn {
+        @include mainBtn(100%);
+        padding: 1.2rem;
       }
     }
   }

@@ -1,9 +1,9 @@
 @import 'variables';
 
 @mixin fontawesomeBig($width) {
-    color: $primary-bg;
+    color: $primary-pink;
     display: inline-block;
-    border: 2px solid $primary-bg;
+    border: 2px solid $primary-pink;
     width: $width;
     height: $width;
     border-radius: 50%;
@@ -12,15 +12,15 @@
 
 @mixin formControl() {
     background-color: transparent;
-    border: 1px solid $primary-bg;
+    border: 1px solid $primary-pink;
     color: $secondary-text;
     &:focus {
-    border-color: $secondary-bg;
+    border-color: $secondary-pink;
     }
 }
 
 @mixin formBoxShadow() {
-    box-shadow: -2px -2px 10px $white, 2px 2px 10px $white, 0 0 20px $secondary-bg, 0 0 40px $secondary-bg, 0 0 60px $secondary-bg, 0 0 80px $secondary-bg, 0 0 100px $secondary-bg;
+    box-shadow: -2px -2px 10px $secondary-bg, 2px 2px 10px $secondary-bg, 0 0 20px $secondary-bg, 0 0 40px $secondary-bg, 0 0 60px $secondary-bg, 0 0 80px $secondary-bg, 0 0 100px $secondary-bg;
 }
 @mixin aside() {
     display: inline-block;
@@ -83,17 +83,17 @@
     }
 }
 
-@mixin mainBtn() {
+@mixin mainBtn($width: '150px') {
     -webkit-appearance: none;
-    width: 150px;
-    border: 1px solid $primary-bg;
-    color: $primary-bg;
+    width: $width;
+    border: 1px solid $primary-pink;
+    color: $white;
     padding: .5rem;
     transition: 0.2s all ease-in;
+    background: $primary-pink;
     &:hover {
-        background: $primary-bg;
-        border: 1px solid $secondary-bg;
-        color: $white;
+        background: $secondary-pink;
+        border: 1px solid $secondary-pink;
     }
 }
 
