@@ -1,0 +1,17 @@
+@import 'variables';
+
+aside {
+  display: inline-flex;
+  .welcome-msg-box {
+    width: auto;
+    margin: .5rem;
+    position: absolute;
+    left: 5%;
+    border: 2px solid $border-color;
+    border-radius: 1.5rem;
+    box-shadow: 5px 5px 5px $border-color;
+    .welcome-container {
+      padding: 10px;
+    }
+  }
+}

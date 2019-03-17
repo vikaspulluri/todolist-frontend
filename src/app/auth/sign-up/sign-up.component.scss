@@ -1,52 +1,37 @@
 @import 'variables';
-@import 'mixins';
-
-.flex-container {
-    display: flex;
-    .welcome-screen {
-        width: 65%;
-        text-align: center;
-        justify-content: center;
-        align-items: center;
-        display: flex;
-    }
-}
 
 .auth-container {
-  min-height: 100vh;
-  height: 100%;
+  height: 100vh;
   margin: 0;
-  padding: 1rem;
-  width: calc(100% - 65% - 2rem);
-  display: flex;
-  align-items: center;
+  padding: 0;
+  background-color: $primary-red;
   .outer-container {
-    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    max-width: 100%;
+    width: 40%;
     .signup-form {
       display: block;
-      background-color: $white;
-      color: $primary-bg;
-      border-radius: 1rem;
-      @include formBoxShadow();
-      fa { 
-        @include fontawesomeBig(90px);
-        border: none;
+      border: 1px solid $primary-icons;
+      background-color: $primary-icons;
+      border-radius: 2px;
+      fa {
+        color: $primary-red;
+        display: inline-block;
+        border: 2px solid;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        margin-top: .5rem;
       }
       .fa {
         margin-top: .8rem;
       }
-      a {
-        color: $primary-bg;
-      }
       form {
         margin: .75rem;
         padding: .75rem;
-        label span {
-          font-size: 1.4rem;
-        }
-      }
-      .form-control {
-        @include formControl();
       }
     }
   }

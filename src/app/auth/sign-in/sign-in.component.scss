@@ -1,74 +1,35 @@
 @import 'variables';
-@import 'mixins';
 
-.flex-container {
-    display: flex;
-    .welcome-screen {
-        width: 65%;
-        text-align: center;
-        justify-content: center;
-        align-items: center;
-        display: flex;
-    }
-}
 .auth-container {
   height: 100vh;
   margin: 0;
   padding: 0;
-  @media screen and (max-width: 767px) {
-    height: auto;
-  }
+  background-color: $primary-red;
   .outer-container {
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
+    left: 50%;
+    transform: translate(-50%,-50%);
     max-width: 100%;
-    display: flex;
-    padding: 0 2rem;
-    justify-content: center;
-    background: $white;
-    border-radius: 5px;
-    width: calc(100% - 65% - 2rem);
-    @include formBoxShadow();
-    @media screen and (max-width: 767px) {
-      position: relative;
-      top: auto;
-      transform: none;
-      flex-direction: column;
-      padding: 0 .25rem;
-    }
+    width: 40%;
     .form {
       display: block;
-      background-color: transparent;
-      color: $primary-bg;
-      @media screen and (max-width: 767px) {
-        width: auto;
-        margin: 1rem;
-        border-right: none !important;
-        a {
-          font-size: .8rem;
-        }
-      }
-      a {
-          color: $primary-bg;
-      }
+      border: 1px solid $primary-icons;
+      background-color: $primary-icons;
+      border-radius: 2px;
       fa {
-        @include fontawesomeBig(100px);
-      }
-      label span {
-        font-size: 1.4rem;
+        color: $primary-red;
+        display: inline-block;
+        border: 2px solid;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-top: .5rem;
       }
       form {
         margin: .75rem;
         padding: .75rem;
       }
-    }
-    .form-control {
-      @include formControl();
-    }
-    .submit-btn-group {
-      display: flex;
-      justify-content: space-between;
     }
   }
 }

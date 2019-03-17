@@ -1,0 +1,54 @@
+@import 'variables';
+
+.issues-container {
+  display: inline-block;
+  position: absolute;
+  left: 8%;
+  width: 90%;
+  .inner-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .container {
+      min-width: 20%;
+      border: 2px solid $border-color;
+      margin: 5px;
+      ul.list {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        position: relative;
+        padding: 0;
+        li {
+          list-style: none;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          width: 100%;
+          padding: 5px 0;
+          &.header {
+            font-weight: 700;
+            font-size: 1.1rem;
+            border-bottom: 1px solid $border-color;
+          }
+          span {
+            width: calc(100% / 3);
+          }
+        }
+      }
+      &.done h4 {
+        color: #97ad00;
+      }
+      &.todo h4 {
+        color: #ff1d1d;
+      }
+      &.in-progress h4 {
+        color: #f25bea;
+      }
+      h4 {
+        border-bottom: 1px solid $border-color;
+        padding: 5px;
+      }
+    }
+  }
+}

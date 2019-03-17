@@ -1,7 +1,9 @@
-@import 'variables';
-@import 'mixins';
 aside {
-  @include aside();
+  display: inline-block;
+  position: absolute;
+  left: 10%;
+  top: 5%;
+  width: 80%;
   .projects-container {
     .header {
       display: flex;
@@ -14,18 +16,8 @@ aside {
         margin: 5px;
       }
       fa {
-        color: $orange;
+        color: blueviolet;
       }
-    }
-    a {
-      color: $orange;
-    }
-  }
-  .table-primary {
-    & > th, & > td {
-      background-color: $secondary-pink;
-      border: 2px solid $primary-pink;
     }
   }
 }
-  

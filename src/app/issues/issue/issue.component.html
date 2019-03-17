@@ -1,151 +1,112 @@
-<aside class="issue-container">
-  <!-- Basic details wrapper -->
-  <div class="basic-details-wrap">
-    <div class="inside-wrap">
-      <h3>
-        <a [routerLink]="['/issue/issue-2']">
-          Issue-2
-        </a>
-      </h3>
-      <h1>Header Layout Building</h1>
-      <h2>
-        <a [routerLink]="['/project/project-2']" title="Project Name">
-          <span><fa name="free-code-camp"></fa></span>
-          <span>UI Development</span>
-        </a>
-      </h2>
+<app-mini-sidebar></app-mini-sidebar>
+<div class="outer-container">
+  <div class="issue-container">
+    <h4>
+      <a [routerLink]="['/issues/IS-01']">IS-01</a>
+    </h4>
+    <h2>Header Development</h2>
+    <div class="btn-panel">
+      <button class="btn btn-secondary">Edit</button>
+      <button class="btn btn-secondary">Comment</button>
+      <button class="btn btn-secondary">Assign</button>
+      <button class="btn btn-secondary">Todo</button>
+      <button class="btn btn-secondary">In Progress</button>
+      <button class="btn btn-secondary">Done</button>
     </div>
-  </div>
-
-  <!-- Other infor and action buttons wrap -->
-  <div class="action-wrap">
-    <!-- Buttons wrap -->
-    <div class="btns-wrap">
-      <div class="wrap">
-        <button class="btn action-btn">Edit</button>
-        <button class="btn action-btn">Todo</button>
-        <button class="btn action-btn">In Progress</button>
-        <button class="btn action-btn">Done</button>
+    <div class="summary-container">
+      <h5>Summary</h5>
+      <div class="summary">
+        <ul>
+          <li>
+            <span class="head">Type:</span>
+            <span><fa name="check-square"></fa>Task</span>
+          </li>
+          <li>
+            <span class="head">Priority:</span>
+            <span><fa name="exclamation" class="medium"></fa>Medium</span>
+          </li>
+          <li>
+            <span class="head">Labels:</span>
+            <span>UI, Development</span>
+          </li>
+          <li>
+            <span class="head">Status:</span>
+            <span class="status in-progress">
+              <fa name="{{'spinner'}}"></fa>
+              In Progress
+            </span>
+          </li>
+        </ul>
       </div>
     </div>
 
-    <!-- Content wrap -->
-    <div class="content-wrap">
-      <div class="left">
-        <div>
-          <span>Title: </span> <span>Header Layout Building</span>
-        </div>
-        <div>
-          <span>Reporter: </span><span><a [routerLink]="[ '/user', 'vikas-pulluri']">Vikas Pulluri</a></span>
-        </div>
-        <div>
-          <span>Assignee: </span><span><a [routerLink]="[ '/user', 'noothana-pulluri']">Noothana Pulluri</a></span>
-        </div>
-        <div>
-          <span>Status: </span> <span>In Progress</span>
-        </div>
-      </div>
-      <div class="right">
-        <div>
-          <span>Reported On: </span> <span>Jan 31, 5:40 PM</span>
-        </div>
-        <div>
-          <span>Last Updated: </span> <span>Feb 2, 2:30 PM</span>
-        </div>
-        <div>
-          <span>Pending Since: </span> <span>3 Days</span>
-        </div>
-        <div>
-          <span>Project: </span> <span>UI Development</span>
-        </div>
+    <div class="description">
+      <h5>Description</h5>
+      <div class="input-group">
+        <textarea name="description" rows="5"></textarea>
       </div>
     </div>
-  </div>
 
-  <!-- Description and watchers wrap -->
-  <div class="body-wrap">
-    <div class="description-wrap">
-      <h4>Description</h4>
-      <p>Build responsive header using media queries, scss features. Makt the code reusable for other applications.</p>
-    </div>
-    <div class="watchers-wrap">
-      <h4>Watchers</h4>
-      <div class="watchers-box">
-          <tag-input [ngModel]="user" [placeholder]="'Add a watcher...'" theme="foundation-theme">
-              <tag-input-dropdown [autocompleteItems]="users" [showDropdownIfEmpty]="true">
-                </tag-input-dropdown>
-          </tag-input>
-      </div>
-    </div>
-  </div>
-
-  <!-- Comments and activity wrap -->
-  <div class="activities-wrap">
-    <div class="comments-wrap">
-      <h4>Comments</h4>
-      <div class="comments-box">
-        <div class="comments">
+    <div class="activity">
+      <h5>Activity</h5>
+      <div class="activity-container">
+        <ul class="tabs">
+          <li class="tab active">Comments</li>
+          <li class="tab">Activity</li>
+        </ul>
+        <div class="comments section" id="comments">
           <div class="comment">
-            <div class="header">
-              <span>Vikas Pulluri</span>
-              <span>Jan 31, 8:00 PM</span>
+            <div class="title">
+                <h6>Vikas Pulluri</h6>
+                <h6>28/01/2018</h6>
             </div>
-            <div class="body">
-              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                  when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-                  It has survived not only five centuries
-              </p>
+            <div class="content">
+              <p>Completed the UI part and need to integrate</p>
             </div>
           </div>
           <div class="comment">
-            <div class="header">
-              <span>Vikas Pulluri</span>
-              <span>Jan 31, 8:00 PM</span>
+            <div class="title">
+                <h6>Vikas Pulluri</h6>
+                <h6>28/01/2018</h6>
             </div>
-            <div class="body">
-              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                  when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-                  It has survived not only five centuries
-              </p>
+            <div class="content">
+              <p>Completed the UI part and need to integrate</p>
             </div>
           </div>
-          <div class="comment">
-            <div class="header">
-              <span>Vikas Pulluri</span>
-              <span>Jan 31, 8:00 PM</span>
+
+          <div class="add-comment">
+            <div class="input-group">
+              <textarea name="add-comment" rows="4"></textarea>
             </div>
-            <div class="body">
-              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                  when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-                  It has survived not only five centuries
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="input-box">
-          <textarea rows="4" title="Add Comment" placeholder="Add Comment"></textarea>
-          <button class="btn action-btn">Add</button>
-        </div>
-      </div>
-    </div>
-    <div class="activity-wrap">
-      <h4>Activity Log</h4>
-      <div class="activity-box">
-        <div class="activities">
-          <div class="activity">
-            <p>Vikas Pulluri has updated the status to in-progress on Jan 31 7:30 PM</p>
-          </div>
-          <div class="activity">
-            <p>Vikas Pulluri has added a comment on Jan 31 7:30 PM</p>
-          </div>
-          <div class="activity">
-            <p>Vikas Pulluri has added a watcher on Jan 31 7:30 PM</p>
+            <button class="btn btn-primary">Add Comment</button>
           </div>
         </div>
       </div>
     </div>
   </div>
-</aside>
+
+  <div class="details-container">
+    <div class="summary">
+      <ul>
+        <li>
+          <span class="head">Assignee:</span>
+          <span><fa name="user"></fa>Vikas Pulluri</span>
+        </li>
+        <li>
+          <span class="head">Reporter:</span>
+          <span><fa name="user"></fa>Vinodhini</span>
+        </li>
+        <li>
+          <span class="head">Created:</span>
+          <span>28/01/2018</span>
+        </li>
+        <li>
+          <span class="head">Updated:</span>
+          <span>
+              28/01/2018
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

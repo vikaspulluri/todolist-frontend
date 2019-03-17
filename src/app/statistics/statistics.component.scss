@@ -1,0 +1,19 @@
+.stats-container {
+  display: inline-block;
+  position: absolute;
+  left: 8%;
+  width: 90%;
+  .cards-container {
+    margin: .5rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    .card {
+      display: inline-block;
+      padding: 10px;
+      width: 15%;
+      box-shadow: 4px 5px rgba(0,0,0,.1);
+    }
+  }
+}

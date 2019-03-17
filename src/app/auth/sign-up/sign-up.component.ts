@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.scss']
+  styleUrls: ['./sign-up.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class SignUpComponent implements OnInit {
 
@@ -13,5 +13,4 @@ export class SignUpComponent implements OnInit {
   ngOnInit() {
   }
 
-  onSignup(form: NgForm) {}
 }

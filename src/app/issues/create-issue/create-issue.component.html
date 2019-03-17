@@ -1,0 +1,49 @@
+<app-mini-sidebar></app-mini-sidebar>
+
+<div class="issue-container col-10">
+  <div class="outer-container">
+    <div class="issue-form form">
+      <div class="profile icon text-center rounded-circle">
+          <span><fa name="user-plus" size="5x"></fa></span>
+      </div>
+      <form>
+        <div class="form-group">
+          <label>Project</label>
+          <input class="form-control" type="text" name="project" placeholder="Project">
+        </div>
+        <div class="form-group">
+          <label>Issue Type</label>
+          <input class="form-control" type="text" name="issue-type" value="Task" disabled>
+        </div>
+        <div class="form-group">
+          <label>Summary</label>
+          <input class="form-control" type="text" name="summary">
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea class="form-control" type="textarea" rows="5" name="description"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="priority">Priority</label>
+          <select class="form-control" id="priority">
+            <option>Medium</option>
+            <option>Low</option>
+            <option>High</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Labels</label>
+          <input type="text" class="form-control" name="labels">
+        </div>
+        <div class="form-group">
+          <label>Assignee</label>
+          <input type="text" name="assignee" class="form-control">
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary" name="create-issue">Create</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
