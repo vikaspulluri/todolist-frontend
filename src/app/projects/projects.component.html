@@ -1,11 +1,9 @@
-<app-mini-sidebar></app-mini-sidebar>
 <aside>
   <div class="projects-container">
     <div class="header">
       <h1>Projects</h1>
       <button class="btn btn-success">Create Project</button>
     </div>
-    <app-filter-panel></app-filter-panel>
     <div class="projects-list">
       <table class="table">
         <thead>
@@ -20,49 +18,49 @@
           <tr class="table-light">
             <th scope="row">
               <span><fa name="free-code-camp"></fa></span>
-              <a href="#">UI Development</a>
+              <a [routerLink]="['/project/project-1']">UI Development</a>
             </th>
             <td>UID</td>
             <td>Software</td>
             <td>
               <span><fa name="user"></fa></span>
-              <a href="#" title="Vikas">Vikas</a>
+              <a [routerLink]="['/user/user-1']" title="Vikas">Vikas</a>
             </td>
           </tr>
           <tr class="table-light">
             <th scope="row">
               <span><fa name="free-code-camp"></fa></span>
-              <a href="#">Backend Development</a>
+              <a [routerLink]="['/project/project-1']">Backend Development</a>
             </th>
             <td>BED</td>
             <td>Software</td>
             <td>
               <span><fa name="user"></fa></span>
-              <a href="#" title="Vikas">Vikas</a>
+              <a [routerLink]="['/user/user-2']" title="Vikas">Vikas</a>
             </td>
           </tr>
           <tr class="table-light">
             <th scope="row">
               <span><fa name="free-code-camp"></fa></span>
-              <a href="#">Code Integration</a>
+              <a [routerLink]="['/project/project-1']">Code Integration</a>
             </th>
             <td>CD</td>
             <td>Software</td>
             <td>
               <span><fa name="user"></fa></span>
-              <a href="#" title="Vikas">Vikas</a>
+              <a [routerLink]="['/project/project-1']" title="Vikas">Vikas</a>
             </td>
           </tr>
           <tr class="table-light">
             <th scope="row">
               <span><fa name="free-code-camp"></fa></span>
-              <a href="#">Deployment</a>
+              <a [routerLink]="['/project/project-1']">Deployment</a>
             </th>
             <td>DP</td>
             <td>Deployment</td>
             <td>
               <span><fa name="user"></fa></span>
-              <a href="#" title="Vikas">Vikas</a>
+              <a [routerLink]="['/project/project-1']" title="Vikas">Vikas</a>
             </td>
           </tr>
         </tbody>

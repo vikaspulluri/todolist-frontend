@@ -1,72 +1,82 @@
-<app-mini-sidebar></app-mini-sidebar>
-<div class="issues-container">
-  <h1>Issues Tracker:</h1>
-  <div class="inner-container">
-    <div class="container in-progress">
-      <h4>In Progress</h4>
-      <div class="issues">
-        <ul class="list">
-          <li class="header">
-            <span>Priority</span>
-            <span>Key</span>
-            <span>Summary</span>
-          </li>
-          <li>
-            <span>Med</span>
-            <span><a [routerLink]="['/issues', 'IS-01']">IS-01</a></span>
-            <span><a [routerLink]="['/issues', 'IS-01']">Develop header</a></span>
-          </li>
-          <li>
-            <span>High</span>
-            <span><a [routerLink]="['/issues', 'IS-02']">IS-02</a></span>
-            <span><a [routerLink]="['/issues', 'IS-02']">Develop footer</a></span>
-          </li>
-        </ul>
-      </div>
+<aside>
+    <div class="headline-wrapper">
+        <div class="title">
+            <h1>Issues</h1>
+        </div>
     </div>
-    <div class="container todo">
-      <h4>Todo</h4>
-      <div class="issues">
-        <ul class="list">
-          <li class="header">
-            <span>Priority</span>
-            <span>Key</span>
-            <span>Summary</span>
-          </li>
-          <li>
-            <span>Med</span>
-            <span><a [routerLink]="['/issues', 'IS-01']">IS-01</a></span>
-            <span><a [routerLink]="['/issues', 'IS-01']">Develop header</a></span>
-          </li>
-          <li>
-            <span>High</span>
-            <span><a [routerLink]="['/issues', 'IS-02']">IS-02</a></span>
-            <span><a [routerLink]="['/issues', 'IS-02']">Develop footer</a></span>
-          </li>
-        </ul>
-      </div>
+    <div class="filters-wrap">
+        <div class="filters">
+            <form [formGroup]="filtersForm" (ngSubmit)="onUpdateFilters()">
+                <h4>Filters:</h4>
+                <div formGroupName="userGroup">
+                    <label for="user">User</label>
+                    <select class="form-control" id="user" formControlName="user">
+                        <option *ngFor="let user of filtersFormConfig.userGroup" [ngValue]="user.value">{{ user.name }}</option>
+                    </select>
+                </div>
+                <div formGroupName="issueGroup">
+                    <label for="issueType">Issue Type</label>
+                    <select class="form-control" id="issueType" formControlName="issueType">
+                        <option *ngFor="let issue of filtersFormConfig.issueGroup" [ngValue]="issue.value">{{ issue.name }}</option>
+                    </select>
+                </div>
+                <div formGroupName="priorityGroup">
+                    <label for="priority">Priority</label>
+                    <select class="form-control" id="priority" formControlName="priority">
+                        <option *ngFor="let priority of filtersFormConfig.priorityGroup" [ngValue]="priority.value">{{ priority.name }}</option>
+                    </select>
+                </div>
+                <div formGroupName="projectGroup">
+                    <label for="projectId">Project</label>
+                    <select class="form-control" id="projectId" formControlName="projectId">
+                        <option *ngFor="let project of filtersFormConfig.projectGroup" [ngValue]="project.value">{{ project.name }}</option>
+                    </select>
+                </div>
+                <button type="submit" class="action-btn btn" [disabled]="!filtersForm.valid">Filter</button>
+            </form>
+        </div>
     </div>
-    <div class="container done">
-      <h4>Done</h4>
-      <div class="issues">
-        <ul class="list">
-          <li class="header">
-            <span>Priority</span>
-            <span>Key</span>
-            <span>Summary</span>
-          </li>
-          <li>
-            <span>Med</span>
-            <span><a [routerLink]="['/issues', 'IS-01']">IS-01</a></span>
-            <span><a [routerLink]="['/issues', 'IS-01']">Develop header</a></span>
-          </li>
-          <li>
-            <span>High</span>
-            <span><a [routerLink]="['/issues', 'IS-02']">IS-02</a></span>
-            <span><a [routerLink]="['/issues', 'IS-02']">Develop footer</a></span>
-          </li>
-        </ul>
-      </div>
+    <div class="results-wrap">
+        <h6>5 Results Found</h6>
+        <table class="table">
+            <thead>
+                <tr class="table-primary">
+                <th scope="col">Title</th>
+                <th scope="col">Key</th>
+                <th scope="col">Priority</th>
+                <th scope="col">Created On</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="table-light">
+                    <th scope="row">
+                        <a [routerLink]="['/issue/issue-1']" title="UI Development">
+                            <span><fa name="bolt"></fa></span> UI Development</a>
+                    </th>
+                    <td>
+                        <a [routerLink]="['/issue/issue-1']" title="UI Development">
+                            <span><fa name="bolt"></fa></span> issue-1</a>
+                    </td>
+                    <td>Medium</td>
+                    <td>
+                        Jan 31, 5:40 PM
+                    </td>
+                </tr>
+                <tr class="table-light">
+                    <th scope="row">
+                        <a [routerLink]="['/issue/issue-2']" title="Backend Development">
+                            <span><fa name="bolt"></fa></span> Backend Development</a>
+                    </th>
+                    <td>
+                        <a [routerLink]="['/issue/issue-2']" title="Backend Development">
+                            <span><fa name="bolt"></fa></span> issue-2</a>
+                    </td>
+                    <td>Medium</td>
+                    <td>
+                        Jan 31, 5:40 PM
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-  </div>
-</div>
+</aside>

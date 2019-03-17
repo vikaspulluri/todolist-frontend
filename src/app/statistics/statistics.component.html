@@ -1,39 +1,84 @@
-<app-mini-sidebar></app-mini-sidebar>
-<div class="stats-container">
-  <div class="outer-container">
-    <div class="header">
-      <h1>Statistics</h1>
+<aside class="project-container">
+<div class="header">
+    <div class="short-name">
+    <h2>{{ userShortName$ }}</h2>
     </div>
-    <div class="filter-panel">
-        <div class="dropdown projects">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Filter By
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
+    <div class="project-name">
+    <h1>{{ userId$ }}</h1>
+    </div>
+</div>
+<div class="main-content">
+    <div class="info-container">
+    <div class="head">
+        <h4>Contributions</h4>
+    </div>
+    <div class="basic-info">
+        <div>
+        <span><fa name="free-code-camp"></fa></span>
+        <a [routerLink]="['/project/general']">General</a>
+        </div>
+        <div>
+        <span><fa name="free-code-camp"></fa></span>
+        <a [routerLink]="['/project/UI-Development']">UI Development</a>
         </div>
     </div>
-    <div class="cards-container">
-      <div class='card'>
-        <h3>8</h3>
-        <h6>Issues Created</h6>
-      </div>
-      <div class='card'>
-        <h3>8</h3>
-        <h6>Issues Assigned To You</h6>
-      </div>
-      <div class='card'>
-        <h3>4</h3>
-        <h6>Issues Done</h6>
-      </div>
-      <div class="card">
-        <h3>4</h3>
-        <h6>Issues In Progress</h6>
-      </div>
+    <div class="members">
+        <div class="head">
+        <h4>Mutual Projects</h4>
+        </div>
+        <div class="body">
+        <div>
+            <span><fa name="free-code-camp"></fa></span>
+            <a [routerLink]="['/project/general']">General</a>
+        </div>
+        <div>
+            <span><fa name="free-code-camp"></fa></span>
+            <a [routerLink]="['/project/UI-Development']">UI Development</a>
+        </div>
+        </div>
     </div>
-    <!-- Bar chart -->
-  </div>
+    </div>
+    <div class="stats-container">
+    <div class="stat-box all">
+        <a [routerLink]="['/issues']" [queryParams]="{projectId: 'xxx', issueType: 'all'}">
+        <div class="head">
+            <h1>8</h1>
+        </div>
+        <div class="footer">
+            <h6>Issues</h6>
+        </div>
+        </a>
+    </div>
+    <div class="stat-box done">
+        <a [routerLink]="['/issues']" [queryParams]="{projectId: 'yyy', issueType: 'done'}">
+        <div class="head">
+            <h1>4</h1>
+        </div>
+        <div class="footer">
+            <h6>Done</h6>
+        </div>
+        </a>
+    </div>
+    <div class="stat-box in-progress">
+        <a [routerLink]="['/issues']" [queryParams]="{projectId: 'xxx', issueType: 'in-progress'}">
+        <div class="head">
+            <h1>2</h1>
+        </div>
+        <div class="footer">
+            <h6>In Progress</h6>
+        </div>
+        </a>
+    </div>
+    <div class="stat-box todo">
+        <a [routerLink]="['/issues']" [queryParams]="{projectId: 'xxx', issueType: 'todo'}">
+        <div class="head">
+            <h1>2</h1>
+        </div>
+        <div class="footer">
+            <h6>Todo</h6>
+        </div>
+        </a>
+    </div>
+    </div>
 </div>
+</aside>

@@ -7,15 +7,26 @@ aside {
     .header {
         text-align: center;
     }
+    .join-text {
+        text-align: center;
+        position: absolute;
+        bottom: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: calc(100% - 100% /  6);
+        h5 {
+            font-family: $mont;
+            font-weight: normal;
+        }
+        .main-btn {
+            background: $primary-pink;
+            color: $white;
+            font-weight: 700;
+        }
+    }
     h1 {
         text-transform: uppercase;
-    }
-    a {
-        color: $primary-pink;
-        &:hover {
-            color: darken($primary-pink, 10%);
-            text-decoration: underline;
-        }
     }
 }
 .main-content {
@@ -30,19 +41,27 @@ aside {
         border: 1px solid #fff;
         height: auto;
     }
-    .basic-info, .members .body {
+    .basic-info {
         padding: 1rem;
-        background: #333;
-        overflow: hidden;
-        overflow-y: auto;
-        max-height: 250px;
         &> div {
             padding: .5rem;
             display: flex;
+            justify-content: space-between;
+        }
+        a {
+            color: orange;
+            &:hover {
+                color: darken(orange, 5%);
+            }
         }
     }
-    fa {
-        color: $primary-pink;
+    .members {
+        .body {
+            overflow: none;
+            overflow-y: auto;
+            padding: 0 .5rem;
+            max-height: 200px;
+        }
     }
     .head {
         text-align: center;

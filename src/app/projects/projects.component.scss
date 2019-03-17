@@ -1,10 +1,11 @@
+@import 'variables';
+@import 'mixins';
 aside {
-  display: inline-block;
-  position: absolute;
-  left: 10%;
-  top: 5%;
-  width: 80%;
+  @include aside();
   .projects-container {
+    table {
+      color: darken($primary-bg, 5%);
+    }
     .header {
       display: flex;
       flex-direction: row;
@@ -16,8 +17,19 @@ aside {
         margin: 5px;
       }
       fa {
-        color: blueviolet;
+        color: $orange;
       }
+    }
+    a {
+      color: $orange;
+    }
+  }
+  .table-primary {
+    & > th, & > td {
+      background-color: $secondary-pink;
+      border: 2px solid $primary-pink;
+      color: $black;
     }
   }
 }
+  
