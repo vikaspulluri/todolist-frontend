@@ -1,3 +1,4 @@
+<app-sidebar></app-sidebar>
 <aside class="issue-container">
   <!-- Basic details wrapper -->
   <div class="basic-details-wrap">
@@ -62,6 +63,15 @@
         </div>
         <div>
           <span>Project: </span> <span>UI Development</span>
+        </div>
+        <div>
+          <span>Labels:</span>
+          <span>
+            <tag-input [ngModel]="user" [placeholder]="'Add label'" theme="foundation-theme">
+              <tag-input-dropdown [autocompleteItems]="users">
+                </tag-input-dropdown>
+            </tag-input>
+          </span>
         </div>
       </div>
     </div>

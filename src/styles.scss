@@ -84,8 +84,11 @@ html, body {
     font-size: 1rem;
   }
   .alert {
-    padding: .5rem;
+    padding: 1rem;
     text-align: center;
+    background: rgba(255,0,0,.8);
+    color: $white;
+    border: none;
   }
   .toast-container.toast-top-center .custom-toast, .toast-container.toast-bottom-center .custom-toast {
     width: 50%;

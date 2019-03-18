@@ -10,7 +10,7 @@ aside {
     .notification {
         margin-bottom: 1rem;
         padding: 1rem;
-        background: $white;
+        background: rgba(255,255,255,.9);
         border: 1px solid $orange;
         border-radius: .4rem;
         color: darken($primary-bg, 5%);

@@ -1,7 +1,15 @@
+<app-sidebar></app-sidebar>
 <aside>
+  <div class="headline">
+    <h1>Create New Issue</h1>
+  </div>
   <form>
     <div class="form-group">
       <label>Title</label>
+      <span>
+        <fa name="info-circle"></fa>
+        <span>Title of the issue</span>
+      </span>
       <input class="form-control" type="text" name="title" placeholder="title">
     </div>
     <div class="form-group">
@@ -42,6 +50,13 @@
       <label>Watchers</label>
       <tag-input [ngModel]="user" name="watchers" [placeholder]="'Add watcher'" [onlyFromAutocomplete]="true" theme="foundation-theme">
         <tag-input-dropdown [autocompleteItems]="users" [showDropdownIfEmpty]="true">
+          </tag-input-dropdown>
+      </tag-input>
+    </div>
+    <div class="form-group">
+      <label>Labels</label>
+      <tag-input [ngModel]="user" name="labels" [placeholder]="'Add label'" theme="foundation-theme">
+        <tag-input-dropdown [autocompleteItems]="users">
           </tag-input-dropdown>
       </tag-input>
     </div>
