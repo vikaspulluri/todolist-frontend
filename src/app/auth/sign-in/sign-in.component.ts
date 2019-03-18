@@ -6,7 +6,7 @@ import { NgForm } from '@angular/forms';
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss']
 })
-export class SignInComponent implements OnInit {
+export class SignInComponent implements OnInit  {
 
   constructor() { }
 

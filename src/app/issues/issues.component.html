@@ -34,6 +34,12 @@
                             <option *ngFor="let project of filtersFormConfig.projectGroup" [ngValue]="project.value">{{ project.name }}</option>
                         </select>
                     </div>
+                    <div formGroupName="labelGroup">
+                        <label for="label">Label</label>
+                        <select class="form-control" id="label" formControlName="label">
+                            <option *ngFor="let label of filtersFormConfig.labelGroup" [ngValue]="label.value">{{ label.name }}</option>
+                        </select>
+                    </div>
                 </div>
                 <button type="submit" class="action-btn btn" [disabled]="!filtersForm.valid">Filter</button>
             </form>

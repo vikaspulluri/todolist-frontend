@@ -17,6 +17,7 @@ import { IssueComponent } from './issues/issue/issue.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { IssueFormComponent } from './issues/issue-form/issue-form.component';
+import { OverviewComponent } from './overview/overview.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { IssueFormComponent } from './issues/issue-form/issue-form.component';
     ContactUsComponent,
     NotificationsComponent,
     IssueFormComponent,
+    OverviewComponent,
   ],
   imports: [
     BrowserModule,

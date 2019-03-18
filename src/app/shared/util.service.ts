@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-
+import { config } from '../app.config';
 @Injectable()
 
 // provided in AppComponent
 export class UtilService {
+
+    public config = config;
 
     /**
      * getShortName(title, length)
@@ -27,6 +29,32 @@ export class UtilService {
         } else if (maxLength === 1) {
             return title.substring(0, 2);
         }
+    }
+
+    /**
+     * getGreeting()
+     * Function that returns 'morning', 'afternoon', 'evening' based on current time
+     * @returns string
+     */
+    public getGreeting() {
+        let currentDate = this.getCurrentDate();
+        let hours = currentDate.getHours();
+        if (hours < 12) {
+            return this.config.greetings[0];
+        } else if (hours < 18) {
+            return this.config.greetings[1];
+        } else {
+            return this.config.greetings[2];
+        }
+    }
+
+    /**
+     * getCurrentDate()
+     * Function that returns new Date Object
+     * @returns Date object
+     */
+    public getCurrentDate() {
+        return new Date();
     }
 
 }

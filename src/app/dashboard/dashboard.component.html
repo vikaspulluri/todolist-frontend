@@ -1,1 +1,79 @@
 <app-sidebar></app-sidebar>
+<aside>
+    <div class="full-container">
+        <div class="headline-container">
+            <h2>Good <span>{{ greeting }}</span> {{ username }}<span></span></h2>
+            <p>Welcome back mate!!! Hope you are having a great day.</p>
+        </div>
+        <div class="notifications-container">
+            <div class="recommendations" [@fadeInOut]="isRecommendationsPresent">
+                <div class="content">
+                    <h2>Recommendations</h2>
+                    <p>Hi Vikas, it seems you are new to this application. In order to make you comfortable with application,
+                        we recommend you to have a look at <a [routerLink]="[ '/overview']">Overview</a>. Don't 
+                        worry, you won't be able to see this recommendation once you are familiar with the workflow.
+                    </p>
+                    <div class="btn-group">
+                        <button class="btn action-btn" [routerLink]="['/overview']">Visit</button>
+                        <button class="btn action-btn" (click)="onCancelRecommendations()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right-container">
+            <div class="dashboard">
+                <div class="headlines">
+                    <h2>Dashboard</h2>
+                    <p>All your open issues</p>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr class="table-primary">
+                        <th scope="col">Title</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Priority</th>
+                        <th scope="col">Reporter</th>
+                        <th scope="col">Created On</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="table-light">
+                            <th scope="row">
+                                <a [routerLink]="['/issue/issue-1']" title="UI Development">
+                                    <span><fa name="bolt"></fa></span> UI Development</a>
+                            </th>
+                            <td>
+                                In Progress
+                            </td>
+                            <td>Medium</td>
+                            <td>
+                                <a [routerLink]="['/statistics/vikas-pulluri']" title="Vikas Pulluri">
+                                    <span><fa name="user"></fa></span> Vikas Pulluri</a>
+                            </td>
+                            <td>
+                                Jan 31, 5:40 PM
+                            </td>
+                        </tr>
+                        <tr class="table-light">
+                            <th scope="row">
+                                <a [routerLink]="['/issue/issue-1']" title="Backend Development">
+                                    <span><fa name="bolt"></fa></span> Backend Development</a>
+                            </th>
+                            <td>
+                                In Progress
+                            </td>
+                            <td>Medium</td>
+                            <td>
+                                <a [routerLink]="['/statistics/vikas-pulluri']" title="Vikas Pulluri">
+                                    <span><fa name="user"></fa></span> Vikas Pulluri</a>
+                            </td>
+                            <td>
+                                Jan 31, 5:40 PM
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</aside>

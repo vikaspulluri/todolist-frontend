@@ -21,13 +21,17 @@ export const config = {
         projectGroup: [
             {name: 'General', value: 'general'},
             {name: 'Project-1', value: 'project-1'}
+        ],
+        labelGroup: [
+            {name: '--None--', value: null}
         ]
     },
     contactUsForm: {
         queryGroup: [
             {name: 'Suggestion', value: 'suggestion'},
-            {name: 'Problem with app', value: 'problem'},
+            {name: 'Problem with application', value: 'problem'},
             {name: 'Want to know something?', value: 'query'}
         ]
-    }
+    },
+    greetings: ['morning', 'afternoon', 'evening']
 };

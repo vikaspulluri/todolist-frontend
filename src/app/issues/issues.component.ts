@@ -16,6 +16,7 @@ export class IssuesComponent implements OnInit {
   public activePriority = this.filtersFormConfig.priorityGroup[0].value;
   public activeProjectId$ = this.filtersFormConfig.projectGroup[0].value;
   public activeIssueType$ = this.filtersFormConfig.issueGroup[0].value;
+  public activeLabel$ = this.filtersFormConfig.labelGroup[0].value;
 
   filtersForm = new FormGroup({
     userGroup: new FormGroup({
@@ -29,6 +30,9 @@ export class IssuesComponent implements OnInit {
     }),
     projectGroup: new FormGroup({
       projectId: new FormControl(this.activeProjectId$)
+    }),
+    labelGroup: new FormGroup({
+      label: new FormControl(this.activeLabel$)
     })
   });
 
@@ -62,7 +66,15 @@ export class IssuesComponent implements OnInit {
       let index = this.filtersFormConfig.priorityGroup.findIndex(item => item.value === priority);
       if (index && index > -1) {
         this.activePriority = this.filtersFormConfig.priorityGroup[index].value;
-        this.updateIssueGroup();
+        this.updatePriorityGroup();
+      }
+    }
+    if (queryParams.get('label')) {
+      let label = queryParams.get('label');
+      let index = this.filtersFormConfig.labelGroup.findIndex(item => item.value === label);
+      if (index && index > -1) {
+        this.activeLabel$ = this.filtersFormConfig.labelGroup[index].value;
+        this.updateLabelGroup();
       }
     }
   }
@@ -72,6 +84,15 @@ export class IssuesComponent implements OnInit {
     this.filtersForm.patchValue({
       priorityGroup: {
         priority: this.activePriority
+      }
+    });
+  }
+
+  // function to update labelGroup in filters
+  updateLabelGroup() {
+    this.filtersForm.patchValue({
+      labelGroup: {
+        label: this.activeLabel$
       }
     });
   }

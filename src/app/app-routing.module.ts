@@ -9,6 +9,7 @@ import { IssueComponent } from './issues/issue/issue.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { IssueFormComponent } from './issues/issue-form/issue-form.component';
+import { OverviewComponent } from './overview/overview.component';
 
 const routes: Routes = [
   {path: 'dashboard', component: DashboardComponent},
@@ -20,6 +21,7 @@ const routes: Routes = [
   {path: 'statistics', component: StatisticsComponent},
   {path: 'statistics/:user', component: StatisticsComponent},
   {path: 'notifications', component: NotificationsComponent},
+  {path: 'overview', component: OverviewComponent},
   {path: 'contact-us', component: ContactUsComponent},
   {path: '', redirectTo: '/login', pathMatch: 'full'}
 ];

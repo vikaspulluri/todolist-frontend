@@ -83,7 +83,7 @@
     }
 }
 
-@mixin mainBtn($width: '150px') {
+@mixin mainBtn($width: 150px) {
     -webkit-appearance: none;
     width: $width;
     border: 1px solid $primary-pink;
