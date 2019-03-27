@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ModuleWithComponentFactories } from '@angular/core';
 import { config } from '../app.config';
 import { AutoCompleteTag } from './interface';
 import { UsersResponse } from './response.interface';
 import { AuthService } from '../auth/shared/auth.service';
+import * as moment from 'moment';
 @Injectable()
 
 // provided in AppComponent
@@ -30,7 +31,7 @@ export class UtilService {
         let maxLength = subTitles.length;
 
         if (length <= maxLength) {
-            return subTitles.reduce((acc, current) => acc + current.charAt(0));
+            return subTitles.reduce((acc, current) => acc + current.charAt(0), '');
         } else if (maxLength === 1) {
             return title.substring(0, 2);
         }
@@ -95,6 +96,7 @@ export class UtilService {
      * @param users AutoCompleteTag[]
      */
     public unmapUserDataFromForm(users: AutoCompleteTag[]) {
+        if (!users) { return; }
         let data = users.map(user => {
             let name = user.display.split(' ');
             let obj = {
@@ -117,6 +119,17 @@ export class UtilService {
             return obj;
         });
         return priviliegedUsers;
+    }
+
+    /**
+     * formatDate()
+     * Functioin that formats the date string to user readable form
+     * @param isoDate Date String in ISO format
+     * @returns String - 27th Mar 19, 10:57 pm
+     */
+    public formatDate(isoDate: string) {
+        let date = new Date(isoDate);
+        return moment(date).format('Do MMM YY, h:mm a');
     }
 
 }

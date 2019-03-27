@@ -15,7 +15,7 @@
       </div>
       <div class="basic-info">
         <div>
-          <span>Lead: </span> <span><a [routerLink]="['/statistics', activeProject.ownerId]" alt="{{activeProject?.ownerName}}"><span><fa name="user"></fa></span> {{ activeProject?.ownerName}}</a></span>
+          <span>Lead: </span> <span><a [routerLink]="['/statistics', activeProject?.ownerId]" title="{{activeProject?.ownerName}}"><span><fa name="user"></fa></span> {{ activeProject?.ownerName}}</a></span>
         </div>
         <div>
           <span>Created On: </span><span>{{ activeProject?.createdDate }}</span>
@@ -79,7 +79,7 @@
       </div>
     </div>
   </div>
-  <div class="join-text">
+  <div class="join-text" *ngIf="isOutSider">
     <h5>Want to Join this project? You can make a request to project lead here.</h5>
     <button class="main-btn">Join now</button>
   </div>

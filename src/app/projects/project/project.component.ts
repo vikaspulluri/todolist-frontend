@@ -20,12 +20,15 @@ export class ProjectComponent implements OnInit {
   public projectId$;
   public projectShortName$;
   private activeProject: Project;
+  private currentUserId = this.authService.getUserId();
+  private isOutSider = false;
   constructor(private route: ActivatedRoute,
     private router: Router,
     private utilService: UtilService,
     private httpService: AppHttpService,
     private toastrService: ToastrService,
-    private loaderService: NgxUiLoaderService) {
+    private loaderService: NgxUiLoaderService,
+    private authService: AuthService) {
   }
 
   ngOnInit() {
@@ -47,7 +50,8 @@ export class ProjectComponent implements OnInit {
 
   getProject(projectId: string) {
     this.httpService.getProject(projectId).subscribe((response: ProjectResponse) => {
-      if (!response.data || response.data.projectId) {
+      console.log(response);
+      if (!response.data || !response.data.projectId) {
         this.router.navigate(['/projects']).then(success => {
           this.toastrService.error('No project found with the ID provided');
         });
@@ -55,9 +59,16 @@ export class ProjectComponent implements OnInit {
       }
       this.activeProject = response.data;
       this.projectShortName$ = this.utilService.getShortName(this.activeProject.title, 2);
+      this.activeProject.createdDate = this.utilService.formatDate(response.data.createdDate);
       this.members = this.utilService.mapUserDataToForm(this.activeProject.members);
       this.members = this.utilService.setUserPrivilieges(this.activeProject.ownerId, this.members);
+      this.isOutSider = !this.isMemberOfProject();
     }, err => this.loaderService.stop());
+  }
+
+  isMemberOfProject() {
+    let filteredArray = this.members.filter(member => member.userId === this.currentUserId);
+    return true ? (filteredArray.length > 0) || (this.currentUserId === this.activeProject.ownerId) : false;
   }
 
 }

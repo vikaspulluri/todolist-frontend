@@ -10,9 +10,11 @@ const projectSchema = mongoose.Schema({
     createdDate: {type: Date, default: Date.now, required: false},
     isGloballyAvailable: {type: Boolean, default: false},
     lastModifiedOn: {type: Date, required: false},
+    type: {type: String, required: true},
     members: [{
       userId: {type:String, required: true},
-      username: {type: String, required: true}
+      firstName: {type: String, required: true},
+      lastName: {type: String, required: true}
     }]
 });
 

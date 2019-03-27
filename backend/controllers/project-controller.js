@@ -11,6 +11,7 @@ const createProject = (req, res, next) => {
         ownerName: req.body.ownerName,
         ownerId: req.body.ownerId,
         createdDate: dateUtility.formatDate(),
+        type: req.body.type,
         isGloballyAvailable: req.body.isGloballyAvailable || false,
         members: req.body.members || []
     };
@@ -23,6 +24,7 @@ const createProject = (req, res, next) => {
                 ownerName: doc.ownerName,
                 members: doc.members,
                 createdDate: doc.createdDate,
+                type: doc.type,
                 projectId: doc._id
             }
             let response = new SuccessResponseBuilder('User created successfully!!!')
@@ -38,6 +40,32 @@ const createProject = (req, res, next) => {
         })
 }
 
+const getProject = (req, res, next) => {
+    Project.findOne({_id: req.body.projectId})
+            .then(doc => {
+                let updatedResponse = {
+                    projectId: doc._id,
+                    title: doc.title,
+                    keyCode: doc.keyCode,
+                    ownerName: doc.ownerName,
+                    ownerId: doc.ownerId,
+                    type: doc.type,
+                    members: doc.members,
+                    createdDate: doc.createdDate
+                };
+                let response = new SuccessResponseBuilder('Project fetched successfully!!!')
+                                .status(200)
+                                .data(updatedResponse)
+                                .build();
+                return res.status(201).send(response);
+            })
+            .catch(error => {
+                logger.log(error, req, 'PC-GP-1');
+                let err = new ErrorResponseBuilder().status(500).errorCode('PC-GP-1').errorType('UnknownError').build();
+                return next(err);
+            })
+}
 module.exports = {
-    createProject: createProject
+    createProject: createProject,
+    getProject: getProject
 }

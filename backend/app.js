@@ -17,6 +17,7 @@ mongoose.connect(appConfig.connectionString, { autoIndex: false, useNewUrlParser
 
 //routes
 const userRoutes = require('./routes/user-routes');
+const projectRoutes = require('./routes/project-routes');
 
 app.use(helmet());
 
@@ -31,6 +32,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/user', userRoutes);
+app.use('/api/project', projectRoutes);
 
 app.use((err, req, res, next) => {
   let status = err.status || 500;
