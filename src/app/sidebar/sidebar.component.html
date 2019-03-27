@@ -3,43 +3,43 @@
     <ul class="main-links">
       <li>
         <a [routerLink]="['/dashboard']" [routerLinkActive]="'active'" title="Dashboard">
-          <fa name="dashcube"></fa>
+          <span><fa name="dashcube"></fa></span>
           <span>Dashboard</span>
         </a>
       </li>
       <li>
         <a [routerLink]="['/projects']" [routerLinkActive]="'active'" title="Projects">
-          <fa name="briefcase"></fa>
+          <span><fa name="briefcase"></fa></span>
           <span>Projects</span>
         </a>
       </li>
       <li>
         <a [routerLink]="['/statistics']" [routerLinkActive]="'active'" title="Statistics">
-          <fa name="line-chart"></fa>
+          <span><fa name="line-chart"></fa></span>
           <span>Statistics</span>
         </a>
       </li>
       <li>
         <a [routerLink]="['/notifications']" [routerLinkActive]="'active'" title="Notifications">
-          <fa name="bell"></fa>
+          <span><fa name="bell"></fa></span>
           <span>Notifications</span>
         </a>
       </li>
       <li>
         <a [routerLink]="['/issue-form']" [routerLinkActive]="'active'" title="Create Issue">
-          <fa name="plus"></fa>
+          <span><fa name="plus"></fa></span>
           <span>Create Issue</span>
         </a>
       </li>
       <li>
         <a [routerLink]="['/issues']" [routerLinkActive]="'active'" title="Issues">
-          <fa name="bolt"></fa>
+          <span><fa name="bolt"></fa></span>
           <span>Issues</span>
         </a>
       </li>
       <li>
         <a [routerLink]="['/contact-us']" [routerLinkActive]="'active'" title="Report problem?">
-          <fa name="envelope"></fa>
+          <span><fa name="envelope"></fa></span>
           <span>Contact Us</span>
         </a>
       </li>
@@ -49,7 +49,7 @@
         <a title="profile" class="dropdown">
           <label for="profile-dropdown">
             <fa name="user-circle"></fa>
-            <label>Vikas Pulluri</label>
+            <label>{{ username }}</label>
           </label>
           <input type="checkbox" id="profile-dropdown">
           <div class="dropdown-content">

@@ -10,24 +10,28 @@ import { ContactUsComponent } from './contact-us/contact-us.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { IssueFormComponent } from './issues/issue-form/issue-form.component';
 import { OverviewComponent } from './overview/overview.component';
+import { AuthGuard } from './auth/auth.guard';
+import { ProjectFormComponent } from './projects/project-form/project-form.component';
 
 const routes: Routes = [
-  {path: 'dashboard', component: DashboardComponent},
-  {path: 'projects', component: ProjectsComponent},
-  {path: 'project/:id', component: ProjectComponent},
-  {path: 'issues', component: IssuesComponent},
-  {path: 'issue/:id', component: IssueComponent},
-  {path: 'issue-form', component: IssueFormComponent},
-  {path: 'statistics', component: StatisticsComponent},
-  {path: 'statistics/:user', component: StatisticsComponent},
-  {path: 'notifications', component: NotificationsComponent},
+  {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
+  {path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard]},
+  {path: 'project/:id', component: ProjectComponent, canActivate: [AuthGuard]},
+  {path: 'issues', component: IssuesComponent, canActivate: [AuthGuard]},
+  {path: 'issue/:id', component: IssueComponent, canActivate: [AuthGuard]},
+  {path: 'issue-form', component: IssueFormComponent, canActivate: [AuthGuard]},
+  {path: 'statistics', component: StatisticsComponent, canActivate: [AuthGuard]},
+  {path: 'statistics/:user', component: StatisticsComponent, canActivate: [AuthGuard]},
+  {path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard]},
+  {path: 'create-project', component: ProjectFormComponent, canActivate: [AuthGuard]},
   {path: 'overview', component: OverviewComponent},
-  {path: 'contact-us', component: ContactUsComponent},
+  {path: 'contact-us', component: ContactUsComponent, canActivate: [AuthGuard]},
   {path: '', redirectTo: '/login', pathMatch: 'full'}
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AuthGuard]
 })
 export class AppRoutingModule { }

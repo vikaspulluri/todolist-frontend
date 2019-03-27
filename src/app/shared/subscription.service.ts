@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
+import { AuthService } from '../auth/shared/auth.service';
 
 @Injectable()
 export class SubscriptionService {
-    private isRecommendationsPresent = true;
+    constructor(private authService: AuthService) {
+    }
+    private isRecommendationsPresent = this.authService.getLoginCount() > 2 ? false : true;
 
     clearRecommendations() {
         this.isRecommendationsPresent = false;

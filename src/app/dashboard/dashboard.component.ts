@@ -1,39 +1,34 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilService } from '../shared/util.service';
 import { SubscriptionService } from '../shared/subscription.service';
-import { trigger, transition, style, animate, state } from '@angular/animations';
+import { AuthService } from '../auth/shared/auth.service';
+import { fadeOut } from '../shared/animations';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
   animations: [
-    trigger('fadeInOut', [
-      state('true', style({
-        opacity: 1,
-        display: 'block'
-      })),
-      state('false', style({
-        opacity: 0,
-        display: 'none'
-      })),
-      transition('true => false', [
-        animate('1s')
-      ]),
-    ])
+    fadeOut
   ]
 })
 export class DashboardComponent implements OnInit {
 
   public greeting: string;
   public username: string;
-  public isRecommendationsPresent;
-  constructor(private utilService: UtilService, private subService: SubscriptionService) {
+  public userFirstName: string;
+  public userId: string;
+  public isRecommendationsPresent = true;
+  constructor(private utilService: UtilService,
+    private subService: SubscriptionService,
+    private authService: AuthService) {
     this.greeting = this.utilService.getGreeting();
   }
 
   ngOnInit() {
-    this.username = 'Vikas Pulluri';
+    this.username = this.authService.getUsername();
+    this.userFirstName = this.authService.getUserFirstName();
+    this.userId = this.authService.getUserId();
     this.setRecommendations();
   }
 

@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
 import { config } from '../app.config';
+import { AutoCompleteTag } from './interface';
+import { UsersResponse } from './response.interface';
+import { AuthService } from '../auth/shared/auth.service';
 @Injectable()
 
 // provided in AppComponent
 export class UtilService {
 
     public config = config;
+    constructor(private authService: AuthService) {}
 
     /**
      * getShortName(title, length)
@@ -55,6 +59,49 @@ export class UtilService {
      */
     public getCurrentDate() {
         return new Date();
+    }
+
+    /**
+     * mapUserDataToForm()
+     * Function that maps the users data to AutoCompleteTag format
+     * @param Object of UsersResponse.data
+     * @returns Array
+     */
+    public mapUserDataToForm(users: UsersResponse['data']) {
+        let formData: AutoCompleteTag[] = users.map(user => {
+            let obj: AutoCompleteTag = {
+                value: user.userId,
+                display: user.firstName + ' ' + user.lastName
+            };
+            return obj;
+        });
+        return formData;
+    }
+
+    /**
+     * excludeCurrentUserFromInputTag()
+     * Function that excludes current user details from populating in the form
+     * @param Array of AutoCompleteTag
+     * @returns AutoCompleteTag[]
+     */
+    public excludeCurrentUserFromInputTag(users: AutoCompleteTag[]) {
+        return users.filter(user => user.value !== this.authService.getUserId());
+    }
+
+    /**
+     * unmapUserDataFromForm()
+     * Function that maps the form data to user data
+     * @param users AutoCompleteTag[]
+     */
+    public unmapUserDataFromForm(users: AutoCompleteTag[]) {
+        let data = users.map(user => {
+            let obj = {
+                userId: user.value,
+                userName: user.display
+            };
+            return obj;
+        });
+        return data;
     }
 
 }

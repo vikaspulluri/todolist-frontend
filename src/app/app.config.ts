@@ -33,5 +33,6 @@ export const config = {
             {name: 'Want to know something?', value: 'query'}
         ]
     },
-    greetings: ['morning', 'afternoon', 'evening']
+    greetings: ['morning', 'afternoon', 'evening'],
+    projectTypes: ['Software Development', 'Website Development', 'QA', 'Deployment', 'None']
 };

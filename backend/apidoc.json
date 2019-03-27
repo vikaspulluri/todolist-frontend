@@ -1,0 +1,17 @@
+{
+    "name": "TODO List",
+    "version": "1.0.0",
+    "description": "TODO List API Documentation",
+    "title": "TODO List API",
+    "author": "Vikas Pulluri",
+    "created": "01-01-2019",
+    "url": "http://todolistsapi.meanpro.com",
+    "order": [
+      "User",
+      "List",
+      "Item"
+    ],
+    "template": {
+      "forceLanguage": "en"
+    }
+}

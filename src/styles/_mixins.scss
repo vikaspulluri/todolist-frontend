@@ -13,7 +13,7 @@
 @mixin formControl() {
     background-color: transparent;
     border: 1px solid $primary-pink;
-    color: $secondary-text;
+    color: $primary-pink;
     &:focus {
     border-color: $secondary-pink;
     }

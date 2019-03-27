@@ -9,7 +9,7 @@
             <div class="recommendations" [@fadeInOut]="isRecommendationsPresent">
                 <div class="content">
                     <h2>Recommendations</h2>
-                    <p>Hi Vikas, it seems you are new to this application. In order to make you comfortable with application,
+                    <p>Hi <a [routerLink]="['/user', userId]"><fa name="user"></fa>{{ userFirstName }}</a>, it seems you are new to this application. In order to make you comfortable with application,
                         we recommend you to have a look at <a [routerLink]="[ '/overview']">Overview</a>. Don't 
                         worry, you won't be able to see this recommendation once you are familiar with the workflow.
                     </p>

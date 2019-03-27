@@ -20,6 +20,8 @@ import { AnimateTextService } from './shared/animate-text.service';
 import { AuthRoutingModule } from './auth-routing.module';
 import { ToastrModule } from 'ngx-toastr';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import { NgxUiLoaderModule } from 'ngx-ui-loader';
+import { progressBarConfig } from '../shared/libraries.config';
 
 @NgModule({
     declarations: [
@@ -37,7 +39,8 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
         RouterModule,
         HttpClientModule,
         AuthRoutingModule,
-        BrowserModule
+        BrowserModule,
+        NgxUiLoaderModule.forRoot(progressBarConfig)
     ],
     exports: [
         SignInComponent,

@@ -1,11 +1,21 @@
-import { BrowserModule } from '@angular/platform-browser';
+// core libraries
 import { NgModule } from '@angular/core';
-import { AngularFontAwesomeModule } from 'angular-font-awesome';
-import { AuthModule } from './auth/auth.module';
-import { TagInputModule } from 'ngx-chips';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // this is needed!
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+
+// 3rd party libraries
+import { TagInputModule } from 'ngx-chips'; // tag inputs
+import { AngularFontAwesomeModule } from 'angular-font-awesome'; // font icons
+import { NgxUiLoaderModule } from 'ngx-ui-loader'; // progress bar
+// App feature modules
+import { AuthModule } from './auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
+import { AuthInterceptor } from './auth/auth.interceptor';
+import { ErrorInterceptor } from './auth/error.interceptor';
+
+// components
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -18,6 +28,14 @@ import { ContactUsComponent } from './contact-us/contact-us.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { IssueFormComponent } from './issues/issue-form/issue-form.component';
 import { OverviewComponent } from './overview/overview.component';
+
+// services
+import { SocketService } from './shared/socket.service';
+
+// config
+import { progressBarConfig, toastrConfig } from './shared/libraries.config';
+import { ToastrModule } from 'ngx-toastr';
+import { ProjectFormComponent } from './projects/project-form/project-form.component';
 
 @NgModule({
   declarations: [
@@ -33,9 +51,11 @@ import { OverviewComponent } from './overview/overview.component';
     NotificationsComponent,
     IssueFormComponent,
     OverviewComponent,
+    ProjectFormComponent,
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     AuthModule,
     AngularFontAwesomeModule,
@@ -43,8 +63,12 @@ import { OverviewComponent } from './overview/overview.component';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    NgxUiLoaderModule.forRoot(progressBarConfig),
+    ToastrModule.forRoot(toastrConfig),
   ],
-  providers: [],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+              {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+              SocketService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
