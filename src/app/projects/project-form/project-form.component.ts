@@ -6,6 +6,9 @@ import { UsersResponse, ProjectResponse } from 'src/app/shared/response.interfac
 import { UtilService } from 'src/app/shared/util.service';
 import { Project } from 'src/app/shared/models';
 import { AuthService } from 'src/app/auth/shared/auth.service';
+import { ToastrService } from 'ngx-toastr';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-project-form',
   templateUrl: './project-form.component.html',
@@ -21,7 +24,10 @@ export class ProjectFormComponent implements OnInit {
   private currentUserName = this.authService.getUsername();
   constructor(private httpService: AppHttpService,
             private utilService: UtilService,
-            private authService: AuthService) {
+            private authService: AuthService,
+            private toastrService: ToastrService,
+            private loaderService: NgxUiLoaderService,
+            private router: Router) {
   }
 
   ngOnInit() {
@@ -38,6 +44,7 @@ export class ProjectFormComponent implements OnInit {
   onProjectCreate(form: NgForm, event: Event) {
     event.preventDefault();
     if (form.invalid) { return; }
+    this.loaderService.start();
     const project: Project = {
       title: form.value.title,
       keyCode: this.utilService.getShortName(form.value.title).toUpperCase(),
@@ -47,7 +54,13 @@ export class ProjectFormComponent implements OnInit {
       members: this.utilService.unmapUserDataFromForm(form.value.members)
     };
     this.httpService.createProject(project).subscribe((response: ProjectResponse) => {
-    });
+      this.loaderService.stop();
+      if (response && response.data) {
+        this.router.navigate(['/project', response.data.projectId]).then(success => {
+          this.toastrService.success(response.message);
+        });
+      }
+    }, err => this.loaderService.stop());
   }
 
 }

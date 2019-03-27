@@ -16,4 +16,8 @@ export class AppHttpService {
     public createProject(project: Project) {
         return this.http.post<ProjectResponse>(`${this.config.apiUrl}/api/project/create`, project);
     }
+
+    public getProject(projectId: string) {
+        return this.http.post<ProjectResponse>(`${this.config.apiUrl}/api/project/id`, {projectId: projectId});
+    }
 }

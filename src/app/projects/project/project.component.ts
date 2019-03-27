@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UtilService } from 'src/app/shared/util.service';
+import { AppHttpService } from 'src/app/shared/app-http.service';
+import { UsersResponse, ProjectResponse } from 'src/app/shared/response.interface';
+import { ToastrService } from 'ngx-toastr';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { Project } from 'src/app/shared/models';
+import { AuthService } from 'src/app/auth/shared/auth.service';
 
 @Component({
   selector: 'app-project',
@@ -10,33 +16,48 @@ import { UtilService } from 'src/app/shared/util.service';
 export class ProjectComponent implements OnInit {
 
   public users;
-  public user;
+  public members;
   public projectId$;
   public projectShortName$;
+  private activeProject: Project;
   constructor(private route: ActivatedRoute,
     private router: Router,
-    private utilService: UtilService) {
-    this.users = [
-      {value: 'xxx', display: 'Vikas', readonly: true},
-      {value: 'yyy', display: 'Noothana'},
-      {value: 'zzz', display: 'Vinnu'},
-      {value: 'aaa', display: 'Karthik'},
-      {value: 'bbb', display: 'Sathish'},
-      {value: 'ccc', display: 'Hemanth'},
-      {value: 'sss', display: 'Mahesh'},
-      {value: 'ddd', display: 'Eswar'},
-      {value: 'www', display: 'Ganesh'}
-    ];
-    this.user = [this.users[0]];
-
+    private utilService: UtilService,
+    private httpService: AppHttpService,
+    private toastrService: ToastrService,
+    private loaderService: NgxUiLoaderService) {
   }
 
-    ngOnInit() {
-      this.route.paramMap.subscribe(params => {
-        // need to get project details from id
-        this.projectId$ = params.get('id');
-        this.projectShortName$ = this.utilService.getShortName(this.projectId$, 2);
-      });
-    }
+  ngOnInit() {
+    this.loaderService.start(); // starting on page load. finish it when all requests completed
+    this.getAllUsers();
+    this.route.paramMap.subscribe(params => {
+      // need to get project details from id
+      this.projectId$ = params.get('id');
+      this.getProject(this.projectId$);
+    });
+  }
+
+  getAllUsers() {
+    this.httpService.getAllUsers().subscribe((response: UsersResponse) => {
+      let usersData = this.utilService.mapUserDataToForm(response.data);
+      this.users = this.utilService.excludeCurrentUserFromInputTag(usersData);
+    });
+  }
+
+  getProject(projectId: string) {
+    this.httpService.getProject(projectId).subscribe((response: ProjectResponse) => {
+      if (!response.data || response.data.projectId) {
+        this.router.navigate(['/projects']).then(success => {
+          this.toastrService.error('No project found with the ID provided');
+        });
+        return;
+      }
+      this.activeProject = response.data;
+      this.projectShortName$ = this.utilService.getShortName(this.activeProject.title, 2);
+      this.members = this.utilService.mapUserDataToForm(this.activeProject.members);
+      this.members = this.utilService.setUserPrivilieges(this.activeProject.ownerId, this.members);
+    }, err => this.loaderService.stop());
+  }
 
 }

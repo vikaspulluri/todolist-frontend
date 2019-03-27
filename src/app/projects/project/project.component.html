@@ -5,7 +5,7 @@
       <h2>{{ projectShortName$ }}</h2>
     </div>
     <div class="project-name">
-      <h1>{{ projectId$ }}</h1>
+      <h1>{{ activeProject?.title }}</h1>
     </div>
   </div>
   <div class="main-content">
@@ -15,13 +15,13 @@
       </div>
       <div class="basic-info">
         <div>
-          <span>Lead: </span> <span><a [routerLink]="['/statistics/user-id']" alt="Vikas Pulluri"><span><fa name="user"></fa></span> Vikas Pulluri</a></span>
+          <span>Lead: </span> <span><a [routerLink]="['/statistics', activeProject.ownerId]" alt="{{activeProject?.ownerName}}"><span><fa name="user"></fa></span> {{ activeProject?.ownerName}}</a></span>
         </div>
         <div>
-          <span>Created On: </span><span>Jan 21, 2019 5:40PM</span>
+          <span>Created On: </span><span>{{ activeProject?.createdDate }}</span>
         </div>
         <div>
-          <span>Status: </span> <span>Active</span>
+          <span>Type: </span> <span>{{ activeProject?.type }}</span>
         </div>
       </div>
       <div class="members">
@@ -29,7 +29,7 @@
           <h4>Members</h4>
         </div>
         <div class="body">
-            <tag-input [ngModel]="user" [placeholder]="'Add new member...'" [onlyFromAutocomplete]="true" theme="foundation-theme">
+            <tag-input [ngModel]="members" [placeholder]="'Add new member...'" [onlyFromAutocomplete]="true" theme="foundation-theme">
                 <tag-input-dropdown [autocompleteItems]="users" [showDropdownIfEmpty]="true">
                   </tag-input-dropdown>
             </tag-input>

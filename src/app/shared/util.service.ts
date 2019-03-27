@@ -9,6 +9,7 @@ import { AuthService } from '../auth/shared/auth.service';
 export class UtilService {
 
     public config = config;
+    private currentUserId = this.authService.getUserId();
     constructor(private authService: AuthService) {}
 
     /**
@@ -95,13 +96,27 @@ export class UtilService {
      */
     public unmapUserDataFromForm(users: AutoCompleteTag[]) {
         let data = users.map(user => {
+            let name = user.display.split(' ');
             let obj = {
                 userId: user.value,
-                userName: user.display
+                firstName: name[0],
+                lastName: name[1]
             };
             return obj;
         });
         return data;
+    }
+
+    public setUserPrivilieges(ownerId: string, users: AutoCompleteTag[]): AutoCompleteTag[] {
+        let priviliegedUsers = users.map(user => {
+            let obj = {
+                value: user.value,
+                display: user.display,
+                readOnly: this.currentUserId === ownerId ? false : true
+            };
+            return obj;
+        });
+        return priviliegedUsers;
     }
 
 }

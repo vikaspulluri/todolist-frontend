@@ -5,9 +5,11 @@ export interface Project {
     keyCode: string;
     type: string;
     projectId?: string;
+    createdDate?: string;
     members: {
         userId: string,
-        userName: string,
+        firstName: string,
+        lastName: string,
         readOnly?: boolean
     }[];
 }
