@@ -21,7 +21,7 @@ const routes: Routes = [
   {path: 'issue/:id', component: IssueComponent, canActivate: [AuthGuard]},
   {path: 'issue-form', component: IssueFormComponent, canActivate: [AuthGuard]},
   {path: 'statistics', component: StatisticsComponent, canActivate: [AuthGuard]},
-  {path: 'statistics/:user', component: StatisticsComponent, canActivate: [AuthGuard]},
+  {path: 'statistics/:userId', component: StatisticsComponent, canActivate: [AuthGuard]},
   {path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard]},
   {path: 'create-project', component: ProjectFormComponent, canActivate: [AuthGuard]},
   {path: 'overview', component: OverviewComponent},

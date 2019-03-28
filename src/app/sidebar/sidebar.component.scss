@@ -37,6 +37,7 @@ aside {
         color: $white;
         a {
           color: $white;
+          cursor: pointer;
           &.active {
             color: $orange;
             fa {

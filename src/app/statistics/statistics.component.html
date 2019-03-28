@@ -1,11 +1,13 @@
+<ngx-ui-loader></ngx-ui-loader>
+
 <app-sidebar></app-sidebar>
 <aside class="project-container">
     <div class="header">
-        <div class="short-name" *ngIf="userShortName$">
-        <h2>{{ userShortName$ }}</h2>
+        <div class="short-name">
+            <h2>{{ userShortName$ }}</h2>
         </div>
         <div class="project-name">
-        <h1>{{ userId$ }}</h1>
+            <h1>{{ userName }}</h1>
         </div>
     </div>
     <div class="main-content">
@@ -14,28 +16,9 @@
             <h4>Contributions</h4>
         </div>
         <div class="basic-info">
-            <div>
+            <div *ngFor="let project of contributions">
             <span><fa name="free-code-camp"></fa></span>
-            <a [routerLink]="['/project/general']">General</a>
-            </div>
-            <div>
-            <span><fa name="free-code-camp"></fa></span>
-            <a [routerLink]="['/project/UI-Development']">UI Development</a>
-            </div>
-        </div>
-        <div class="members">
-            <div class="head">
-            <h4>Mutual Projects</h4>
-            </div>
-            <div class="body">
-            <div>
-                <span><fa name="free-code-camp"></fa></span>
-                <a [routerLink]="['/project/general']">General</a>
-            </div>
-            <div>
-                <span><fa name="free-code-camp"></fa></span>
-                <a [routerLink]="['/project/UI-Development']">UI Development</a>
-            </div>
+            <a [routerLink]="['/project', project.projectId]">{{ project.title }}</a>
             </div>
         </div>
         </div>

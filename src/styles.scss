@@ -32,6 +32,7 @@ html, body {
   }
   a {
     color: $primary-text;
+    cursor: pointer;
   }
   input.form-control::placeholder {
     opacity: 1;

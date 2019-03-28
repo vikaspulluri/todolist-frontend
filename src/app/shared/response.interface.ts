@@ -12,3 +12,15 @@ export interface UsersResponse extends Response {
 export interface ProjectResponse extends Response {
     data: Project;
 }
+
+export interface UserStatsResponse extends Response {
+    data: {
+        userId: string,
+        firstName: string,
+        lastName: string,
+        projectDetails: {
+            title: string,
+            projectId: string
+        }[]
+    };
+}

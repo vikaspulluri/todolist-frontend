@@ -158,6 +158,8 @@ router.post('/login', validateRequest('UC-LU-1', 'email', 'password'), userContr
  */
 router.get('/@self', decodeToken, checkUser, userController.getUser);
 
+router.post('/stats', decodeToken, checkUser, validateRequest('UC-GUS', 'userId'), userController.getUserStats);
+
 // only for admin purpose
 router.get('/all-users', decodeToken, checkUser, userController.getAllUsers);
 

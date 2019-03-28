@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { UsersResponse, ProjectResponse } from './response.interface';
+import { UsersResponse, ProjectResponse, UserStatsResponse } from './response.interface';
 import { Project } from './models';
 
 @Injectable({providedIn: 'root'})
@@ -11,6 +11,10 @@ export class AppHttpService {
 
     public getAllUsers() {
         return this.http.get<UsersResponse>(`${this.config.apiUrl}/api/user/all-users`);
+    }
+
+    public getUserStats(userId: string) {
+        return this.http.post<UserStatsResponse>(`${this.config.apiUrl}/api/user/stats`, {userId: userId});
     }
 
     public createProject(project: Project) {

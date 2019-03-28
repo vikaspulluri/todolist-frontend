@@ -50,25 +50,26 @@ export class ProjectComponent implements OnInit {
 
   getProject(projectId: string) {
     this.httpService.getProject(projectId).subscribe((response: ProjectResponse) => {
-      console.log(response);
-      if (!response.data || !response.data.projectId) {
-        this.router.navigate(['/projects']).then(success => {
-          this.toastrService.error('No project found with the ID provided');
-        });
-        return;
-      }
       this.activeProject = response.data;
       this.projectShortName$ = this.utilService.getShortName(this.activeProject.title, 2);
       this.activeProject.createdDate = this.utilService.formatDate(response.data.createdDate);
       this.members = this.utilService.mapUserDataToForm(this.activeProject.members);
       this.members = this.utilService.setUserPrivilieges(this.activeProject.ownerId, this.members);
       this.isOutSider = !this.isMemberOfProject();
-    }, err => this.loaderService.stop());
+      this.loaderService.stop();
+    }, err => {
+      this.router.navigate(['/projects']);
+      return;
+    });
   }
 
   isMemberOfProject() {
-    let filteredArray = this.members.filter(member => member.userId === this.currentUserId);
+    let filteredArray = this.members.filter(member => member.value === this.currentUserId);
     return true ? (filteredArray.length > 0) || (this.currentUserId === this.activeProject.ownerId) : false;
+  }
+
+  onLeadClick() {
+    this.router.navigate(['/statistics', this.activeProject.ownerId]);
   }
 
 }

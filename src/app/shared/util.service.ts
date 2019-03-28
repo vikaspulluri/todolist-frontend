@@ -114,7 +114,7 @@ export class UtilService {
             let obj = {
                 value: user.value,
                 display: user.display,
-                readOnly: this.currentUserId === ownerId ? false : true
+                readonly: this.currentUserId === ownerId ? false : true
             };
             return obj;
         });

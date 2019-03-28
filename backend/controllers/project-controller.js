@@ -43,6 +43,13 @@ const createProject = (req, res, next) => {
 const getProject = (req, res, next) => {
     Project.findOne({_id: req.body.projectId})
             .then(doc => {
+                if (doc == null || typeof doc == 'undefined') {
+                    let response = new ErrorResponseBuilder('There is no project with id ' + req.body.projectId)
+                                        .errorCode('PC-GP-1')
+                                        .errorType('DataNotFoundError')
+                                        .build();
+                    return res.status(404).send(response);
+                }
                 let updatedResponse = {
                     projectId: doc._id,
                     title: doc.title,
@@ -57,9 +64,10 @@ const getProject = (req, res, next) => {
                                 .status(200)
                                 .data(updatedResponse)
                                 .build();
-                return res.status(201).send(response);
+                return res.status(200).send(response);
             })
             .catch(error => {
+                console.log(error);
                 logger.log(error, req, 'PC-GP-1');
                 let err = new ErrorResponseBuilder().status(500).errorCode('PC-GP-1').errorType('UnknownError').build();
                 return next(err);

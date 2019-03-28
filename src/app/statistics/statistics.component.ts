@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UtilService } from 'src/app/shared/util.service';
+import { AuthService } from '../auth/shared/auth.service';
+import { AppHttpService } from '../shared/app-http.service';
+import { UserStatsResponse } from '../shared/response.interface';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-statistics',
@@ -9,34 +13,36 @@ import { UtilService } from 'src/app/shared/util.service';
 })
 export class StatisticsComponent implements OnInit {
 
-  public users;
-  public user;
   public userId$;
+  public userName;
   public userShortName$;
+  public contributions = [];
+  private currentUserId = this.authService.getUserId();
   constructor(private route: ActivatedRoute,
     private router: Router,
-    private utilService: UtilService) {
-    this.users = [
-      {value: 'xxx', display: 'Vikas', readonly: true},
-      {value: 'yyy', display: 'Noothana'},
-      {value: 'zzz', display: 'Vinnu'},
-      {value: 'aaa', display: 'Karthik'},
-      {value: 'bbb', display: 'Sathish'},
-      {value: 'ccc', display: 'Hemanth'},
-      {value: 'sss', display: 'Mahesh'},
-      {value: 'ddd', display: 'Eswar'},
-      {value: 'www', display: 'Ganesh'}
-    ];
-    this.user = [this.users[0]];
+    private utilService: UtilService,
+    private authService: AuthService,
+    private httpService: AppHttpService,
+    private loaderService: NgxUiLoaderService) {
 
   }
 
   ngOnInit() {
+    this.loaderService.start();
     this.route.paramMap.subscribe(params => {
       // need to get project details from userId
-      this.userId$ = params.get('user');
-      this.userShortName$ = this.utilService.getShortName(this.userId$, 2);
+      this.userId$ = params.get('userId') || this.currentUserId;
+      this.getUserStats();
     });
+  }
+
+  getUserStats() {
+    this.httpService.getUserStats(this.userId$).subscribe((response: UserStatsResponse) => {
+      this.userName = response.data.firstName + ' ' + response.data.lastName;
+      this.userShortName$ = this.utilService.getShortName(this.userName, 2);
+      this.contributions = response.data.projectDetails;
+      this.loaderService.stop();
+    }, err => this.loaderService.stop());
   }
 
 }

@@ -1,5 +1,5 @@
 const User = require('../models/user-model');
-const Request = require('../models/request-model');
+const Project = require('../models/project-model');
 const Feedback = require('../models/feedback-model');
 const bcrypt = require('bcryptjs');
 const {ErrorResponseBuilder, SuccessResponseBuilder} = require('../libraries/response-builder');
@@ -75,7 +75,7 @@ const loginUser = (req, res, next) => {
                 userId: fetchedUser._id,
                 loginCount: fetchedUser.loginCount
             };
-            incrementLoginCount(fetchedUser.email, req, next);
+            incrementLoginCount(req.body.email, req, next);
             let jsonResponse = new SuccessResponseBuilder('User Logged In Successfully...').data(data).build();
             return res.status(200).send(jsonResponse);
         })
@@ -90,14 +90,52 @@ const incrementLoginCount = (email, req, next) => {
   User.findOneAndUpdate({email: email},
     {$inc: {loginCount: 1}})
     .then(docs => {
-      logger.log(docs, req, 'UC-UUPI-1');
-      let err = new ErrorResponseBuilder('Unable to increment login count').status(500).errorCode('UC-ILC-1').errorType('UnknownError').build();
+      // successfully updated
     })
     .catch(error => {
-      logger.log(error, req, 'UC-ILC-1');
+      logger.log(error, null, 'UC-ILC-1');
       let err = new ErrorResponseBuilder().status(500).errorCode('UC-UUPI-3').errorType('UnknownError').build();
       return next(err);
     })
+}
+
+const getUserStats = (req, res, next) => {
+  User.findById(req.body.userId, {password: 0})
+      .then(doc => {
+        if (doc == null || typeof doc == 'undefined') {
+          let response = new ErrorResponseBuilder('There is no user with id ' + req.body.userId)
+                              .errorCode('UC-GUS-1')
+                              .errorType('DataNotFoundError')
+                              .build();
+          return res.status(404).send(response);
+        }
+        return {userId: doc._id, firstName: doc.firstName, lastName: doc.lastName};
+      })
+      .then(userData => {
+        console.log(userData);
+        Project.find({$or: [{ownerId: userData.userId}, {members: {$elemMatch: {userId: userData.userId}}}]})
+                .then(docs => {
+                  userData.projectDetails = docs.map(doc => {
+                    let obj = {
+                      title: doc.title,
+                      projectId: doc._id
+                    };
+                    return obj;
+                  });
+                  let jsonResponse = new SuccessResponseBuilder('User Stats Fetched Successfully!!!').data(userData).build();
+                  res.status(200).send(jsonResponse);
+                })
+                .catch(error => {
+                  logger.log(error, req, 'UC-GUS');
+                  let err = new ErrorResponseBuilder().status(500).errorCode('UC-GUS-3').errorType('UnknownError').build();
+                  return next(err);
+                })
+      })
+      .catch(error => {
+        logger.log(error, req, 'UC-GU');
+        let err = new ErrorResponseBuilder().status(500).errorCode('UC-GU-4').errorType('UnknownError').build();
+        return next(err);
+      })
 }
 
 const getUser = (req, res, next) => {
@@ -109,35 +147,10 @@ const getUser = (req, res, next) => {
                 firstName: result.firstName,
                 lastName: result.lastName,
                 email: result.email,
-                createdOn: result.createdDate,
-                country: result.country,
-                phone: result.phone
+                createdOn: result.createdDate
             }
-            let friends = [...new Set(result.friends)];
-            User.find({'_id': {$in: friends}}, {firstName:1, lastName:1, _id: 1})
-                .then(docs => {
-                  data.friends = docs;
-                })
-            Request.find({'requesterId': result._id}, {__v: 0})
-                    .then(docs => {
-                      data.sentRequests = docs;
-                      Request.find({'receiverId': result._id}, {__v: 0})
-                        .then(docs2 => {
-                          data.receivedRequests = docs2;
-                          let jsonResponse = new SuccessResponseBuilder('User Data Fetched Successfully!!!').data(data).build();
-                          res.status(200).send(jsonResponse);
-                        })
-                        .catch(error => {
-                          logger.log(error, req, 'UC-GU');
-                          let err = new ErrorResponseBuilder().status(500).errorCode('UC-GU-2').errorType('UnknownError').build();
-                          return next(err);
-                        });
-                    })
-                    .catch(error => {
-                      logger.log(error, req, 'UC-GU');
-                      let err = new ErrorResponseBuilder().status(500).errorCode('UC-GU-1').errorType('UnknownError').build();
-                      return next(err);
-                    });
+            let jsonResponse = new SuccessResponseBuilder('User Data Fetched Successfully!!!').data(data).build();
+            res.status(200).send(jsonResponse);
         })
         .catch(error => {
             logger.log(error, req, 'UC-GU');
@@ -312,6 +325,7 @@ module.exports = {
   createUser: createUser,
   loginUser: loginUser,
   getUser: getUser,
+  getUserStats: getUserStats,
   getAllUsers: getAllUsers,
   getUserNotifications: getUserNotifications,
   sendUserFeedback: sendUserFeedback,
