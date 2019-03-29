@@ -6,7 +6,7 @@ export interface Project {
     type: string;
     projectId?: string;
     createdDate?: string;
-    members: {
+    members?: {
         userId: string,
         firstName: string,
         lastName: string,

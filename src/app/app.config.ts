@@ -34,5 +34,10 @@ export const config = {
         ]
     },
     greetings: ['morning', 'afternoon', 'evening'],
-    projectTypes: ['Software Development', 'Website Development', 'QA', 'Deployment', 'None']
+    projectTypes: ['Software Development', 'Website Development', 'QA', 'Deployment', 'None'],
+    customPagination: {
+        itemsPerPage: 2,
+        currentPage: 1,
+        itemsPerPageOptions: [2, 3, 5, 8, 10]
+    }
 };

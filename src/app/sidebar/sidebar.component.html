@@ -12,6 +12,14 @@
           <span><fa name="briefcase"></fa></span>
           <span>Projects</span>
         </a>
+        <ul class="sub-links">
+          <li>
+            <a [routerLink]="['/project-form']" [routerLinkActive]="'active'" title="Create Project">
+              <span><fa name="plus"></fa></span>
+              <span>Create Project</span>
+            </a>
+          </li>
+        </ul>
       </li>
       <li>
         <a [routerLink]="['/statistics']" [routerLinkActive]="'active'" title="Statistics">
@@ -26,16 +34,18 @@
         </a>
       </li>
       <li>
-        <a [routerLink]="['/issue-form']" [routerLinkActive]="'active'" title="Create Issue">
-          <span><fa name="plus"></fa></span>
-          <span>Create Issue</span>
-        </a>
-      </li>
-      <li>
         <a [routerLink]="['/issues']" [routerLinkActive]="'active'" title="Issues">
           <span><fa name="bolt"></fa></span>
           <span>Issues</span>
         </a>
+        <ul class="sub-links">
+          <li>
+            <a [routerLink]="['/issue-form']" [routerLinkActive]="'active'" title="Create Issue">
+              <span><fa name="plus"></fa></span>
+              <span>Create Issue</span>
+            </a>
+          </li>
+        </ul>
       </li>
       <li>
         <a [routerLink]="['/contact-us']" [routerLinkActive]="'active'" title="Report problem?">

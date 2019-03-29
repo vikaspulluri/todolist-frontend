@@ -1,4 +1,5 @@
 const Project = require('../models/project-model');
+const User = require('../models/user-model');
 const {ErrorResponseBuilder, SuccessResponseBuilder} = require('../libraries/response-builder');
 const validateRequest = require('../libraries/validate-request');
 const dateUtility = require('../libraries/date-formatter');
@@ -27,7 +28,7 @@ const createProject = (req, res, next) => {
                 type: doc.type,
                 projectId: doc._id
             }
-            let response = new SuccessResponseBuilder('User created successfully!!!')
+            let response = new SuccessResponseBuilder('Project created successfully!!!')
                                 .status(201)
                                 .data(projectData)
                                 .build();
@@ -67,13 +68,102 @@ const getProject = (req, res, next) => {
                 return res.status(200).send(response);
             })
             .catch(error => {
-                console.log(error);
                 logger.log(error, req, 'PC-GP-1');
                 let err = new ErrorResponseBuilder().status(500).errorCode('PC-GP-1').errorType('UnknownError').build();
                 return next(err);
             })
 }
+const constructQueryForGetProjects = (req, res, next) => {
+    let query = {};
+    $or = [];
+    $or.push({title: 'Default', _id: 'uFOUIKMUo'}); // always return default project
+    if (req.body.title && req.body.title !== '') {
+        query.$and = [];
+        query.$and.push({title: new RegExp(req.body.title, 'gi')}); // get projects that matches the search string
+    }
+    let isAllUsers = req.body.users.find(user => user === '*');
+    if (isAllUsers || req.body.users === []) {
+        // need to get all user ID's
+        getAllUserIds().then(users => {
+            req.body.users = users;
+            $or.push({ownerId: {$in:users}},
+                {members: {$elemMatch: {userId: {$in: users}}}});
+            if (query.$and) {
+                query.$and.push({$or: $or});
+            } else {
+                query.$or = $or;
+            }
+            req.projectsQuery = query;
+            return next();
+        })
+        .catch(error => {
+            logger.log(error, req, 'PC-CQFGP');
+            let err = new ErrorResponseBuilder().status(500).errorCode('UC-CFGP-1').errorType('UnknownError').build();
+            return next(err);
+        })
+    } else {
+        $or.push({ownerId: {$in: req.body.users}},
+            {members: {$elemMatch: {userId: {$in: req.body.users}}}});
+        if (query.$and) {
+            query.$and.push({$or: $or});
+        } else {
+            query.$or = $or;
+        }
+        req.projectsQuery = query;
+        return next();
+    }
+}
+
+const getProjects = (req, res, next) => {
+    Project.find(req.projectsQuery)
+            .then(docs => {
+                let priorityProjects = [];
+                let nonPriorityProjects = [];
+                docs.forEach(doc => {
+                    let updatedResponse = {
+                        projectId: doc._id,
+                        title: doc.title,
+                        keyCode: doc.keyCode,
+                        ownerName: doc.ownerName,
+                        ownerId: doc.ownerId,
+                        type: doc.type,
+                        createdDate: doc.createdDate
+                    };
+                    if (doc._id === 'uFOUIKMUo') {
+                        priorityProjects.push(updatedResponse);
+                    } else {
+                        nonPriorityProjects.push(updatedResponse);
+                    }
+                });
+                let response = [...priorityProjects, ...nonPriorityProjects];
+                let jsonResponse = new SuccessResponseBuilder('User Projects Fetched Successfully!!!').data(response).build();
+                res.status(200).send(jsonResponse);
+            })
+            .catch(error => {
+                logger.log(error, req, 'PC-GUS');
+                let err = new ErrorResponseBuilder().status(500).errorCode('UC-GUS-3').errorType('UnknownError').build();
+                return next(err);
+            })
+}
+
+const getAllUserIds = () => {
+    return new Promise((resolve, reject) => {
+        User.find({}, {_id: 1})
+            .then(users => {
+                let userIds = users.map(user => user._id);
+                resolve(userIds);
+            })
+            .catch(error => {
+                logger.log(error, '*', 'PC-GAUI');
+                reject(error);
+            })
+    });
+}
+
+
 module.exports = {
     createProject: createProject,
-    getProject: getProject
+    getProject: getProject,
+    getProjects: getProjects,
+    constructQueryForGetProjects: constructQueryForGetProjects
 }

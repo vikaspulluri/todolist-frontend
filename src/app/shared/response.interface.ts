@@ -13,6 +13,10 @@ export interface ProjectResponse extends Response {
     data: Project;
 }
 
+export interface ProjectsResponse extends Response {
+    data: Project[];
+}
+
 export interface UserStatsResponse extends Response {
     data: {
         userId: string,

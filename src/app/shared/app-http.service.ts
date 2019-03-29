@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { UsersResponse, ProjectResponse, UserStatsResponse } from './response.interface';
+import { UsersResponse, ProjectResponse, UserStatsResponse, ProjectsResponse } from './response.interface';
 import { Project } from './models';
 
 @Injectable({providedIn: 'root'})
@@ -23,5 +23,9 @@ export class AppHttpService {
 
     public getProject(projectId: string) {
         return this.http.post<ProjectResponse>(`${this.config.apiUrl}/api/project/id`, {projectId: projectId});
+    }
+
+    public getProjects(filters: {title: string, users: string[]}) {
+        return this.http.post<ProjectsResponse>(`${this.config.apiUrl}/api/project/all`, filters);
     }
 }

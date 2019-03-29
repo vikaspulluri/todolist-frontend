@@ -20,6 +20,14 @@ aside {
         .wrapper {
             color: darken($orange, 5%);
             margin: 0 .5rem 2.5rem;
+            & > form {
+                max-width: 80%;
+                margin: 0 auto;
+                background: $secondary-bg;
+                padding: 2rem;
+                color: $white;
+                border-radius: .5rem;
+            }
             .form-group {
                 text-align: left;
                 label {

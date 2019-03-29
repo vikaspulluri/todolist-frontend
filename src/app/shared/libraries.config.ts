@@ -37,4 +37,3 @@ export const toastrConfig = {
     toastClass: 'custom-toast toast',
     positionClass: 'toast-top-center'
 };
-

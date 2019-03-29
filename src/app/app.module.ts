@@ -9,6 +9,9 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TagInputModule } from 'ngx-chips'; // tag inputs
 import { AngularFontAwesomeModule } from 'angular-font-awesome'; // font icons
 import { NgxUiLoaderModule } from 'ngx-ui-loader'; // progress bar
+import {NgxPaginationModule} from 'ngx-pagination'; // pagination module
+import { ToastrModule } from 'ngx-toastr'; // toastr module
+
 // App feature modules
 import { AuthModule } from './auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
@@ -28,14 +31,13 @@ import { ContactUsComponent } from './contact-us/contact-us.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { IssueFormComponent } from './issues/issue-form/issue-form.component';
 import { OverviewComponent } from './overview/overview.component';
+import { ProjectFormComponent } from './projects/project-form/project-form.component';
 
 // services
 import { SocketService } from './shared/socket.service';
 
 // config
 import { progressBarConfig, toastrConfig } from './shared/libraries.config';
-import { ToastrModule } from 'ngx-toastr';
-import { ProjectFormComponent } from './projects/project-form/project-form.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +65,7 @@ import { ProjectFormComponent } from './projects/project-form/project-form.compo
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    NgxPaginationModule,
     NgxUiLoaderModule.forRoot(progressBarConfig),
     ToastrModule.forRoot(toastrConfig),
   ],

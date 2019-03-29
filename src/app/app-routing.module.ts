@@ -23,10 +23,10 @@ const routes: Routes = [
   {path: 'statistics', component: StatisticsComponent, canActivate: [AuthGuard]},
   {path: 'statistics/:userId', component: StatisticsComponent, canActivate: [AuthGuard]},
   {path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard]},
-  {path: 'create-project', component: ProjectFormComponent, canActivate: [AuthGuard]},
+  {path: 'project-form', component: ProjectFormComponent, canActivate: [AuthGuard]},
   {path: 'overview', component: OverviewComponent},
   {path: 'contact-us', component: ContactUsComponent, canActivate: [AuthGuard]},
-  {path: '', redirectTo: '/login', pathMatch: 'full'}
+  {path: '', redirectTo: '/dashboard', pathMatch: 'full'}
 ];
 
 @NgModule({

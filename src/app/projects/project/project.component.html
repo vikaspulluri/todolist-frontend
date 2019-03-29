@@ -32,7 +32,8 @@
         </div>
         <div class="body">
             <tag-input [ngModel]="members" 
-                        [placeholder]="'Add new member...'" 
+                        [placeholder]="'Add new member...'"
+                        [secondaryPlaceholder]="'Add new member'"
                         [onlyFromAutocomplete]="true" 
                         theme="foundation-theme" 
                         [maxItems]="activeProject?.ownerId == currentUserId ? users?.length : members?.length">

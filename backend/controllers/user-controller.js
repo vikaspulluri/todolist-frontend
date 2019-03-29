@@ -112,7 +112,6 @@ const getUserStats = (req, res, next) => {
         return {userId: doc._id, firstName: doc.firstName, lastName: doc.lastName};
       })
       .then(userData => {
-        console.log(userData);
         Project.find({$or: [{ownerId: userData.userId}, {members: {$elemMatch: {userId: userData.userId}}}]})
                 .then(docs => {
                   userData.projectDetails = docs.map(doc => {
@@ -160,7 +159,7 @@ const getUser = (req, res, next) => {
 }
 
 const getAllUsers = (req, res, next) => {
-  User.find({},{firstName: 1, lastName: 1, _id: 1})
+  User.find({hasAdminPrevilieges: false},{firstName: 1, lastName: 1, _id: 1})
       .then(result => {
         let customResponse = result.map(user => {
           let obj = {

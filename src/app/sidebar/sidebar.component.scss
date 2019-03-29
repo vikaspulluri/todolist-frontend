@@ -22,7 +22,16 @@ aside {
       padding: 0;
       display: flex;
       flex-direction: column;
-      &:last-child {
+      &.sub-links {
+        font-size: 1rem;
+        display: none;
+        opacity: 0;
+        transition: .2s all ease-in-out;
+        span:first-child {
+          min-width: auto !important;
+        }
+      }
+      &:last-child:not(.sub-links) {
         position: absolute;
         bottom: 1rem;
         display: flex;
@@ -35,6 +44,12 @@ aside {
         position: relative;
         padding: 0.6rem;
         color: $white;
+        &:hover {
+          & > ul.sub-links {
+            display: block;
+            opacity: 1;
+          }
+        }
         a {
           color: $white;
           cursor: pointer;
