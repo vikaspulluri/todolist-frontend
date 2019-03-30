@@ -3,22 +3,22 @@
   <div class="headline">
     <h1>Create New Issue</h1>
   </div>
-  <form>
+  <form [formGroup]="issueForm">
     <div class="form-group">
       <label>Title</label>
       <span>
         <fa name="info-circle"></fa>
         <span>Title of the issue</span>
       </span>
-      <input class="form-control" type="text" name="title" placeholder="title">
+      <input class="form-control" type="text" [formControlName]="'title'" placeholder="title">
     </div>
     <div class="form-group">
       <label>Issue Type</label>
-      <input class="form-control" type="text" name="issue-type" value="Task" disabled>
+      <input class="form-control" type="text" formControlName="issueType">
     </div>
     <div class="form-group">
       <label>Description</label>
-      <textarea rows="4" title="Description" class="form-control"></textarea>
+      <textarea rows="4" formControlName="description" title="Description" class="form-control"></textarea>
     </div>
     <div class="form-group">
       <label for="priority">Priority</label>
@@ -29,33 +29,42 @@
       </select>
     </div>
     <div class="form-group">
+      <label>Attachments</label>
+      <button class="image-picker-btn" type="button" (click)="imagePicker.click()">Add Attachments</button>
+      <input type="file" #imagePicker (change)="onImagePicked($event)">
+      <div class="image-preview" *ngIf="attachmentPreview !== '' && attachmentPreview">
+        <img [src]="attachmentPreview" [alt]="issueForm.value.title">
+        <button class="btn remove-btn" (click)="attachmentPreview = ''">Remove</button>
+      </div>
+    </div>
+    <div class="form-group">
       <label>Reporter</label>
       <input class="form-control" type="text" name="reporter" value="Vikas Pulluri" disabled>
     </div>
     <div class="form-group">
       <label>Project</label>
-      <tag-input [ngModel]="project" name="project" [placeholder]="'select project'" [onlyFromAutocomplete]="true" [maxItems]="1" theme="foundation-theme">
+      <tag-input formContronName="project" name="project" [placeholder]="'select project'" [onlyFromAutocomplete]="true" [maxItems]="1" theme="foundation-theme">
         <tag-input-dropdown [autocompleteItems]="projects" [showDropdownIfEmpty]="true">
           </tag-input-dropdown>
       </tag-input>
     </div>
     <div class="form-group">
       <label>Assignee</label>
-      <tag-input [ngModel]="user" name="assignee" [placeholder]="'Add assignee'" [onlyFromAutocomplete]="true" [maxItems]="1" theme="foundation-theme">
+      <tag-input formControlName="user" name="assignee" [placeholder]="'Add assignee'" [onlyFromAutocomplete]="true" [maxItems]="1" theme="foundation-theme">
         <tag-input-dropdown [autocompleteItems]="users" [showDropdownIfEmpty]="true">
           </tag-input-dropdown>
       </tag-input>
     </div>
     <div class="form-group">
       <label>Watchers</label>
-      <tag-input [ngModel]="user" name="watchers" [placeholder]="'Add watcher'" [onlyFromAutocomplete]="true" theme="foundation-theme">
+      <tag-input formControlName="user" name="watchers" [placeholder]="'Add watcher'" [onlyFromAutocomplete]="true" theme="foundation-theme">
         <tag-input-dropdown [autocompleteItems]="users" [showDropdownIfEmpty]="true">
           </tag-input-dropdown>
       </tag-input>
     </div>
     <div class="form-group">
       <label>Labels</label>
-      <tag-input [ngModel]="user" name="labels" [placeholder]="'Add label'" theme="foundation-theme">
+      <tag-input formControlName="user" name="labels" [placeholder]="'Add label'" theme="foundation-theme">
         <tag-input-dropdown [autocompleteItems]="users">
           </tag-input-dropdown>
       </tag-input>

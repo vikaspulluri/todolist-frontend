@@ -4,6 +4,7 @@ const {ErrorResponseBuilder, SuccessResponseBuilder} = require('../libraries/res
 const validateRequest = require('../libraries/validate-request');
 const dateUtility = require('../libraries/date-formatter');
 const logger = require('../libraries/log-message');
+const config = require('../config/config');
 
 const createProject = (req, res, next) => {
     const project = {
@@ -76,7 +77,7 @@ const getProject = (req, res, next) => {
 const constructQueryForGetProjects = (req, res, next) => {
     let query = {};
     $or = [];
-    $or.push({title: 'Default', _id: 'uFOUIKMUo'}); // always return default project
+    $or.push({title: config.defaultProject.title, _id: config.defaultProject.id }); // always return default project
     if (req.body.title && req.body.title !== '') {
         query.$and = [];
         query.$and.push({title: new RegExp(req.body.title, 'gi')}); // get projects that matches the search string
@@ -129,7 +130,7 @@ const getProjects = (req, res, next) => {
                         type: doc.type,
                         createdDate: doc.createdDate
                     };
-                    if (doc._id === 'uFOUIKMUo') {
+                    if (doc._id === config.defaultProject.id) {
                         priorityProjects.push(updatedResponse);
                     } else {
                         nonPriorityProjects.push(updatedResponse);

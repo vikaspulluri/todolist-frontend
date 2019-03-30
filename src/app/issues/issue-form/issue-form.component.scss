@@ -53,6 +53,40 @@ aside {
     }
 }
 
+input[type='file']{
+    visibility: hidden;
+}
+.image-preview{
+    height: 5rem;
+    margin: 1rem 0;
+}
+.image-preview img{
+    height: 100%;
+}
+
+.image-picker-btn {
+    padding: .75rem;
+    background: $primary-pink;
+    border: 1px dashed $white;
+    color: $white;
+    display: block;
+    transition: .3s ease-in-out;
+    &:hover {
+        background: $secondary-pink;
+        color: $black;
+    }
+}
+.remove-btn {
+    padding: .75rem;
+    background: #ff006aad;
+    color: $white;
+    margin: .5rem;
+    &:hover {
+        background: darken($primary-pink, 10%);
+        color: $white;
+    }
+}
+
 /deep/ tag-input tag {
     padding: .8rem !important;
 }
