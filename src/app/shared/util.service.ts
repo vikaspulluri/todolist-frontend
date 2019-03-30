@@ -1,7 +1,7 @@
 import { Injectable, ModuleWithComponentFactories } from '@angular/core';
 import { config } from '../app.config';
 import { AutoCompleteTag } from './interface';
-import { UsersResponse } from './response.interface';
+import { UsersResponse, ProjectsResponse, SimpleUser } from './response.interface';
 import { AuthService } from '../auth/shared/auth.service';
 import * as moment from 'moment';
 @Injectable()
@@ -78,6 +78,30 @@ export class UtilService {
             return obj;
         });
         return formData;
+    }
+
+    public mapProjectDataToForm(projects: ProjectsResponse['data']) {
+        let formData: AutoCompleteTag[] = projects.map(project => {
+            let obj: AutoCompleteTag = {
+                value: project.projectId,
+                display: project.title
+            };
+            return obj;
+        });
+        return formData;
+    }
+
+    public formatToSimpleUser(data: AutoCompleteTag[]) {
+        const users = data.map(user => {
+            let username = user.display.split(' ');
+            let obj: SimpleUser = {
+                userId: user.value,
+                firstName: username[0],
+                lastName: username[1]
+            };
+            return obj;
+        });
+        return users;
     }
 
     /**

@@ -1,10 +1,14 @@
+<ngx-ui-loader></ngx-ui-loader>
+
 <app-sidebar></app-sidebar>
+
 <aside>
   <div class="headline">
     <h1 *ngIf="mode == 'create'">Create New Issue</h1>
     <h1 *ngIf="mode == 'edit'">Update Issue</h1>
   </div>
   <form [formGroup]="issueForm">
+    <!-- title field -->
     <div class="form-group">
       <label>Title</label>
       <span>
@@ -13,6 +17,9 @@
       </span>
       <input class="form-control" type="text" [formControlName]="'title'" placeholder="title">
     </div>
+    <!-- end title -->
+
+    <!-- issue type -->
     <div class="form-group">
       <label>Issue Type</label>
       <span>
@@ -21,6 +28,9 @@
       </span>
       <input class="form-control" type="text" formControlName="issueType">
     </div>
+    <!-- end issue type -->
+
+    <!-- description -->
     <div class="form-group">
       <label>Description</label>
       <span>
@@ -29,18 +39,24 @@
       </span>
       <textarea [froalaEditor]="textEditorConfig" formControlName="description" title="Description" class="form-control"></textarea>
     </div>
+    <!-- end description -->
+
+    <!-- priority -->
     <div class="form-group">
       <label for="priority">Priority</label>
       <span>
         <fa name="info-circle"></fa>
         <span>Issue Priority</span>
       </span>
-      <select class="form-control" id="priority">
+      <select class="form-control" id="priority" formControlName="priority">
         <option>Medium</option>
         <option>Low</option>
         <option>High</option>
       </select>
     </div>
+    <!-- end priority -->
+
+    <!-- attachment -->
     <div class="form-group">
       <label>Attachment</label>
       <span>
@@ -54,62 +70,114 @@
         <button class="btn remove-btn" (click)="attachmentPreview = ''">Remove</button>
       </div>
     </div>
+    <!-- end attachment -->
+
+    <!-- reporter -->
     <div class="form-group">
       <label>Reporter</label>
       <span>
         <fa name="info-circle"></fa>
-        <span>Issue reporter</span>
+        <span>Reporter of the issue</span>
       </span>
-      <input class="form-control" type="text" name="reporter" value="Vikas Pulluri" disabled>
+      <tag-input
+        formControlName="reporter"
+        name="reporter"
+        [onlyFromAutocomplete]="true"
+        [maxItems]="1"
+        theme="foundation-theme">
+        <tag-input-dropdown [autocompleteItems]="users" [showDropdownIfEmpty]="true" [keepOpen]="false">
+          </tag-input-dropdown>
+      </tag-input>
     </div>
+    <!-- end reporter -->
+
+    <!-- project -->
     <div class="form-group">
       <label>Project</label>
       <span>
         <fa name="info-circle"></fa>
         <span>Choose a project for the issue. Default will be selected if none choosen</span>
       </span>
-      <tag-input formContronName="project" name="project" [placeholder]="'select project'" [onlyFromAutocomplete]="true" [maxItems]="1" theme="foundation-theme">
-        <tag-input-dropdown [autocompleteItems]="projects" [showDropdownIfEmpty]="true">
+      <tag-input 
+        formControlName="project"
+        name="project"
+        [placeholder]="'select project'"
+        [secondaryPlaceholder]="'select project'"
+        [onlyFromAutocomplete]="true"
+        [maxItems]="1"
+        theme="foundation-theme">
+        <tag-input-dropdown [autocompleteItems]="projects" [showDropdownIfEmpty]="true" [keepOpen]="false">
           </tag-input-dropdown>
       </tag-input>
     </div>
+    <!-- end project -->
+
+    <!-- assignee -->
     <div class="form-group">
       <label>Assignee</label>
       <span>
         <fa name="info-circle"></fa>
         <span>Assign the issue to any user. Assigns to reporter, if none choosen</span>
       </span>
-      <tag-input formControlName="user" name="assignee" [placeholder]="'Add assignee'" [onlyFromAutocomplete]="true" [maxItems]="1" theme="foundation-theme">
-        <tag-input-dropdown [autocompleteItems]="users" [showDropdownIfEmpty]="true">
+      <tag-input
+        formControlName="assignee"
+        name="assignee"
+        [placeholder]="'Add assignee'"
+        [secondaryPlaceholder]="'Add assignee'"
+        [onlyFromAutocomplete]="true"
+        [maxItems]="1"
+        theme="foundation-theme">
+        <tag-input-dropdown [autocompleteItems]="users" [showDropdownIfEmpty]="true" [keepOpen]="false">
           </tag-input-dropdown>
       </tag-input>
     </div>
+    <!-- end assignee -->
+
+    <!-- watchers -->
     <div class="form-group">
       <label>Watchers</label>
       <span>
         <fa name="info-circle"></fa>
         <span>Optional, Add watchers to issue whom you want to be notified about updates</span>
       </span>
-      <tag-input formControlName="user" name="watchers" [placeholder]="'Add watcher'" [onlyFromAutocomplete]="true" theme="foundation-theme">
-        <tag-input-dropdown [autocompleteItems]="users" [showDropdownIfEmpty]="true">
+      <tag-input
+      formControlName="watchers"
+      name="watcher"
+      [placeholder]="'Add watcher'"
+      [secondaryPlaceholder]="'Add watcher'"
+      [onlyFromAutocomplete]="true"
+      theme="foundation-theme">
+        <tag-input-dropdown [autocompleteItems]="users" [showDropdownIfEmpty]="true" [keepOpen]="false">
           </tag-input-dropdown>
       </tag-input>
     </div>
+    <!-- end watchers -->
+
+    <!-- labels -->
     <div class="form-group">
       <label>Labels</label>
       <span>
         <fa name="info-circle"></fa>
         <span>Add some lables to your issue</span>
       </span>
-      <tag-input formControlName="user" name="labels" [placeholder]="'Add label'" theme="foundation-theme">
-        <tag-input-dropdown [autocompleteItems]="users">
+      <tag-input
+      formControlName="labels"
+      name="label"
+      [placeholder]="'Add label'"
+      [secondaryPlaceholder]="'Add label'"
+      theme="foundation-theme">
+        <tag-input-dropdown [autocompleteItems]="labels" [keepOpen]="false">
           </tag-input-dropdown>
       </tag-input>
     </div>
+    <!-- end labels -->
+
+    <!-- buttons -->
     <div class="btn-groups">
       <button class="btn submit-btn" (click)="onFormSubmit()">Submit</button>
       <button class="btn submit-btn reset-btn" *ngIf="mode == 'create'">Reset</button>
       <button class="btn submit-btn cancel-btn" *ngIf="mode== 'edit'">Cancel</button>
     </div>
+    <!-- end buttons -->
   </form>
 </aside>

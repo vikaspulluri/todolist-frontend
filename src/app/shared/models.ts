@@ -1,3 +1,5 @@
+import { SimpleUser } from './response.interface';
+
 export interface Project {
     title: string;
     ownerId: string;
@@ -12,4 +14,21 @@ export interface Project {
         lastName: string,
         readOnly?: boolean
     }[];
+}
+
+export interface Issue {
+    issueId?: string;
+    title: string;
+    description: string;
+    priority: string;
+    issueType: string;
+    attachment?: File;
+    project: {
+        projectId: string,
+        title: string
+    };
+    assignee: SimpleUser;
+    reporter: SimpleUser;
+    watchers?: SimpleUser[];
+    labels?: string[];
 }
