@@ -1,7 +1,8 @@
 <app-sidebar></app-sidebar>
 <aside>
   <div class="headline">
-    <h1>Create New Issue</h1>
+    <h1 *ngIf="mode == 'create'">Create New Issue</h1>
+    <h1 *ngIf="mode == 'edit'">Update Issue</h1>
   </div>
   <form [formGroup]="issueForm">
     <div class="form-group">
@@ -14,14 +15,26 @@
     </div>
     <div class="form-group">
       <label>Issue Type</label>
+      <span>
+        <fa name="info-circle"></fa>
+        <span>Type Of Issue. Currently supports only Tasks</span>
+      </span>
       <input class="form-control" type="text" formControlName="issueType">
     </div>
     <div class="form-group">
       <label>Description</label>
-      <textarea rows="4" formControlName="description" title="Description" class="form-control"></textarea>
+      <span>
+        <fa name="info-circle"></fa>
+        <span>Add some descripion about the issue</span>
+      </span>
+      <textarea [froalaEditor]="textEditorConfig" formControlName="description" title="Description" class="form-control"></textarea>
     </div>
     <div class="form-group">
       <label for="priority">Priority</label>
+      <span>
+        <fa name="info-circle"></fa>
+        <span>Issue Priority</span>
+      </span>
       <select class="form-control" id="priority">
         <option>Medium</option>
         <option>Low</option>
@@ -29,8 +42,12 @@
       </select>
     </div>
     <div class="form-group">
-      <label>Attachments</label>
-      <button class="image-picker-btn" type="button" (click)="imagePicker.click()">Add Attachments</button>
+      <label>Attachment</label>
+      <span>
+        <fa name="info-circle"></fa>
+        <span>Add optional attachment. Supports only png, jpeg, jpg</span>
+      </span>
+      <button class="image-picker-btn" type="button" (click)="imagePicker.click()">Add Attachment</button>
       <input type="file" #imagePicker (change)="onImagePicked($event)">
       <div class="image-preview" *ngIf="attachmentPreview !== '' && attachmentPreview">
         <img [src]="attachmentPreview" [alt]="issueForm.value.title">
@@ -39,10 +56,18 @@
     </div>
     <div class="form-group">
       <label>Reporter</label>
+      <span>
+        <fa name="info-circle"></fa>
+        <span>Issue reporter</span>
+      </span>
       <input class="form-control" type="text" name="reporter" value="Vikas Pulluri" disabled>
     </div>
     <div class="form-group">
       <label>Project</label>
+      <span>
+        <fa name="info-circle"></fa>
+        <span>Choose a project for the issue. Default will be selected if none choosen</span>
+      </span>
       <tag-input formContronName="project" name="project" [placeholder]="'select project'" [onlyFromAutocomplete]="true" [maxItems]="1" theme="foundation-theme">
         <tag-input-dropdown [autocompleteItems]="projects" [showDropdownIfEmpty]="true">
           </tag-input-dropdown>
@@ -50,6 +75,10 @@
     </div>
     <div class="form-group">
       <label>Assignee</label>
+      <span>
+        <fa name="info-circle"></fa>
+        <span>Assign the issue to any user. Assigns to reporter, if none choosen</span>
+      </span>
       <tag-input formControlName="user" name="assignee" [placeholder]="'Add assignee'" [onlyFromAutocomplete]="true" [maxItems]="1" theme="foundation-theme">
         <tag-input-dropdown [autocompleteItems]="users" [showDropdownIfEmpty]="true">
           </tag-input-dropdown>
@@ -57,6 +86,10 @@
     </div>
     <div class="form-group">
       <label>Watchers</label>
+      <span>
+        <fa name="info-circle"></fa>
+        <span>Optional, Add watchers to issue whom you want to be notified about updates</span>
+      </span>
       <tag-input formControlName="user" name="watchers" [placeholder]="'Add watcher'" [onlyFromAutocomplete]="true" theme="foundation-theme">
         <tag-input-dropdown [autocompleteItems]="users" [showDropdownIfEmpty]="true">
           </tag-input-dropdown>
@@ -64,11 +97,19 @@
     </div>
     <div class="form-group">
       <label>Labels</label>
+      <span>
+        <fa name="info-circle"></fa>
+        <span>Add some lables to your issue</span>
+      </span>
       <tag-input formControlName="user" name="labels" [placeholder]="'Add label'" theme="foundation-theme">
         <tag-input-dropdown [autocompleteItems]="users">
           </tag-input-dropdown>
       </tag-input>
     </div>
-
+    <div class="btn-groups">
+      <button class="btn submit-btn" (click)="onFormSubmit()">Submit</button>
+      <button class="btn submit-btn reset-btn" *ngIf="mode == 'create'">Reset</button>
+      <button class="btn submit-btn cancel-btn" *ngIf="mode== 'edit'">Cancel</button>
+    </div>
   </form>
 </aside>

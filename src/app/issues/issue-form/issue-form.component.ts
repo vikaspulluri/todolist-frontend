@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-
+import { mimeType } from './mime-type.validator';
+import { textEditorConfig } from '../../shared/libraries.config';
 @Component({
   selector: 'app-issue-form',
   templateUrl: './issue-form.component.html',
@@ -16,6 +17,7 @@ export class IssueFormComponent implements OnInit {
   public user;
   public projects = [{value: 'general', display: 'General'}, {value: 'project-xxx', display: 'Project-1'}];
   public project = [this.projects[0]];
+  public textEditorConfig = textEditorConfig;
   constructor() {
     this.users = [
       {value: 'xxx', display: 'Vikas'},
@@ -29,7 +31,7 @@ export class IssueFormComponent implements OnInit {
       title: new FormControl(null, {validators: [Validators.required, Validators.minLength(3)]}),
       description: new FormControl(null, {validators: [Validators.required]}),
       issueType:  new FormControl({value: 'Task', disabled: true}, {validators: [Validators.required]}),
-      attachment: new FormControl(null),
+      attachment: new FormControl(null, {asyncValidators: [mimeType]}),
       user: new FormControl(null)
     });
   }
@@ -43,6 +45,10 @@ export class IssueFormComponent implements OnInit {
       this.attachmentPreview = reader.result;
     };
     reader.readAsDataURL(file);
+  }
+
+  onFormSubmit() {
+    console.log(this.issueForm);
   }
 
 }

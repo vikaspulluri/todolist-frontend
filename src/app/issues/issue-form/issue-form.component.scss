@@ -25,7 +25,7 @@ aside {
     input[disabled], input[disabled]:active {
         background: $orange;
         color: $white;
-        opacity: .8;
+        opacity: .5;
         cursor: not-allowed;
     }
     .form-group > span {
@@ -81,9 +81,33 @@ input[type='file']{
     background: #ff006aad;
     color: $white;
     margin: .5rem;
+    transition: .3s ease-in-out;
     &:hover {
         background: darken($primary-pink, 10%);
         color: $white;
+    }
+}
+.btn-groups {
+    display: flex;
+    justify-content: center;
+}
+.submit-btn {
+    min-width: 150px;
+    padding: .75rem;
+    background: #28a745;
+    color: $white;
+    transition: .3s ease-in-out;
+    margin: .75rem;
+    &:hover {
+        background: darken(#28a745, 5%);
+    }
+    &.reset-btn, &.cancel-btn {
+        background: lighten(#ffc107, 15%);
+        color: $black;
+        &:hover {
+            background: #ffc107;
+            color: $white;
+        }
     }
 }
 

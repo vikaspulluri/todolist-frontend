@@ -9,9 +9,9 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TagInputModule } from 'ngx-chips'; // tag inputs
 import { AngularFontAwesomeModule } from 'angular-font-awesome'; // font icons
 import { NgxUiLoaderModule } from 'ngx-ui-loader'; // progress bar
-import {NgxPaginationModule} from 'ngx-pagination'; // pagination module
+import { NgxPaginationModule } from 'ngx-pagination'; // pagination module
 import { ToastrModule } from 'ngx-toastr'; // toastr module
-
+import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg'; // rich text editor
 // App feature modules
 import { AuthModule } from './auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
@@ -68,6 +68,8 @@ import { progressBarConfig, toastrConfig } from './shared/libraries.config';
     NgxPaginationModule,
     NgxUiLoaderModule.forRoot(progressBarConfig),
     ToastrModule.forRoot(toastrConfig),
+    FroalaEditorModule.forRoot(),
+    FroalaViewModule.forRoot()
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
               {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},

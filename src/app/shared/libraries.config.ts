@@ -37,3 +37,16 @@ export const toastrConfig = {
     toastClass: 'custom-toast toast',
     positionClass: 'toast-top-center'
 };
+
+export const textEditorConfig = {
+    theme: 'royal',
+    inlineMode: false,
+    // tslint:disable-next-line:max-line-length
+    toolbarButtons: ['undo', 'redo' , '|', 'bold', 'italic', 'underline',
+                        'strikeThrough', 'subscript', 'superscript', 'outdent',
+                        'indent', 'clearFormatting', 'insertTable', 'html',
+                        'emoticons', 'codeBeautifier'
+                    ],
+    toolbarButtonsXS: ['undo', 'redo' , '-', 'bold', 'italic', 'underline', 'emoticons']
+};
+
