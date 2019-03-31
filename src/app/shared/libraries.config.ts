@@ -41,6 +41,7 @@ export const toastrConfig = {
 export const textEditorConfig = {
     theme: 'royal',
     inlineMode: false,
+    placeholder: 'Add Description about the issue',
     // tslint:disable-next-line:max-line-length
     toolbarButtons: ['undo', 'redo' , '|', 'bold', 'italic', 'underline',
                         'strikeThrough', 'subscript', 'superscript', 'outdent',

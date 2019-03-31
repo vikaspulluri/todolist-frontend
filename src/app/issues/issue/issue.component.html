@@ -1,7 +1,7 @@
 <ngx-ui-loader></ngx-ui-loader>
 
 <app-sidebar></app-sidebar>
-<aside class="issue-container">
+<aside class="issue-container" *ngIf="issueDetails && issueDetails.issueId">
   <!-- Basic details wrapper -->
   <div class="basic-details-wrap">
     <div class="inside-wrap">
@@ -86,7 +86,7 @@
   <div class="body-wrap">
     <div class="description-wrap">
       <h4>Description</h4>
-      <p [innerHTML]="issueDetails.description"></p>
+      <p [froalaEditor]="textEditorConfig" [(froalaModel)]="issueDetails.description"></p>
     </div>
     <div class="watchers-wrap">
       <h4>Watchers</h4>

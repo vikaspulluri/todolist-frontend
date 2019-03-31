@@ -9,7 +9,6 @@ const extractFile = require('../middleware/file');
 
 router.post('/create', decodeToken,
                         checkUser,
-                        validateRequest('IC-CI-1', 'title', 'description', 'project', 'priority', 'assignee', 'reporter'),
                         extractFile.single('attachment'),
                         issueController.createIssue);
 
@@ -17,5 +16,10 @@ router.post('/id', decodeToken,
                     checkUser,
                     validateRequest('IC-GIBI-1', 'issueId'),
                     issueController.getIssueById)
+
+router.post('/all', decodeToken,
+                    checkUser,
+                    issueController.constructQueryForIssues,
+                    issueController.getIssues)
 
 module.exports = router;

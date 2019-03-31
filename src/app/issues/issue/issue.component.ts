@@ -6,6 +6,7 @@ import { IssueDetailsResponse } from 'src/app/shared/response.interface';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { ToastrService } from 'ngx-toastr';
 import { Issue } from 'src/app/shared/models';
+import { textEditorConfig } from 'src/app/shared/libraries.config';
 
 @Component({
   selector: 'app-issue',
@@ -18,6 +19,7 @@ export class IssueComponent implements OnInit {
   public user;
   public issueId;
   public issueDetails: Issue;
+  public textEditorConfig = textEditorConfig;
   constructor(private route: ActivatedRoute,
     private router: Router,
     private utilService: UtilService,
@@ -41,18 +43,22 @@ export class IssueComponent implements OnInit {
 
   getIssueById() {
     this.httpService.getIssueById(this.issueId).subscribe((response: IssueDetailsResponse) => {
-      this.issueDetails.issueId = response.data.issueId;
-      this.issueDetails.title = response.data.title;
-      this.issueDetails.assignee = response.data.assignee;
-      this.issueDetails.reporter = response.data.reporter;
-      this.issueDetails.priority = response.data.priority;
-      this.issueDetails.project = response.data.project;
-      this.issueDetails.description = response.data.description;
-      this.issueDetails.watchers = response.data.watchers;
-      this.issueDetails.labels = response.data.labels;
-      this.issueDetails.imageUrl = response.data.imageUrl;
-      this.issueDetails.createdDate = this.utilService.formatDate(response.data.createdDate);
-      this.issueDetails.lastModifiedOn = this.utilService.formatDate(response.data.lastModifiedOn);
+      this.issueDetails = {
+        issueId: response.data.issueId,
+        title: response.data.title,
+        assignee: response.data.assignee,
+        reporter: response.data.reporter,
+        priority: response.data.priority,
+        project: response.data.project,
+        description: response.data.description,
+        watchers: response.data.watchers,
+        labels: response.data.labels,
+        imageUrl: response.data.imageUrl,
+        createdDate: this.utilService.formatDate(response.data.createdDate),
+        lastModifiedOn: this.utilService.formatDate(response.data.lastModifiedOn)
+      };
+      console.log(this.issueDetails.description);
+      this.loaderService.stop();
     }, err => this.router.navigate(['/issues']));
   }
 

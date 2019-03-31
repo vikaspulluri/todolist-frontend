@@ -35,7 +35,6 @@ export class AppHttpService {
         postData.append('title', issue.title);
         postData.append('description', issue.description);
         postData.append('priority', issue.priority);
-        postData.append('issueType', issue.issueType);
         postData.append('project', JSON.stringify(issue.project));
         postData.append('assignee', JSON.stringify(issue.assignee));
         postData.append('reporter', JSON.stringify(issue.reporter));
@@ -53,5 +52,9 @@ export class AppHttpService {
 
     public getIssueById(issueId: string) {
         return this.http.post<IssueDetailsResponse>(`${this.config.apiUrl}/api/issue/id`, {issueId: issueId});
+    }
+
+    public getIssues(filters) {
+        return this.http.post(`${this.config.apiUrl}/api/issue/all`, filters);
     }
 }

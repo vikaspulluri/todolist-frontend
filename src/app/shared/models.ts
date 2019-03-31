@@ -21,7 +21,6 @@ export interface Issue {
     title: string;
     description: string;
     priority: string;
-    issueType: string;
     attachment?: File;
     status?: string;
     createdDate?: string;

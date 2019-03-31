@@ -1,19 +1,17 @@
 export const config = {
     filtersForm: {
         userGroup: [
-            {name: 'All', value: 'all'},
-            {name: 'Assigned To Me', value: 'to-me'},
-            {name: 'Reported By Me', value: 'from-me'}
+            {name: 'All', value: 'all'}
         ],
         issueGroup: [
-            {name: 'All', value: 'all'},
+            {name: 'All', value: null},
             {name: 'Open', value: 'open'},
             {name: 'Todo', value: 'todo'},
             {name: 'In Progress', value: 'in-progress'},
             {name: 'Completed', value: 'done'}
         ],
         priorityGroup: [
-            {name: 'All', value: 'all'},
+            {name: 'All', value: null},
             {name: 'High', value: 'high'},
             {name: 'Medium', value: 'medium'},
             {name: 'Low', value: 'low'}

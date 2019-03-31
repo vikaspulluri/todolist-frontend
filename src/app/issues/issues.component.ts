@@ -25,10 +25,13 @@ export class IssuesComponent implements OnInit {
   public users;
   public projects;
   public currentUserId = this.authService.getUserId();
+  public serverCallsCount = 2; // getProjects, getUsers
+  public completedServerCallsCount = 0;
+  public isinitialPageLoad = true;
 
   filtersForm = new FormGroup({
     userGroup: new FormGroup({
-      user: new FormControl(this.activeUserId)
+      userId: new FormControl(this.activeUserId)
     }),
     issueGroup: new FormGroup({
       issueType: new FormControl(this.activeIssueType$)
@@ -50,11 +53,11 @@ export class IssuesComponent implements OnInit {
               private utilService: UtilService,
               private authService: AuthService) {}
   ngOnInit() {
+    this.loaderService.start();
     this.route.queryParamMap.subscribe(queryParams => {
       this.mapActivatedQueryParams(queryParams);
-      console.log(this.filtersForm.value);
       this.getAllUsers();
-      this.getProjects('', [this.currentUserId]);
+      this.getProjects('', ['*']);
     });
   }
 
@@ -138,36 +141,65 @@ export class IssuesComponent implements OnInit {
   updateUserGroup() {
     this.filtersForm.patchValue({
       userGroup: {
-        user: this.activeUserId
+        userId: this.activeUserId
       }
     });
   }
 
   getAllUsers() {
-    this.loaderService.start();
     this.httpService.getAllUsers().subscribe((response: UsersResponse) => {
+      this.completedServerCallsCount++;
       this.users = this.utilService.mapUserDataToForm(response.data);
-      this.users.push({value: '*', display: 'All'});
+      this.users.push({value: null, display: 'All'});
       this.activeUserId = this.activeUserId || this.currentUserId;
       this.updateUserGroup();
-      this.loaderService.stop();
+      if (this.completedServerCallsCount >= this.serverCallsCount && this.isinitialPageLoad) {
+        this.isinitialPageLoad = false;
+        this.getFilteredIssues();
+        this.loaderService.stop();
+      }
     }, err => this.loaderService.stop());
   }
 
   getProjects(title: string, users: string[]) {
-    this.loaderService.start();
     this.httpService.getProjects({title: title, users: users}).subscribe((response: ProjectsResponse) => {
+      this.completedServerCallsCount++;
       this.projects = this.utilService.mapProjectDataToForm(response.data);
       this.activeProjectId$ = this.activeProjectId$ || this.projects[0].value;
       this.updateProjectGroup();
-      this.loaderService.stop();
+      if (this.completedServerCallsCount >= this.serverCallsCount && this.isinitialPageLoad) {
+        this.isinitialPageLoad = false;
+        this.getFilteredIssues();
+        this.loaderService.stop();
+      }
     }, err => this.loaderService.stop());
   }
 
   getAllLabels() {}
 
+  getFilteredIssues() {
+    let formControls = this.filtersForm.controls;
+    let userGroup = formControls.userGroup;
+    let priorityGroup = formControls.priorityGroup;
+    let issueGroup = formControls.issueGroup;
+    let projectGroup = formControls.projectGroup;
+    let labelGroup = formControls.labelGroup;
+    let filters = {
+      userId: userGroup.get('userId').value,
+      projectId: projectGroup.get('projectId').value,
+      issueType: issueGroup.get('issueType').value,
+      priority: priorityGroup.get('priority').value,
+      label: labelGroup.get('label').value
+    };
+    console.log(filters);
+    this.httpService.getIssues(filters).subscribe(response => {
+      console.log(response);
+    });
+  }
+
   onUpdateFilters() {
     console.log(this.filtersForm.value);
+    this.getFilteredIssues();
   }
 
 

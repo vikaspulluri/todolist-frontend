@@ -14,7 +14,7 @@
                 <div class="inputs-wrap">
                     <div formGroupName="userGroup">
                         <label for="user">User</label>
-                        <select class="form-control" id="user" formControlName="user">
+                        <select class="form-control" id="user" formControlName="userId">
                             <option *ngFor="let user of users" [ngValue]="user.value">{{ user.display }}</option>
                         </select>
                     </div>

@@ -50,7 +50,6 @@ export class IssueFormComponent implements OnInit {
     this.issueForm = new FormGroup({
       title: new FormControl(null, {validators: [Validators.required, Validators.minLength(3)]}),
       description: new FormControl(null, {validators: [Validators.required]}),
-      issueType:  new FormControl({value: 'Task', disabled: true}, {validators: [Validators.required]}),
       attachment: new FormControl(null, {asyncValidators: [mimeType]}),
       priority: new FormControl('Medium', {validators: [Validators.required]}),
       project: new FormControl(null, {validators: [Validators.required]}),
@@ -116,7 +115,6 @@ export class IssueFormComponent implements OnInit {
       title: this.issueForm.value.title,
       description: this.issueForm.value.description,
       priority: this.issueForm.value.priority,
-      issueType: this.issueForm.value.issueType,
       project: {
         projectId: this.issueForm.value.project[0].value,
         title: this.issueForm.value.project[0].display

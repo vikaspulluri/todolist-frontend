@@ -4,13 +4,14 @@ const {ErrorResponseBuilder, SuccessResponseBuilder} = require('../libraries/res
 const { parseJSON } = require('../libraries/parse-json');
 const dateUtility = require('../libraries/date-formatter');
 const logger = require('../libraries/log-message');
+const config = require('../config/config');
 
 const createIssue = (req, res, next) => {
     const url = req.protocol + '://' + req.get('host');
     // since we receive data in formData format, parse the JSON string into objects
-    const project = parseJSON(project);
-    const assignee = parseJSON(assignee);
-    const reporter = parseJSON(reporter);
+    const project = parseJSON(req.body.project) || {projectId: config.defaultProject.id, title: 'Default'};
+    const assignee = parseJSON(req.body.assignee);
+    const reporter = parseJSON(req.body.reporter);
     if (!(project && assignee && reporter)) {
         logger.log({name: 'Invalid format for project, assignee, reporter'}, req, 'IC-CI-1');
         let err = new ErrorResponseBuilder('Invalid format for project, assignee, reporter').status(400).errorCode('IC-CI-1').errorType('DataValidationError').build();
@@ -19,7 +20,6 @@ const createIssue = (req, res, next) => {
     const issue = {
         title: req.body.title,
         description: req.body.description,
-        issueType: req.body.issueType,
         priority: req.body.priority,
         project: project,
         assignee: assignee,
@@ -84,7 +84,54 @@ const getIssueById = (req, res, next) => {
             return res.status(200).send(response);
         })
 }
+
+const constructQueryForIssues = (req, res, next) => {
+    let query = {};
+    $and = [];
+    console.log('inside construct');
+    if (req.body.title && req.body.title !== '' && req.body.title !== null) {
+        $and.push({title: new RegExp(req.body.title, 'gi')}); // get projects that matches the search string
+    }
+    if (req.body.issueType && req.body.issueType !== '' && req.body.issueType !== null) {
+        $and.push({status: req.body.issueType});
+    }
+    if (req.body.label && req.body.label !== '' && req.body.label !== null) {
+        $and.push({$in: {labels: req.body.label}});
+    }
+    if (req.body.priority && req.body.priority !== '' && req.body.priority !== null) {
+        $and.push({priority: req.body.priority});
+    }
+    if (req.body.projectId && req.body.projectId !== '' && req.body.projectId !== null) {
+        if (req.body.projectId === 'default') {
+            req.body.projectId = config.defaultProject.id;
+        }
+        $and.push({"project.projectId": req.body.projectId});
+    }
+    if (req.body.userId && req.body.userId !== '' && req.body.userId !== null) {
+        let or = [{"assignee.userId": req.body.userId},
+                    {"reporter.userId": req.body.userId}];
+        $and.push({$or: or});
+    }
+    query.$and = $and;
+    req.issuesQuery = query;
+    return next();
+}
+
+const getIssues = (req, res, next) => {
+    console.log(req.issuesQuery);
+    Issue.find(req.issuesQuery)
+        .exec()
+        .then(docs => {
+            res.send(docs);
+        })
+        .catch(error => {
+            logger.log(error, req, 'IC-GI-1');
+        })
+}
+
 module.exports = {
     createIssue: createIssue,
-    getIssueById: getIssueById
+    getIssueById: getIssueById,
+    constructQueryForIssues: constructQueryForIssues,
+    getIssues: getIssues
 }

@@ -6,7 +6,6 @@ const issueSchema = mongoose.Schema({
     title: {type: String, required: true, trim: true},
     description: {type: String, required: true, trim: true},
     priority: {type: String, required: true},
-    issueType: {type: String, required: true, default: 'Task'},
     attachment: {type: String, required: false},
     createdDate: {type: Date, default: Date.now, required: true},
     status: {type: String, default: 'backlog', required: true},
