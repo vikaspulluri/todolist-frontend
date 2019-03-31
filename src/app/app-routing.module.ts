@@ -26,7 +26,7 @@ const routes: Routes = [
   {path: 'project-form', component: ProjectFormComponent, canActivate: [AuthGuard]},
   {path: 'overview', component: OverviewComponent},
   {path: 'contact-us', component: ContactUsComponent, canActivate: [AuthGuard]},
-  {path: '', redirectTo: '/dashboard', pathMatch: 'full'}
+  {path: '', redirectTo: '/login', pathMatch: 'full'}
 ];
 
 @NgModule({

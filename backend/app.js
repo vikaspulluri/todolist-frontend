@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
 const appConfig = require('./config/config');
+const path = require('path');
 
 const app = express();
 mongoose.connect(appConfig.connectionString, { autoIndex: false, useNewUrlParser: true })
@@ -18,11 +19,13 @@ mongoose.connect(appConfig.connectionString, { autoIndex: false, useNewUrlParser
 //routes
 const userRoutes = require('./routes/user-routes');
 const projectRoutes = require('./routes/project-routes');
+const issueRoutes = require('./routes/issue-routes');
 
 app.use(helmet());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+app.use("/images", express.static(path.join('images')));
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin','*');
@@ -33,6 +36,7 @@ app.use((req, res, next) => {
 
 app.use('/api/user', userRoutes);
 app.use('/api/project', projectRoutes);
+app.use('/api/issue', issueRoutes);
 
 app.use((err, req, res, next) => {
   let status = err.status || 500;

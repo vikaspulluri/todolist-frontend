@@ -23,6 +23,8 @@ export interface Issue {
     priority: string;
     issueType: string;
     attachment?: File;
+    status?: string;
+    imageUrl?: string; // will come from server response
     project: {
         projectId: string,
         title: string
@@ -31,4 +33,8 @@ export interface Issue {
     reporter: SimpleUser;
     watchers?: SimpleUser[];
     labels?: string[];
+    activity?: {
+        summary: string,
+        dateLog: string
+    }[];
 }

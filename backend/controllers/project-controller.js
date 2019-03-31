@@ -1,7 +1,6 @@
 const Project = require('../models/project-model');
 const User = require('../models/user-model');
 const {ErrorResponseBuilder, SuccessResponseBuilder} = require('../libraries/response-builder');
-const validateRequest = require('../libraries/validate-request');
 const dateUtility = require('../libraries/date-formatter');
 const logger = require('../libraries/log-message');
 const config = require('../config/config');

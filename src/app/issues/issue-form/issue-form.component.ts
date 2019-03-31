@@ -8,6 +8,8 @@ import { UtilService } from 'src/app/shared/util.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { UsersResponse, ProjectsResponse } from 'src/app/shared/response.interface';
 import { Issue } from 'src/app/shared/models';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-issue-form',
   templateUrl: './issue-form.component.html',
@@ -32,7 +34,9 @@ export class IssueFormComponent implements OnInit {
   constructor(private authService: AuthService,
               private httpService: AppHttpService,
               private utilService: UtilService,
-              private loaderService: NgxUiLoaderService) {
+              private loaderService: NgxUiLoaderService,
+              private router: Router,
+              private toastrService: ToastrService) {
   }
 
   ngOnInit() {
@@ -107,7 +111,7 @@ export class IssueFormComponent implements OnInit {
   }
 
   onFormSubmit() {
-    console.log(this.issueForm);
+    this.loaderService.start();
     let issue: Issue = {
       title: this.issueForm.value.title,
       description: this.issueForm.value.description,
@@ -120,16 +124,23 @@ export class IssueFormComponent implements OnInit {
       assignee: this.utilService.formatToSimpleUser(this.issueForm.value.assignee)[0],
       reporter: this.utilService.formatToSimpleUser(this.issueForm.value.reporter)[0]
     };
-    if (this.issueForm.value.attachment) {
-      issue.attachment = this.issueForm.value.attachment;
+    if (this.issueForm.get('attachment').value) {
+      issue.attachment = this.issueForm.get('attachment').value;
     }
     if (this.issueForm.value.labels) {
-      issue.labels = this.issueForm.value.labels;
+      issue.labels = this.issueForm.value.labels.map(label => label.value);
     }
     if (this.issueForm.value.watchers) {
       issue.watchers = this.utilService.formatToSimpleUser(this.issueForm.value.watchers);
     }
-    console.log(issue);
+    this.httpService.createIssue(issue).subscribe(response => {
+      this.loaderService.stop();
+      if (response.data && response.data.issueId) {
+        this.router.navigate(['/issue', response.data.issueId]).then(success => this.toastrService.success(response.message));
+      }
+    }, err => {
+      this.loaderService.stop();
+    });
   }
 
 }

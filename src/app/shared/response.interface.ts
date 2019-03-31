@@ -1,5 +1,5 @@
 import { Response } from './interface';
-import { Project } from './models';
+import { Project, Issue } from './models';
 
 export interface SimpleUser {
     userId: string;
@@ -28,4 +28,8 @@ export interface UserStatsResponse extends Response {
             projectId: string
         }[]
     };
+}
+
+export interface IssueDetailsResponse extends Response {
+    data: Issue;
 }
