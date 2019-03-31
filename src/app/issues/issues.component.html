@@ -1,3 +1,5 @@
+<ngx-ui-loader></ngx-ui-loader>
+
 <app-sidebar></app-sidebar>
 <aside>
     <div class="headline-wrapper">
@@ -13,11 +15,11 @@
                     <div formGroupName="userGroup">
                         <label for="user">User</label>
                         <select class="form-control" id="user" formControlName="user">
-                            <option *ngFor="let user of filtersFormConfig.userGroup" [ngValue]="user.value">{{ user.name }}</option>
+                            <option *ngFor="let user of users" [ngValue]="user.value">{{ user.display }}</option>
                         </select>
                     </div>
                     <div formGroupName="issueGroup">
-                        <label for="issueType">Issue Type</label>
+                        <label for="issueType">Issue Status</label>
                         <select class="form-control" id="issueType" formControlName="issueType">
                             <option *ngFor="let issue of filtersFormConfig.issueGroup" [ngValue]="issue.value">{{ issue.name }}</option>
                         </select>
@@ -31,7 +33,7 @@
                     <div formGroupName="projectGroup">
                         <label for="projectId">Project</label>
                         <select class="form-control" id="projectId" formControlName="projectId">
-                            <option *ngFor="let project of filtersFormConfig.projectGroup" [ngValue]="project.value">{{ project.name }}</option>
+                            <option *ngFor="let project of projects" [ngValue]="project.value">{{ project.display }}</option>
                         </select>
                     </div>
                     <div formGroupName="labelGroup">

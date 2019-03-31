@@ -3,6 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
 
 import { config } from '../app.config';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { AppHttpService } from '../shared/app-http.service';
+import { UsersResponse, ProjectsResponse } from '../shared/response.interface';
+import { UtilService } from '../shared/util.service';
+import { AuthService } from '../auth/shared/auth.service';
 
 @Component({
   selector: 'app-issues',
@@ -12,11 +17,14 @@ import { config } from '../app.config';
 export class IssuesComponent implements OnInit {
 
   public filtersFormConfig = config.filtersForm;
-  public activeUserId = this.filtersFormConfig.userGroup[0].value;
+  public activeUserId;
   public activePriority = this.filtersFormConfig.priorityGroup[0].value;
-  public activeProjectId$ = this.filtersFormConfig.projectGroup[0].value;
+  public activeProjectId$;
   public activeIssueType$ = this.filtersFormConfig.issueGroup[0].value;
   public activeLabel$ = this.filtersFormConfig.labelGroup[0].value;
+  public users;
+  public projects;
+  public currentUserId = this.authService.getUserId();
 
   filtersForm = new FormGroup({
     userGroup: new FormGroup({
@@ -36,15 +44,22 @@ export class IssuesComponent implements OnInit {
     })
   });
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute,
+              private loaderService: NgxUiLoaderService,
+              private httpService: AppHttpService,
+              private utilService: UtilService,
+              private authService: AuthService) {}
   ngOnInit() {
     this.route.queryParamMap.subscribe(queryParams => {
       this.mapActivatedQueryParams(queryParams);
+      console.log(this.filtersForm.value);
+      this.getAllUsers();
+      this.getProjects('', [this.currentUserId]);
     });
   }
 
   mapActivatedQueryParams(queryParams) {
-    if (queryParams.get('projectId')) {
+    if (queryParams.has('projectId')) {
       let projectId = queryParams.get('projectId');
       let index = this.filtersFormConfig.projectGroup.findIndex(item => item.value === projectId);
       if (index && index > -1) {
@@ -52,7 +67,12 @@ export class IssuesComponent implements OnInit {
         this.updateProjectGroup();
       }
     }
-    if (queryParams.get('issueType')) {
+    if (queryParams.has('userId')) {
+      let userId = queryParams.get('userId');
+      this.activeUserId = userId;
+      this.updateUserGroup();
+    }
+    if (queryParams.has('issueType')) {
       let issueType = queryParams.get('issueType');
       let index = this.filtersFormConfig.issueGroup.findIndex(item => item.value === issueType);
       if (index && index > -1) {
@@ -61,7 +81,7 @@ export class IssuesComponent implements OnInit {
       }
     }
 
-    if (queryParams.get('priority')) {
+    if (queryParams.has('priority')) {
       let priority = queryParams.get('priority');
       let index = this.filtersFormConfig.priorityGroup.findIndex(item => item.value === priority);
       if (index && index > -1) {
@@ -69,7 +89,7 @@ export class IssuesComponent implements OnInit {
         this.updatePriorityGroup();
       }
     }
-    if (queryParams.get('label')) {
+    if (queryParams.has('label')) {
       let label = queryParams.get('label');
       let index = this.filtersFormConfig.labelGroup.findIndex(item => item.value === label);
       if (index && index > -1) {
@@ -114,6 +134,37 @@ export class IssuesComponent implements OnInit {
       }
     });
   }
+
+  updateUserGroup() {
+    this.filtersForm.patchValue({
+      userGroup: {
+        user: this.activeUserId
+      }
+    });
+  }
+
+  getAllUsers() {
+    this.loaderService.start();
+    this.httpService.getAllUsers().subscribe((response: UsersResponse) => {
+      this.users = this.utilService.mapUserDataToForm(response.data);
+      this.users.push({value: '*', display: 'All'});
+      this.activeUserId = this.activeUserId || this.currentUserId;
+      this.updateUserGroup();
+      this.loaderService.stop();
+    }, err => this.loaderService.stop());
+  }
+
+  getProjects(title: string, users: string[]) {
+    this.loaderService.start();
+    this.httpService.getProjects({title: title, users: users}).subscribe((response: ProjectsResponse) => {
+      this.projects = this.utilService.mapProjectDataToForm(response.data);
+      this.activeProjectId$ = this.activeProjectId$ || this.projects[0].value;
+      this.updateProjectGroup();
+      this.loaderService.stop();
+    }, err => this.loaderService.stop());
+  }
+
+  getAllLabels() {}
 
   onUpdateFilters() {
     console.log(this.filtersForm.value);

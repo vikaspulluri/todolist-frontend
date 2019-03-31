@@ -19,8 +19,7 @@ export const config = {
             {name: 'Low', value: 'low'}
         ],
         projectGroup: [
-            {name: 'General', value: 'general'},
-            {name: 'Project-1', value: 'project-1'}
+            {name: 'Default', value: 'default'},
         ],
         labelGroup: [
             {name: '--None--', value: null}
