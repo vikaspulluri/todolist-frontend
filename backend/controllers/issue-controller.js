@@ -61,7 +61,7 @@ const getIssueById = (req, res, next) => {
                 let err = new ErrorResponseBuilder('No Issue Found with given Id').status(404).errorCode('IC-CGIBI-1').errorType('DataNotFoundError').build();
                 return next(err);
             }
-            let response = {
+            let data = {
                 issueId: doc._id,
                 title: doc.title,
                 description: doc.description,
@@ -73,11 +73,13 @@ const getIssueById = (req, res, next) => {
                 status: doc.status,
                 imageUrl: doc.attachment,
                 watchers: doc.watchers,
-                labels: doc.labels
+                labels: doc.labels,
+                lastModifiedOn: doc.lastModifiedOn,
+                createdDate: doc.createdDate
             };
             let response = new SuccessResponseBuilder('Issue fetched successfully!!!')
                             .status(200)
-                            .data(response)
+                            .data(data)
                             .build();
             return res.status(200).send(response);
         })

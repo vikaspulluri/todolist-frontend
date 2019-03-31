@@ -24,6 +24,8 @@ export interface Issue {
     issueType: string;
     attachment?: File;
     status?: string;
+    createdDate?: string;
+    lastModifiedOn?: string;
     imageUrl?: string; // will come from server response
     project: {
         projectId: string,

@@ -8,13 +8,13 @@ const issueSchema = mongoose.Schema({
     priority: {type: String, required: true},
     issueType: {type: String, required: true, default: 'Task'},
     attachment: {type: String, required: false},
-    createdDate: {type: Date, default: Date.now, required: false},
+    createdDate: {type: Date, default: Date.now, required: true},
     status: {type: String, default: 'backlog', required: true},
     project: {
         projectId: {type: String, required: true},
         title: {type: String, required: true}
     },
-    lastModifiedOn: {type: Date, required: false},
+    lastModifiedOn: {type: Date, required: true, default: Date.now},
     watchers: [{
       userId: {type:String, required: true},
       firstName: {type: String, required: true},
