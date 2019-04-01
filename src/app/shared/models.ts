@@ -1,4 +1,5 @@
 import { SimpleUser } from './response.interface';
+import { AutoCompleteTag } from './interface';
 
 export interface Project {
     title: string;
@@ -33,6 +34,7 @@ export interface Issue {
     assignee: SimpleUser;
     reporter: SimpleUser;
     watchers?: SimpleUser[];
+    formWatchers?: AutoCompleteTag[]; // when rendering watchers in form, it is required
     labels?: string[];
     activity?: {
         summary: string,

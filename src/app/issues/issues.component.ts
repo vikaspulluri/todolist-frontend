@@ -5,7 +5,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { config } from '../app.config';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { AppHttpService } from '../shared/app-http.service';
-import { UsersResponse, ProjectsResponse } from '../shared/response.interface';
+import { UsersResponse, ProjectsResponse, FilteredIssuesResponse } from '../shared/response.interface';
 import { UtilService } from '../shared/util.service';
 import { AuthService } from '../auth/shared/auth.service';
 
@@ -25,9 +25,14 @@ export class IssuesComponent implements OnInit {
   public users;
   public projects;
   public currentUserId = this.authService.getUserId();
-  public serverCallsCount = 2; // getProjects, getUsers
+  public serverCallsCount = 3; // getProjects, getUsers, getLabels
   public completedServerCallsCount = 0;
   public isinitialPageLoad = true;
+  public issues = [];
+  public labels = [];
+  private currentPage = config.customPagination.currentPage;
+  private itemsPerPage = config.customPagination.itemsPerPage;
+  private itemsPerPageOptions = config.customPagination.itemsPerPageOptions;
 
   filtersForm = new FormGroup({
     userGroup: new FormGroup({
@@ -58,6 +63,7 @@ export class IssuesComponent implements OnInit {
       this.mapActivatedQueryParams(queryParams);
       this.getAllUsers();
       this.getProjects('', ['*']);
+      this.getAllLabels();
     });
   }
 
@@ -165,6 +171,7 @@ export class IssuesComponent implements OnInit {
     this.httpService.getProjects({title: title, users: users}).subscribe((response: ProjectsResponse) => {
       this.completedServerCallsCount++;
       this.projects = this.utilService.mapProjectDataToForm(response.data);
+      this.projects.push({display: 'All', value: null});
       this.activeProjectId$ = this.activeProjectId$ || this.projects[0].value;
       this.updateProjectGroup();
       if (this.completedServerCallsCount >= this.serverCallsCount && this.isinitialPageLoad) {
@@ -175,9 +182,27 @@ export class IssuesComponent implements OnInit {
     }, err => this.loaderService.stop());
   }
 
-  getAllLabels() {}
+  getAllLabels() {
+    this.httpService.getAllLabels().subscribe((response: {message: string, error: boolean, data: string[]}) => {
+      this.completedServerCallsCount++;
+      this.labels = response.data.map(label => {
+        let obj = {
+          name: label,
+          value: label
+        };
+        return obj;
+      });
+      this.labels.unshift(this.filtersFormConfig.labelGroup[0]);
+      if (this.completedServerCallsCount >= this.serverCallsCount && this.isinitialPageLoad) {
+        this.isinitialPageLoad = false;
+        this.getFilteredIssues();
+        this.loaderService.stop();
+      }
+    }, err => this.loaderService.stop());
+  }
 
   getFilteredIssues() {
+    this.loaderService.start();
     let formControls = this.filtersForm.controls;
     let userGroup = formControls.userGroup;
     let priorityGroup = formControls.priorityGroup;
@@ -191,10 +216,13 @@ export class IssuesComponent implements OnInit {
       priority: priorityGroup.get('priority').value,
       label: labelGroup.get('label').value
     };
-    console.log(filters);
-    this.httpService.getIssues(filters).subscribe(response => {
-      console.log(response);
-    });
+    this.httpService.getIssues(filters).subscribe((response: FilteredIssuesResponse) => {
+      this.issues = response.data.map(issue => {
+        issue.createdDate = this.utilService.formatDate(issue.createdDate);
+        return issue;
+      });
+      this.loaderService.stop();
+    }, err => this.loaderService.stop());
   }
 
   onUpdateFilters() {

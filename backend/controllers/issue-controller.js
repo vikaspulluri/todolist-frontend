@@ -66,7 +66,6 @@ const getIssueById = (req, res, next) => {
                 title: doc.title,
                 description: doc.description,
                 priority: doc.priority,
-                issueType: doc.issueType,
                 assignee: doc.assignee,
                 reporter: doc.reporter,
                 project: doc.project,
@@ -83,12 +82,16 @@ const getIssueById = (req, res, next) => {
                             .build();
             return res.status(200).send(response);
         })
+        .catch(error => {
+            logger.log(error, req, 'IC-GIBI-2');
+            let err = new ErrorResponseBuilder().status(500).errorCode('IC-GIBI-2').errorType('UnknownError').build();
+            return next(err);
+        })
 }
 
 const constructQueryForIssues = (req, res, next) => {
     let query = {};
     $and = [];
-    console.log('inside construct');
     if (req.body.title && req.body.title !== '' && req.body.title !== null) {
         $and.push({title: new RegExp(req.body.title, 'gi')}); // get projects that matches the search string
     }
@@ -112,20 +115,66 @@ const constructQueryForIssues = (req, res, next) => {
                     {"reporter.userId": req.body.userId}];
         $and.push({$or: or});
     }
-    query.$and = $and;
+    if ($and && $and.length > 0) {
+        query.$and = $and;
+    } else {
+        query = {}; // no filters
+    }
     req.issuesQuery = query;
     return next();
 }
 
 const getIssues = (req, res, next) => {
-    console.log(req.issuesQuery);
     Issue.find(req.issuesQuery)
         .exec()
         .then(docs => {
-            res.send(docs);
+            let jsonResponse;
+            if (docs && docs.length === 0) {
+                jsonResponse = docs;
+            } else {
+                jsonResponse = docs.map(doc => {
+                    let obj = {};
+                    obj.issueId = doc._id;
+                    obj.title = doc.title;
+                    obj.project = doc.project;
+                    obj.priority = doc.priority;
+                    obj.status = doc.status;
+                    obj.createdDate = doc.createdDate;
+                    obj.assignee = doc.assignee;
+                    obj.reporter = doc.reporter;
+                    return obj;
+                });
+            }
+            let response = new SuccessResponseBuilder('Issues fetched successfully!!!')
+                                .status(200)
+                                .data(jsonResponse)
+                                .build();
+            return res.status(200).send(response);
         })
         .catch(error => {
             logger.log(error, req, 'IC-GI-1');
+            let err = new ErrorResponseBuilder().status(500).errorCode('IC-GI-2').errorType('UnknownError').build();
+            return next(err);
+        })
+}
+
+const getAvailableLabels = (req, res, next) => {
+    Issue.find({}, {labels: 1})
+        .exec()
+        .then(docs => {
+            let labels = docs.map(doc => doc.labels).reduce((acc, cur) => acc.concat(cur), []);
+            labels = Array.from(new Set(labels));
+            // labels = labels.flatMap(label => label); // flatMap has no support here
+            let response = new SuccessResponseBuilder('Labels fetched successfully!!!')
+                            .status(200)
+                            .data(labels)
+                            .build();
+            return res.status(200).send(response);
+        })
+        .catch(error => {
+            logger.log(error, req, 'IC-GAL-1');
+            let err = new ErrorResponseBuilder().status(500).errorCode('IC-GAL-1').errorType('UnknownError').build();
+            return next(err);
         })
 }
 
@@ -133,5 +182,6 @@ module.exports = {
     createIssue: createIssue,
     getIssueById: getIssueById,
     constructQueryForIssues: constructQueryForIssues,
-    getIssues: getIssues
+    getIssues: getIssues,
+    getAvailableLabels: getAvailableLabels
 }

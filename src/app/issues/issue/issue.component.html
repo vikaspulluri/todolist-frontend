@@ -64,7 +64,7 @@
           <span>Pending Since: </span> <span>3 Days</span>
         </div>
         <div>
-          <span>Project: </span> <div><a [routerLink]="['/project', issueDetails.project.projectId]" title="{{issueDetails.project.title}}">
+          <span>Project: </span> <div class="d-inline"><a [routerLink]="['/project', issueDetails.project.projectId]" title="{{issueDetails.project.title}}">
             <span><fa name="free-code-camp"></fa></span>
             <span>{{issueDetails.project.title}}</span>
           </a></div>
@@ -72,7 +72,10 @@
         <div>
           <span>Labels:</span>
           <span>
-            <tag-input [ngModel]="user" [placeholder]="'Add label'" theme="foundation-theme">
+            <tag-input [ngModel]="issueDetails.labels"
+                       [placeholder]="'Add label'"
+                       [secondaryPlaceholder]="'Add label'"
+                       theme="foundation-theme">
               <tag-input-dropdown [autocompleteItems]="users">
                 </tag-input-dropdown>
             </tag-input>
@@ -91,7 +94,10 @@
     <div class="watchers-wrap">
       <h4>Watchers</h4>
       <div class="watchers-box">
-          <tag-input [ngModel]="user" [placeholder]="'Add a watcher...'" theme="foundation-theme">
+          <tag-input [ngModel]="issueDetails.formWatchers"
+                     [placeholder]="'Add a watcher...'"
+                     [secondaryPlaceholder]="'Add a watcher'"
+                     theme="foundation-theme">
               <tag-input-dropdown [autocompleteItems]="users" [showDropdownIfEmpty]="true">
                 </tag-input-dropdown>
           </tag-input>

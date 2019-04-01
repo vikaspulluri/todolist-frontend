@@ -7,6 +7,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { ToastrService } from 'ngx-toastr';
 import { Issue } from 'src/app/shared/models';
 import { textEditorConfig } from 'src/app/shared/libraries.config';
+import { AuthService } from 'src/app/auth/shared/auth.service';
 
 @Component({
   selector: 'app-issue',
@@ -20,12 +21,14 @@ export class IssueComponent implements OnInit {
   public issueId;
   public issueDetails: Issue;
   public textEditorConfig = textEditorConfig;
+  public currentUserId = this.authService.getUserId();
   constructor(private route: ActivatedRoute,
     private router: Router,
     private utilService: UtilService,
     private httpService: AppHttpService,
     private loaderService: NgxUiLoaderService,
-    private toastrService: ToastrService) {
+    private toastrService: ToastrService,
+    private authService: AuthService) {
   }
 
   ngOnInit() {
@@ -48,18 +51,38 @@ export class IssueComponent implements OnInit {
         title: response.data.title,
         assignee: response.data.assignee,
         reporter: response.data.reporter,
+        status: response.data.status,
         priority: response.data.priority,
         project: response.data.project,
         description: response.data.description,
-        watchers: response.data.watchers,
+        formWatchers: this.utilService.mapUserDataToForm(response.data.watchers),
         labels: response.data.labels,
         imageUrl: response.data.imageUrl,
         createdDate: this.utilService.formatDate(response.data.createdDate),
         lastModifiedOn: this.utilService.formatDate(response.data.lastModifiedOn)
       };
-      console.log(this.issueDetails.description);
+      this.updatePrivilieges();
       this.loaderService.stop();
     }, err => this.router.navigate(['/issues']));
+  }
+
+  updatePrivilieges() {
+    if (!this.hasWriteAccess()) {
+      this.textEditorConfig.contenteditable = false;
+      this.textEditorConfig.events = {
+        'froalaEditor.initialized': function(e, editor) {
+          editor.edit.off();
+        }
+      };
+    }
+  }
+
+  hasWriteAccess() {
+    if (this.issueDetails && this.issueDetails.assignee && this.issueDetails.reporter) {
+      // tslint:disable-next-line:max-line-length
+      return true ? (this.currentUserId === this.issueDetails.assignee.userId || this.currentUserId === this.issueDetails.reporter.userId) : false;
+    }
+    return false;
   }
 
 }

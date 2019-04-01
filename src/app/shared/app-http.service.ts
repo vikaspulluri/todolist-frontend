@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { UsersResponse, ProjectResponse, UserStatsResponse, ProjectsResponse, IssueDetailsResponse } from './response.interface';
+import { UsersResponse,
+        ProjectResponse,
+        UserStatsResponse,
+        ProjectsResponse, IssueDetailsResponse,
+        FilteredIssuesResponse } from './response.interface';
 import { Project, Issue } from './models';
-import { Response } from './interface';
 
 @Injectable({providedIn: 'root'})
 export class AppHttpService {
@@ -55,6 +58,10 @@ export class AppHttpService {
     }
 
     public getIssues(filters) {
-        return this.http.post(`${this.config.apiUrl}/api/issue/all`, filters);
+        return this.http.post<FilteredIssuesResponse>(`${this.config.apiUrl}/api/issue/all`, filters);
+    }
+
+    public getAllLabels() {
+        return this.http.get<{message: string, error: boolean, data: string[]}>(`${this.config.apiUrl}/api/issue/labels`);
     }
 }

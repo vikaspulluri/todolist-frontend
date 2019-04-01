@@ -10,6 +10,8 @@ const extractFile = require('../middleware/file');
 router.post('/create', decodeToken,
                         checkUser,
                         extractFile.single('attachment'),
+                        validateRequest('IC-CI', 'title', 'description', 'assignee',
+                                        'reporter', 'priority'),
                         issueController.createIssue);
 
 router.post('/id', decodeToken,
@@ -21,5 +23,7 @@ router.post('/all', decodeToken,
                     checkUser,
                     issueController.constructQueryForIssues,
                     issueController.getIssues)
+
+router.get('/labels', decodeToken, checkUser, issueController.getAvailableLabels);
 
 module.exports = router;

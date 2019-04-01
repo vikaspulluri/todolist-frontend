@@ -33,3 +33,7 @@ export interface UserStatsResponse extends Response {
 export interface IssueDetailsResponse extends Response {
     data: Issue;
 }
+
+export interface FilteredIssuesResponse extends Response {
+    data: Issue[];
+}

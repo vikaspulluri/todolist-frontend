@@ -5,9 +5,9 @@ export const config = {
         ],
         issueGroup: [
             {name: 'All', value: null},
-            {name: 'Open', value: 'open'},
-            {name: 'Todo', value: 'todo'},
+            {name: 'Backlog', value: 'backlog'},
             {name: 'In Progress', value: 'in-progress'},
+            {name: 'In QA', value: 'in-qa'},
             {name: 'Completed', value: 'done'}
         ],
         priorityGroup: [

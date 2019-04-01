@@ -48,6 +48,8 @@ export const textEditorConfig = {
                         'indent', 'clearFormatting', 'insertTable', 'html',
                         'emoticons', 'codeBeautifier'
                     ],
-    toolbarButtonsXS: ['undo', 'redo' , '-', 'bold', 'italic', 'underline', 'emoticons']
+    toolbarButtonsXS: ['undo', 'redo' , '-', 'bold', 'italic', 'underline', 'emoticons'],
+    contenteditable: true,
+    events: {}
 };
 

@@ -19,7 +19,7 @@
                         </select>
                     </div>
                     <div formGroupName="issueGroup">
-                        <label for="issueType">Issue Status</label>
+                        <label for="issueType">Status</label>
                         <select class="form-control" id="issueType" formControlName="issueType">
                             <option *ngFor="let issue of filtersFormConfig.issueGroup" [ngValue]="issue.value">{{ issue.name }}</option>
                         </select>
@@ -39,7 +39,7 @@
                     <div formGroupName="labelGroup">
                         <label for="label">Label</label>
                         <select class="form-control" id="label" formControlName="label">
-                            <option *ngFor="let label of filtersFormConfig.labelGroup" [ngValue]="label.value">{{ label.name }}</option>
+                            <option *ngFor="let label of labels" [ngValue]="label.value">{{ label.name }}</option>
                         </select>
                     </div>
                 </div>
@@ -47,47 +47,50 @@
             </form>
         </div>
     </div>
-    <div class="results-wrap">
-        <h6>5 Results Found</h6>
+    <div class="results-wrap" *ngIf="issues">
+        <h6>{{ issues.length }} Results Found</h6>
         <table class="table">
             <thead>
                 <tr class="table-primary">
                 <th scope="col">Title</th>
                 <th scope="col">Key</th>
-                <th scope="col">Priority</th>
+                <th scope="col">Reporter</th>
+                <th scope="col">Assignee</th>
                 <th scope="col">Created On</th>
                 </tr>
             </thead>
             <tbody>
-                <tr class="table-light">
+                <tr class="table-light" *ngFor="let issue of issues | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }">
                     <th scope="row">
-                        <a [routerLink]="['/issue/issue-1']" title="UI Development">
-                            <span><fa name="bolt"></fa></span> UI Development</a>
+                        <a [routerLink]="['/issue', issue.issueId]" title="{{ issue.title }}">
+                            <span><fa name="bolt"></fa></span> {{ issue.title }}</a>
                     </th>
                     <td>
-                        <a [routerLink]="['/issue/issue-1']" title="UI Development">
-                            <span><fa name="bolt"></fa></span> issue-1</a>
+                        <a [routerLink]="['/issue', issue.issueId]" title="{{ issue.title }}">
+                            <span><fa name="bolt"></fa></span> {{ issue.issueId }}</a>
                     </td>
-                    <td>Medium</td>
                     <td>
-                        Jan 31, 5:40 PM
+                        <a [routerLink]="['/statistics', issue.reporter.userId]" title="{{ issue.reporter.firstName }}">
+                            <span><fa name="bolt"></fa></span> {{ issue.reporter.firstName }}</a>
                     </td>
-                </tr>
-                <tr class="table-light">
-                    <th scope="row">
-                        <a [routerLink]="['/issue/issue-2']" title="Backend Development">
-                            <span><fa name="bolt"></fa></span> Backend Development</a>
-                    </th>
                     <td>
-                        <a [routerLink]="['/issue/issue-2']" title="Backend Development">
-                            <span><fa name="bolt"></fa></span> issue-2</a>
+                        <a [routerLink]="['/statistics', issue.assignee.userId]" title="{{ issue.assignee.firstName }}">
+                            <span><fa name="bolt"></fa></span> {{ issue.assignee.firstName }}</a>
                     </td>
-                    <td>Medium</td>
                     <td>
-                        Jan 31, 5:40 PM
+                        {{ issue.createdDate }}
                     </td>
                 </tr>
             </tbody>
         </table>
+        <div class="custom-pagination-controls">
+            <pagination-controls class="custom-pagination" (pageChange)="currentPage = $event"></pagination-controls>
+            <div class="custom-select-form">
+              <label>Records Per Page</label>
+              <select class="pagination-select" [(ngModel)]="itemsPerPage">
+                <option *ngFor="let option of itemsPerPageOptions" [value]="option">{{ option }}</option>
+              </select>
+            </div>
+        </div>
     </div>
 </aside>
