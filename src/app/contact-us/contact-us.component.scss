@@ -37,12 +37,15 @@ aside {
         }
         .action-btn {
             padding: .75rem;
-            min-width: 80px;
-            background: $primary-pink;
-            color: $white;
+            min-width: 50%;
+            background: transparent;
+            color: $primary-pink;
             font-size: 1.1rem;
+            border: 1px solid $primary-pink;
+            transition: .3s all ease-in-out;
             &:hover {
                 background: darken($primary-pink, 5%);
+                color: $white;
             }
         }
     } 

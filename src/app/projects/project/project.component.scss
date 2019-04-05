@@ -93,6 +93,9 @@ aside {
        &.todo {
         @include addGradient($primary-red, $secondary-red);
        }
+       &.in-qa {
+        @include addGradient($orange, lighten($orange, 15%));
+       }
 
        .head {
            padding: 1rem;

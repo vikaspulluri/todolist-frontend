@@ -24,6 +24,11 @@ router.post('/all', decodeToken,
                     issueController.constructQueryForIssues,
                     issueController.getIssues)
 
+router.post('/stats', decodeToken,
+                        checkUser,
+                        issueController.constructQueryForIssues,
+                        issueController.getStatistics)
+
 router.get('/labels', decodeToken, checkUser, issueController.getAvailableLabels);
 
 module.exports = router;

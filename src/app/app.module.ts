@@ -12,6 +12,8 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader'; // progress bar
 import { NgxPaginationModule } from 'ngx-pagination'; // pagination module
 import { ToastrModule } from 'ngx-toastr'; // toastr module
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg'; // rich text editor
+import { NgxGalleryModule } from 'ngx-gallery'; // attachment gallery in issue details page
+
 // App feature modules
 import { AuthModule } from './auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
@@ -69,7 +71,8 @@ import { progressBarConfig, toastrConfig } from './shared/libraries.config';
     NgxUiLoaderModule.forRoot(progressBarConfig),
     ToastrModule.forRoot(toastrConfig),
     FroalaEditorModule.forRoot(),
-    FroalaViewModule.forRoot()
+    FroalaViewModule.forRoot(),
+    NgxGalleryModule
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
               {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},

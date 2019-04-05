@@ -26,53 +26,52 @@
                     <h2>Dashboard</h2>
                     <p>All your open issues</p>
                 </div>
-                <table class="table">
-                    <thead>
-                        <tr class="table-primary">
-                        <th scope="col">Title</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Priority</th>
-                        <th scope="col">Reporter</th>
-                        <th scope="col">Created On</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="table-light">
-                            <th scope="row">
-                                <a [routerLink]="['/issue/issue-1']" title="UI Development">
-                                    <span><fa name="bolt"></fa></span> UI Development</a>
-                            </th>
-                            <td>
-                                In Progress
-                            </td>
-                            <td>Medium</td>
-                            <td>
-                                <a [routerLink]="['/statistics/vikas-pulluri']" title="Vikas Pulluri">
-                                    <span><fa name="user"></fa></span> Vikas Pulluri</a>
-                            </td>
-                            <td>
-                                Jan 31, 5:40 PM
-                            </td>
-                        </tr>
-                        <tr class="table-light">
-                            <th scope="row">
-                                <a [routerLink]="['/issue/issue-1']" title="Backend Development">
-                                    <span><fa name="bolt"></fa></span> Backend Development</a>
-                            </th>
-                            <td>
-                                In Progress
-                            </td>
-                            <td>Medium</td>
-                            <td>
-                                <a [routerLink]="['/statistics/vikas-pulluri']" title="Vikas Pulluri">
-                                    <span><fa name="user"></fa></span> Vikas Pulluri</a>
-                            </td>
-                            <td>
-                                Jan 31, 5:40 PM
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="results-wrap" *ngIf="issues">
+                    <h6>{{ issues.length }} Results Found</h6>
+                    <table class="table">
+                        <thead>
+                            <tr class="table-primary">
+                            <th scope="col">Title</th>
+                            <th scope="col">Key</th>
+                            <th scope="col">Reporter</th>
+                            <th scope="col">Assignee</th>
+                            <th scope="col">Created On</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="table-light" *ngFor="let issue of issues | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }">
+                                <th scope="row">
+                                    <a [routerLink]="['/issue', issue.issueId]" title="{{ issue.title }}">
+                                        <span><fa name="bolt"></fa></span> {{ issue.title }}</a>
+                                </th>
+                                <td>
+                                    <a [routerLink]="['/issue', issue.issueId]" title="{{ issue.title }}">
+                                        <span><fa name="bolt"></fa></span> {{ issue.issueId }}</a>
+                                </td>
+                                <td>
+                                    <a [routerLink]="['/statistics', issue.reporter.userId]" title="{{ issue.reporter.firstName }}">
+                                        <span><fa name="bolt"></fa></span> {{ issue.reporter.firstName }}</a>
+                                </td>
+                                <td>
+                                    <a [routerLink]="['/statistics', issue.assignee.userId]" title="{{ issue.assignee.firstName }}">
+                                        <span><fa name="bolt"></fa></span> {{ issue.assignee.firstName }}</a>
+                                </td>
+                                <td>
+                                    {{ issue.createdDate }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="custom-pagination-controls">
+                        <pagination-controls class="custom-pagination" (pageChange)="currentPage = $event"></pagination-controls>
+                        <div class="custom-select-form">
+                          <label>Records Per Page</label>
+                          <select class="pagination-select" [(ngModel)]="itemsPerPage">
+                            <option *ngFor="let option of itemsPerPageOptions" [value]="option">{{ option }}</option>
+                          </select>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -3,6 +3,10 @@ import { UtilService } from '../shared/util.service';
 import { SubscriptionService } from '../shared/subscription.service';
 import { AuthService } from '../auth/shared/auth.service';
 import { fadeOut } from '../shared/animations';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { AppHttpService } from '../shared/app-http.service';
+import { FilteredIssuesResponse } from '../shared/response.interface';
+import { config } from '../app.config';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,9 +23,15 @@ export class DashboardComponent implements OnInit {
   public userFirstName: string;
   public userId: string;
   public isRecommendationsPresent = true;
+  public issues = [];
+  private currentPage = config.customPagination.currentPage;
+  private itemsPerPage = config.customPagination.itemsPerPage;
+  private itemsPerPageOptions = config.customPagination.itemsPerPageOptions;
   constructor(private utilService: UtilService,
     private subService: SubscriptionService,
-    private authService: AuthService) {
+    private authService: AuthService,
+    private loaderService: NgxUiLoaderService,
+    private httpService: AppHttpService) {
     this.greeting = this.utilService.getGreeting();
   }
 
@@ -30,10 +40,26 @@ export class DashboardComponent implements OnInit {
     this.userFirstName = this.authService.getUserFirstName();
     this.userId = this.authService.getUserId();
     this.setRecommendations();
+    this.getFilteredIssues();
   }
 
   setRecommendations() {
     this.isRecommendationsPresent = this.subService.getIsRecommendationsPresent();
+  }
+
+  getFilteredIssues() {
+    this.loaderService.start();
+    let filters = {
+      userId: this.userId,
+      status: ['backlog', 'progress', 'qa']
+    };
+    this.httpService.getIssues(filters).subscribe((response: FilteredIssuesResponse) => {
+      this.issues = response.data.map(issue => {
+        issue.createdDate = this.utilService.formatDate(issue.createdDate, 'dateOnly');
+        return issue;
+      });
+      this.loaderService.stop();
+    }, err => this.loaderService.stop());
   }
 
   onCancelRecommendations() {

@@ -18,7 +18,7 @@ export interface ProjectsResponse extends Response {
     data: Project[];
 }
 
-export interface UserStatsResponse extends Response {
+export interface ContribProjects extends Response {
     data: {
         userId: string,
         firstName: string,
@@ -36,4 +36,17 @@ export interface IssueDetailsResponse extends Response {
 
 export interface FilteredIssuesResponse extends Response {
     data: Issue[];
+}
+
+export interface IssueStatsResponse extends Response {
+    data: {
+        totalIssues: number,
+        issues: {
+            backlog?: number,
+            // tslint:disable-next-line:no-unused-expression
+            qa?: number,
+            done?: number,
+            progress?: number
+        }
+    };
 }

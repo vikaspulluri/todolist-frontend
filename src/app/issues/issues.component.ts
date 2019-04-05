@@ -8,6 +8,7 @@ import { AppHttpService } from '../shared/app-http.service';
 import { UsersResponse, ProjectsResponse, FilteredIssuesResponse } from '../shared/response.interface';
 import { UtilService } from '../shared/util.service';
 import { AuthService } from '../auth/shared/auth.service';
+import { format } from 'url';
 
 @Component({
   selector: 'app-issues',
@@ -70,11 +71,8 @@ export class IssuesComponent implements OnInit {
   mapActivatedQueryParams(queryParams) {
     if (queryParams.has('projectId')) {
       let projectId = queryParams.get('projectId');
-      let index = this.filtersFormConfig.projectGroup.findIndex(item => item.value === projectId);
-      if (index && index > -1) {
-        this.activeProjectId$ = this.filtersFormConfig.projectGroup[index].value;
-        this.updateProjectGroup();
-      }
+      this.activeProjectId$ = projectId;
+      this.updateProjectGroup();
     }
     if (queryParams.has('userId')) {
       let userId = queryParams.get('userId');
@@ -156,7 +154,7 @@ export class IssuesComponent implements OnInit {
     this.httpService.getAllUsers().subscribe((response: UsersResponse) => {
       this.completedServerCallsCount++;
       this.users = this.utilService.mapUserDataToForm(response.data);
-      this.users.push({value: null, display: 'All'});
+      this.users.push(this.filtersFormConfig.userGroup[0]);
       this.activeUserId = this.activeUserId || this.currentUserId;
       this.updateUserGroup();
       if (this.completedServerCallsCount >= this.serverCallsCount && this.isinitialPageLoad) {
@@ -170,8 +168,8 @@ export class IssuesComponent implements OnInit {
   getProjects(title: string, users: string[]) {
     this.httpService.getProjects({title: title, users: users}).subscribe((response: ProjectsResponse) => {
       this.completedServerCallsCount++;
-      this.projects = this.utilService.mapProjectDataToForm(response.data);
-      this.projects.push({display: 'All', value: null});
+      let formattedProjects = this.utilService.mapProjectDataToForm(response.data);
+      this.projects = [...this.filtersFormConfig.projectGroup, ...formattedProjects];
       this.activeProjectId$ = this.activeProjectId$ || this.projects[0].value;
       this.updateProjectGroup();
       if (this.completedServerCallsCount >= this.serverCallsCount && this.isinitialPageLoad) {
@@ -218,7 +216,7 @@ export class IssuesComponent implements OnInit {
     };
     this.httpService.getIssues(filters).subscribe((response: FilteredIssuesResponse) => {
       this.issues = response.data.map(issue => {
-        issue.createdDate = this.utilService.formatDate(issue.createdDate);
+        issue.createdDate = this.utilService.formatDate(issue.createdDate, 'dateOnly');
         return issue;
       });
       this.loaderService.stop();
@@ -226,7 +224,6 @@ export class IssuesComponent implements OnInit {
   }
 
   onUpdateFilters() {
-    console.log(this.filtersForm.value);
     this.getFilteredIssues();
   }
 

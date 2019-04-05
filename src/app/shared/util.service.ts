@@ -151,9 +151,15 @@ export class UtilService {
      * @param isoDate Date String in ISO format
      * @returns String - 27th Mar 19, 10:57 pm
      */
-    public formatDate(isoDate: string) {
+    public formatDate(isoDate: string, format?: string) {
         let date = new Date(isoDate);
-        return moment(date).format('Do MMM YY, h:mm a');
+        let dateFormat = 'Do MMM YY, h:mm a';
+        if (format && format === 'dateOnly') {
+            dateFormat = 'Do MMM YY';
+        } else if (format && format === 'timeOnly') {
+            dateFormat = 'h:mm a';
+        }
+        return moment(date).format(dateFormat);
     }
 
 }

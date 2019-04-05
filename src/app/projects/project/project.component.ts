@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UtilService } from 'src/app/shared/util.service';
 import { AppHttpService } from 'src/app/shared/app-http.service';
-import { UsersResponse, ProjectResponse } from 'src/app/shared/response.interface';
+import { UsersResponse, ProjectResponse, IssueStatsResponse } from 'src/app/shared/response.interface';
 import { ToastrService } from 'ngx-toastr';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Project } from 'src/app/shared/models';
@@ -20,6 +20,7 @@ export class ProjectComponent implements OnInit {
   public projectId$;
   public projectShortName$;
   private activeProject: Project;
+  public issueStats: {totalIssues: number, qa: number, progress: number, done: number, backlog: number};
   private currentUserId = this.authService.getUserId();
   private isOutSider = false;
   constructor(private route: ActivatedRoute,
@@ -38,6 +39,7 @@ export class ProjectComponent implements OnInit {
       // need to get project details from id
       this.projectId$ = params.get('id');
       this.getProject(this.projectId$);
+      this.getIssueStats();
     });
   }
 
@@ -71,5 +73,20 @@ export class ProjectComponent implements OnInit {
   onLeadClick() {
     this.router.navigate(['/statistics', this.activeProject.ownerId]);
   }
+
+  getIssueStats() {
+    this.loaderService.start();
+    this.httpService.getIssueStats({projectId: this.projectId$}).subscribe((response: IssueStatsResponse) => {
+      this.issueStats = {
+        totalIssues: response.data.totalIssues || 0,
+        backlog: response.data.issues.backlog || 0,
+        qa: response.data.issues.qa || 0,
+        progress: response.data.issues.progress || 0,
+        done: response.data.issues.done || 0
+      };
+      this.loaderService.stop();
+    }, err => this.loaderService.stop());
+  }
+
 
 }

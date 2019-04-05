@@ -1,4 +1,5 @@
 import { NgxUiLoaderConfig } from 'ngx-ui-loader';
+import { NgxGalleryAnimation, NgxGalleryOptions } from 'ngx-gallery';
 
 export const progressBarConfig: NgxUiLoaderConfig = {
     'bgsColor': '#00ACC1',
@@ -52,4 +53,7 @@ export const textEditorConfig = {
     contenteditable: true,
     events: {}
 };
+
+export const galleryConfig: NgxGalleryOptions[] = [{ 'image': false, 'height': '100px', imageAnimation: NgxGalleryAnimation.Slide },
+{ 'breakpoint': 500, 'width': '100%' }];
 

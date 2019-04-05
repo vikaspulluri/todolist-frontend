@@ -3,9 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { UsersResponse,
         ProjectResponse,
-        UserStatsResponse,
+        ContribProjects,
         ProjectsResponse, IssueDetailsResponse,
-        FilteredIssuesResponse } from './response.interface';
+        FilteredIssuesResponse,
+        IssueStatsResponse} from './response.interface';
 import { Project, Issue } from './models';
 
 @Injectable({providedIn: 'root'})
@@ -17,8 +18,8 @@ export class AppHttpService {
         return this.http.get<UsersResponse>(`${this.config.apiUrl}/api/user/all-users`);
     }
 
-    public getUserStats(userId: string) {
-        return this.http.post<UserStatsResponse>(`${this.config.apiUrl}/api/user/stats`, {userId: userId});
+    public getUserContibProjects(userId: string) {
+        return this.http.post<ContribProjects>(`${this.config.apiUrl}/api/user/stats`, {userId: userId});
     }
 
     public createProject(project: Project) {
@@ -63,5 +64,10 @@ export class AppHttpService {
 
     public getAllLabels() {
         return this.http.get<{message: string, error: boolean, data: string[]}>(`${this.config.apiUrl}/api/issue/labels`);
+    }
+
+    // function to get statistics either for project or user
+    public getIssueStats(data: {userId: string} | {projectId: string}) {
+        return this.http.post<IssueStatsResponse>(`${this.config.apiUrl}/api/issue/stats`, data);
     }
 }

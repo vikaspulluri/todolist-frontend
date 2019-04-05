@@ -1,13 +1,13 @@
 export const config = {
     filtersForm: {
         userGroup: [
-            {name: 'All', value: 'all'}
+            {display: 'All', value: 'all'}
         ],
         issueGroup: [
             {name: 'All', value: null},
             {name: 'Backlog', value: 'backlog'},
-            {name: 'In Progress', value: 'in-progress'},
-            {name: 'In QA', value: 'in-qa'},
+            {name: 'In Progress', value: 'progress'},
+            {name: 'In QA', value: 'qa'},
             {name: 'Completed', value: 'done'}
         ],
         priorityGroup: [
@@ -17,7 +17,7 @@ export const config = {
             {name: 'Low', value: 'low'}
         ],
         projectGroup: [
-            {name: 'Default', value: 'default'},
+            {display: 'All', value: null}
         ],
         labelGroup: [
             {name: '--None--', value: null}

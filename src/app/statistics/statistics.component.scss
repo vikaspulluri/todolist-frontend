@@ -61,7 +61,7 @@ aside {
     }
     
     .stat-box {
-        background-image: $primary-pink; // fallback color
+        background: $primary-pink; // fallback color
        @include statBox();
        &.done {
            background-image: $primary-green; // fallback color
@@ -73,6 +73,9 @@ aside {
        }
        &.todo {
         @include addGradient($primary-red, $secondary-red);
+       }
+       &.in-qa {
+           @include addGradient($orange, lighten($orange, 15%));
        }
 
        .head {

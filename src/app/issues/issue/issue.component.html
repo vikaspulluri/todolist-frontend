@@ -105,6 +105,11 @@
     </div>
   </div>
 
+  <div class="gallery-wrap" *ngIf="galleryImages">
+      <h4>Attachments</h4>
+    <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+  </div>
+
   <!-- Comments and activity wrap -->
   <div class="activities-wrap">
     <div class="comments-wrap">

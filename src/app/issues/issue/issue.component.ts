@@ -6,8 +6,9 @@ import { IssueDetailsResponse } from 'src/app/shared/response.interface';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { ToastrService } from 'ngx-toastr';
 import { Issue } from 'src/app/shared/models';
-import { textEditorConfig } from 'src/app/shared/libraries.config';
+import { textEditorConfig, galleryConfig } from 'src/app/shared/libraries.config';
 import { AuthService } from 'src/app/auth/shared/auth.service';
+import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
 
 @Component({
   selector: 'app-issue',
@@ -22,6 +23,8 @@ export class IssueComponent implements OnInit {
   public issueDetails: Issue;
   public textEditorConfig = textEditorConfig;
   public currentUserId = this.authService.getUserId();
+  public galleryOptions = galleryConfig;
+  public galleryImages: NgxGalleryImage[];
   constructor(private route: ActivatedRoute,
     private router: Router,
     private utilService: UtilService,
@@ -62,6 +65,7 @@ export class IssueComponent implements OnInit {
         lastModifiedOn: this.utilService.formatDate(response.data.lastModifiedOn)
       };
       this.updatePrivilieges();
+      this.galleryImages = [{medium: this.issueDetails.imageUrl, small: this.issueDetails.imageUrl, big: this.issueDetails.imageUrl}];
       this.loaderService.stop();
     }, err => this.router.navigate(['/issues']));
   }

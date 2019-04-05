@@ -99,7 +99,7 @@ const constructQueryForIssues = (req, res, next) => {
         $and.push({status: req.body.issueType});
     }
     if (req.body.label && req.body.label !== '' && req.body.label !== null) {
-        $and.push({$in: {labels: req.body.label}});
+        $and.push({labels: req.body.label});
     }
     if (req.body.priority && req.body.priority !== '' && req.body.priority !== null) {
         $and.push({priority: req.body.priority});
@@ -109,6 +109,9 @@ const constructQueryForIssues = (req, res, next) => {
             req.body.projectId = config.defaultProject.id;
         }
         $and.push({"project.projectId": req.body.projectId});
+    }
+    if (req.body.status && req.body.status !== '' && req.body.status !== null && Array.isArray(req.body.status)) {
+        $and.push({status: {$in: req.body.status}});
     }
     if (req.body.userId && req.body.userId !== '' && req.body.userId !== null) {
         let or = [{"assignee.userId": req.body.userId},
@@ -177,11 +180,40 @@ const getAvailableLabels = (req, res, next) => {
             return next(err);
         })
 }
+/* Need to optimize the query by using $group later */
+const getStatistics = (req, res, next) => {
+    Issue.find(req.issuesQuery, {status: 1})
+        .exec()
+        .then(issues => {
+            let responseObj = {};
+            responseObj.totalIssues = issues.length || 0;
+            let groupedData = [];
+            if (responseObj.totalIssues) {
+                groupedData = issues.reduce((acc, cur) => {
+                    acc[cur.status] = (acc[cur.status] || 0) + 1;
+                    return acc;
+                }, {});
+            }
+            responseObj.issues = groupedData;
+
+            let response = new SuccessResponseBuilder('Statistics fetched successfully!!!')
+                            .status(200)
+                            .data(responseObj)
+                            .build();
+            return res.status(200).send(response);
+        })
+        .catch(error => {
+            logger.log(error, req, 'IC-GS-1');
+            let err = new ErrorResponseBuilder().status(500).errorCode('IC-GS-1').errorType('UnknownError').build();
+            return next(err);
+        })
+}
 
 module.exports = {
     createIssue: createIssue,
     getIssueById: getIssueById,
     constructQueryForIssues: constructQueryForIssues,
     getIssues: getIssues,
-    getAvailableLabels: getAvailableLabels
+    getAvailableLabels: getAvailableLabels,
+    getStatistics: getStatistics
 }
