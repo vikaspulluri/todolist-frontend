@@ -1,3 +1,4 @@
+<ngx-ui-loader></ngx-ui-loader>
 <app-sidebar></app-sidebar>
 <aside>
     <div class="full-container">
@@ -27,7 +28,20 @@
                     <p>All your open issues</p>
                 </div>
                 <div class="results-wrap" *ngIf="issues">
-                    <h6>{{ issues.length }} Results Found</h6>
+                    <h4 *ngIf="hasOpenIssues == false">
+                        Great Champ!!! You are all caught up. No open issues in your bucket today!!!
+                    </h4>
+                    <div class="wrap">
+                        <h6>{{ issues.length }} Results Found</h6>
+                        <div class="input-box">
+                            <input type="text" class="search-box"
+                                name="search-box" [(ngModel)]="searchTitle"
+                                placeholder="Search by title">
+                            <span (click)="getOpenIssues()">
+                                <fa name="search"></fa>
+                            </span>
+                        </div>
+                    </div>
                     <table class="table">
                         <thead>
                             <tr class="table-primary">

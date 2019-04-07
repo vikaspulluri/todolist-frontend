@@ -23,7 +23,9 @@ export class DashboardComponent implements OnInit {
   public userFirstName: string;
   public userId: string;
   public isRecommendationsPresent = true;
-  public issues = [];
+  public issues;
+  public hasOpenIssues;
+  public searchTitle; // two way data binding with search bar value
   private currentPage = config.customPagination.currentPage;
   private itemsPerPage = config.customPagination.itemsPerPage;
   private itemsPerPageOptions = config.customPagination.itemsPerPageOptions;
@@ -40,27 +42,33 @@ export class DashboardComponent implements OnInit {
     this.userFirstName = this.authService.getUserFirstName();
     this.userId = this.authService.getUserId();
     this.setRecommendations();
-    this.getFilteredIssues();
+    this.getOpenIssues();
   }
 
   setRecommendations() {
     this.isRecommendationsPresent = this.subService.getIsRecommendationsPresent();
   }
 
-  getFilteredIssues() {
+  getOpenIssues() {
     this.loaderService.start();
     let filters = {
       userId: this.userId,
-      status: ['backlog', 'progress', 'qa']
+      status: ['backlog', 'progress', 'qa'],
+      title: this.searchTitle
     };
     this.httpService.getIssues(filters).subscribe((response: FilteredIssuesResponse) => {
       this.issues = response.data.map(issue => {
         issue.createdDate = this.utilService.formatDate(issue.createdDate, 'dateOnly');
         return issue;
       });
+      // first time getting the issues for dashboard and setting the value
+      if (typeof this.hasOpenIssues === 'undefined') {
+        this.hasOpenIssues = this.issues.length > 0 ? true : false;
+      }
       this.loaderService.stop();
     }, err => this.loaderService.stop());
   }
+
 
   onCancelRecommendations() {
     this.subService.clearRecommendations();

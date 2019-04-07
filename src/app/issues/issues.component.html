@@ -48,7 +48,17 @@
         </div>
     </div>
     <div class="results-wrap" *ngIf="issues">
-        <h6>{{ issues.length }} Results Found</h6>
+        <div class="wrap">
+            <h6>{{ issues.length }} Results Found</h6>
+            <div class="input-box">
+                <input type="text" class="search-box"
+                    name="search-box" [(ngModel)]="searchTitle"
+                    placeholder="Search by title">
+                <span (click)="getFilteredIssues()">
+                    <fa name="search"></fa>
+                </span>
+            </div>
+        </div>
         <table class="table">
             <thead>
                 <tr class="table-primary">

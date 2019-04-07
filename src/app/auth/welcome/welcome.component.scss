@@ -8,6 +8,21 @@ p {
     position: relative;
     text-align: left;
     padding: 0 5rem;
+    @media screen and (max-width: 1024px) {
+        padding: 0 1.5rem;
+    }
+    @media screen and (max-width: 767px) {
+        padding: .5rem;
+        h1 {
+            font-size: 2rem;
+        }
+        h2 {
+            font-size: 1.5rem;
+        }
+        p {
+            max-width: none;
+        }
+    }
     h1, h2 {
         text-transform: uppercase;
     }

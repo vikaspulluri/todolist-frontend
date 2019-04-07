@@ -31,6 +31,8 @@ export class IssuesComponent implements OnInit {
   public isinitialPageLoad = true;
   public issues = [];
   public labels = [];
+  public hasOpenIssues;
+  public searchTitle; // two way data binding with search bar value
   private currentPage = config.customPagination.currentPage;
   private itemsPerPage = config.customPagination.itemsPerPage;
   private itemsPerPageOptions = config.customPagination.itemsPerPageOptions;
@@ -212,7 +214,8 @@ export class IssuesComponent implements OnInit {
       projectId: projectGroup.get('projectId').value,
       issueType: issueGroup.get('issueType').value,
       priority: priorityGroup.get('priority').value,
-      label: labelGroup.get('label').value
+      label: labelGroup.get('label').value,
+      title: this.searchTitle
     };
     this.httpService.getIssues(filters).subscribe((response: FilteredIssuesResponse) => {
       this.issues = response.data.map(issue => {

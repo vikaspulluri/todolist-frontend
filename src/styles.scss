@@ -52,7 +52,7 @@ html, body {
   }
   input, textarea {
     &:focus, &:active {
-      outline: 1px solid $primary-bg;
+      outline: 1px solid $secondary-pink;
     }
   }
   textarea {

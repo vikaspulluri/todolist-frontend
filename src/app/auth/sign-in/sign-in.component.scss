@@ -3,12 +3,23 @@
 
 .flex-container {
     display: flex;
+    @media screen and (max-width: 767px) {
+      flex-direction: column;
+      max-width: none;
+      margin: 0;
+      align-items: center;
+    }
     .welcome-screen {
         width: 65%;
         text-align: center;
         justify-content: center;
         align-items: center;
         display: flex;
+        @media screen and (max-width: 767px) {
+          width: 100%;
+          margin: 1rem;
+          padding: 1rem;
+        }
     }
 }
 .auth-container {
@@ -17,6 +28,11 @@
   padding: 0;
   @media screen and (max-width: 767px) {
     height: auto;
+    max-width: none;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
   }
   .outer-container {
     position: absolute;
@@ -30,12 +46,20 @@
     width: calc(100% - 65% - 2rem);
     background: $secondary-bg;
     @include formBoxShadow();
+    @media screen and (max-width: 1024px) {
+      padding: 0rem;
+      a {
+        font-size: .9rem;
+      }
+    }
     @media screen and (max-width: 767px) {
       position: relative;
       top: auto;
       transform: none;
       flex-direction: column;
       padding: 0 .25rem;
+      display: block;
+      width: 90%;
     }
     .form {
       display: block;

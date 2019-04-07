@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { AnimateTextService } from '../shared/animate-text.service';
 
 @Component({
@@ -8,10 +8,20 @@ import { AnimateTextService } from '../shared/animate-text.service';
 })
 export class WelcomeComponent implements OnInit, OnDestroy {
 
+  public screenWidth;
   constructor(private animateTextService: AnimateTextService) { }
 
   ngOnInit() {
-    this.animateTextService.initiate();
+    if (this.screenWidth > 767) {
+      this.animateTextService.initiate();
+    } else {
+      this.animateTextService.clearTime();
+    }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  getScreenSize(event?) {
+    this.screenWidth = window.innerWidth;
   }
 
   ngOnDestroy() {
