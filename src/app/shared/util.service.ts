@@ -80,6 +80,12 @@ export class UtilService {
         return formData;
     }
 
+    /**
+     * mapProjectDataToForm()
+     * Function that maps projects data to AutoCompleteTag format
+     * @param projects Array
+     * @returns Array
+     */
     public mapProjectDataToForm(projects: ProjectsResponse['data']) {
         let formData: AutoCompleteTag[] = projects.map(project => {
             let obj: AutoCompleteTag = {
@@ -91,6 +97,12 @@ export class UtilService {
         return formData;
     }
 
+    /**
+     * formatToSimpleUser()
+     * Function that maps the data in the form of AutoCompleteTag format to SimpleUser format
+     * @param data Array
+     * @returns Array
+     */
     public formatToSimpleUser(data: AutoCompleteTag[]) {
         const users = data.map(user => {
             let username = user.display.split(' ');
@@ -133,6 +145,13 @@ export class UtilService {
         return data;
     }
 
+    /**
+     * setUserPrevilieges()
+     * Function that updates user privilieges. Mostly seen in issue details page
+     * @param ownerId String
+     * @param users Array of AutoCompleteTag
+     * @returns Array
+     */
     public setUserPrivilieges(ownerId: string, users: AutoCompleteTag[]): AutoCompleteTag[] {
         let priviliegedUsers = users.map(user => {
             let obj = {
@@ -160,6 +179,37 @@ export class UtilService {
             dateFormat = 'h:mm a';
         }
         return moment(date).format(dateFormat);
+    }
+
+    /**
+     * getDuration()
+     * Function that takes two isoDate strings and returns duration between them
+     * @param startDate String
+     * @param endDate String
+     * @returns String
+     */
+    public getDuration(startDate: string, endDate) {
+        let end = endDate || new Date();
+        let start = moment(new Date(startDate));
+        end = moment(end);
+        const duration = moment.duration(end.diff(start));
+        const minutes = Math.floor(duration.asMinutes());
+        const hours = Math.floor(duration.asHours());
+        const days = Math.floor(duration.asDays());
+        const months = Math.floor(duration.asMonths());
+        const years = Math.floor(duration.asYears());
+        if (years && years > 0) {
+            return `${years} Years`;
+        } if (months && months > 0) {
+            return `${months} Months`;
+        } if (days && days > 0) {
+            return `${days} Days`;
+        } if (hours && hours > 0) {
+            return `${hours} Hours`;
+        } if (minutes && minutes > 0) {
+            return `${minutes} Minutes`;
+        }
+        return null;
     }
 
 }

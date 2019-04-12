@@ -22,46 +22,68 @@
 
   <!-- Other infor and action buttons wrap -->
   <div class="action-wrap">
-    <!-- Buttons wrap -->
-    <div class="btns-wrap">
-      <div class="wrap">
-        <button class="btn action-btn">Edit</button>
-        <button class="btn action-btn">Todo</button>
-        <button class="btn action-btn">In Progress</button>
-        <button class="btn action-btn">Done</button>
-      </div>
-    </div>
 
     <!-- Content wrap -->
     <div class="content-wrap">
       <div class="left">
         <div>
-          <span>Title: </span> <span>{{ issueDetails.title }}</span>
+          <span>Title: </span> <span class="value">{{ issueDetails.title }}</span>
         </div>
         <div>
           <span>Reporter: </span><span><a [routerLink]="[ '/statistics', issueDetails.reporter.userId]">
-            <span><fa name="user"></fa></span> {{ issueDetails.reporter.firstName }}</a></span>
+            <span><fa name="user"></fa></span> {{ issueDetails.reporter.firstName }} {{ issueDetails.reporter.lastName }}</a></span>
         </div>
         <div>
           <span>Assignee: </span><span><a [routerLink]="[ '/statistics', issueDetails.assignee.userId]">
-            <span><fa name="user"></fa></span> {{issueDetails.assignee.firstName }}</a></span>
+          <span><fa name="user"></fa></span> {{issueDetails.assignee.firstName }} {{issueDetails.assignee.lastName }}</a></span>
+          <span *ngIf="isAssignee() || isReporter()" class="edit" (click)="isAssigneeEditing = true">
+            <fa name="edit"></fa>
+          </span>
+          <span *ngIf="isAssigneeEditing" class="assignee-form">
+            <tag-input [ngModel]="issueDetails.formAssignee"
+                       [placeholder]="'Add Assignee'"
+                       [secondaryPlaceholder]="'Add Assignee'"
+                       [maxItems]="1"
+                       (onAdd)="onUpdateAssignee($event)"
+                       theme="foundation-theme">
+              <tag-input-dropdown
+                [autocompleteItems]="users"
+                [showDropdownIfEmpty]="true"
+                [keepOpen]="false">
+                </tag-input-dropdown>
+            </tag-input>
+            <span>
+              <span class="fa-wrap"><fa name="check" size="2x" class="save" (click)="onUpdateAssignee(null, true)"></fa></span>
+              <span class="fa-wrap"><fa name="times" size="2x" class="cancel" (click)="isAssigneeEditing = false"></fa></span>
+            </span>
+          </span>
         </div>
         <div>
-          <span>Status: </span> <span>{{ issueDetails.status }}</span>
+          <span>Status: </span>
+          <span class="position-relative">
+            <select [ngModel]="issueDetails.status" [disabled]="!(isAssignee() || isReporter())">
+              <option *ngFor="let option of statusGroup" value="{{option.value}}">{{ option.name }}</option>
+            </select>
+          </span>
         </div>
         <div>
-          <span>Priority: </span> <span>{{ issueDetails.priority }}</span>
+          <span>Priority: </span>
+          <span class="position-relative">
+            <select [ngModel]="issueDetails.priority" [disabled]="!isReporter()">
+              <option *ngFor="let option of priorityGroup" value="{{option.value}}">{{ option.name }}</option>
+            </select>
+          </span>
         </div>
       </div>
       <div class="right">
         <div>
-          <span>Reported On: </span> <span>{{ issueDetails.createdDate }}</span>
+          <span>Reported On: </span> <span class="value">{{ issueDetails.createdDate }}</span>
         </div>
         <div>
-          <span>Last Updated: </span> <span>{{ issueDetails.lastModifiedOn }}</span>
+          <span>Last Updated: </span> <span class="value">{{ issueDetails.lastModifiedOn }}</span>
         </div>
         <div>
-          <span>Pending Since: </span> <span>3 Days</span>
+          <span>Active Duration: </span> <span class="value">{{ issueDuration }}</span>
         </div>
         <div>
           <span>Project: </span> <div class="d-inline"><a [routerLink]="['/project', issueDetails.project.projectId]" title="{{issueDetails.project.title}}">
@@ -76,7 +98,7 @@
                        [placeholder]="'Add label'"
                        [secondaryPlaceholder]="'Add label'"
                        theme="foundation-theme">
-              <tag-input-dropdown [autocompleteItems]="users">
+              <tag-input-dropdown [autocompleteItems]="labels" [showDropdownIfEmpty]="true" [keepOpen]="false">
                 </tag-input-dropdown>
             </tag-input>
           </span>
@@ -98,7 +120,7 @@
                      [placeholder]="'Add a watcher...'"
                      [secondaryPlaceholder]="'Add a watcher'"
                      theme="foundation-theme">
-              <tag-input-dropdown [autocompleteItems]="users" [showDropdownIfEmpty]="true">
+              <tag-input-dropdown [autocompleteItems]="users" [showDropdownIfEmpty]="true" [keepOpen]="false">
                 </tag-input-dropdown>
           </tag-input>
       </div>

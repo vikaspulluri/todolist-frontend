@@ -8,7 +8,7 @@ import { AnimateTextService } from '../shared/animate-text.service';
 })
 export class WelcomeComponent implements OnInit, OnDestroy {
 
-  public screenWidth;
+  public screenWidth = window.outerWidth;
   constructor(private animateTextService: AnimateTextService) { }
 
   ngOnInit() {

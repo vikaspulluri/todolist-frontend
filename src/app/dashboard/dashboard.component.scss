@@ -20,9 +20,11 @@ aside {
         top: 50%;
         right: 0;
         transform: translateY(-50%);
-        width: 40px;
+        width: 50px;
         padding: calc(.75rem + 1px);
         background: $primary-pink;
+        display: flex;
+        justify-content: center;
         cursor: pointer;
         fa {
             color: $white;

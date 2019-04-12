@@ -26,13 +26,16 @@ export interface Issue {
     status?: string;
     createdDate?: string;
     lastModifiedOn?: string;
+    completionDate?: string;
     imageUrl?: string; // will come from server response
     project: {
         projectId: string,
         title: string
     };
     assignee: SimpleUser;
+    formAssignee?: AutoCompleteTag[];
     reporter: SimpleUser;
+    formReporter?: AutoCompleteTag;
     watchers?: SimpleUser[];
     formWatchers?: AutoCompleteTag[]; // when rendering watchers in form, it is required
     labels?: string[];

@@ -67,10 +67,10 @@ const loginUser = (req, res, next) => {
                                         .build();
                 return next(error);
             }
-            const token = jwt.sign({email: fetchedUser.email, firstName: fetchedUser.firstName, lastName: fetchedUser.lastName, id: fetchedUser._id, isAdmin: fetchedUser.hasAdminPrevilieges}, process.env.JWT_KEY, {expiresIn: '1h'});
+            const token = jwt.sign({email: fetchedUser.email, firstName: fetchedUser.firstName, lastName: fetchedUser.lastName, id: fetchedUser._id, isAdmin: fetchedUser.hasAdminPrevilieges}, process.env.JWT_KEY, {expiresIn: '2h'});
             const data = {
                 token: token,
-                expiryDuration: 3600,
+                expiryDuration: 7200,
                 username: fetchedUser.firstName + ' ' + fetchedUser.lastName,
                 userId: fetchedUser._id,
                 loginCount: fetchedUser.loginCount

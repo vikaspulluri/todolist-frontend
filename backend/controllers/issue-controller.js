@@ -1,4 +1,4 @@
-const Project = require('../models/project-model');
+const Comment = require('../models/comment-model');
 const Issue = require('../models/issue-model');
 const {ErrorResponseBuilder, SuccessResponseBuilder} = require('../libraries/response-builder');
 const { parseJSON } = require('../libraries/parse-json');
@@ -209,11 +209,56 @@ const getStatistics = (req, res, next) => {
         })
 }
 
+const addComment = (req, res, next) => {
+    const comment = new Comment({
+        userName: req.body.userName,
+        userId: req.body.userId,
+        summary: req.body.summary,
+        issueId: req.body.issueId
+    });
+    comment.save()
+            .then(doc => {
+                updateIssueActivity(doc.summary, doc.issueId, doc.createdDate)
+                    .then(result => {
+                        let response = new SuccessResponseBuilder('Comment added successfully!!!')
+                            .status(200)
+                            .data(doc)
+                            .build();
+                        return res.status(200).send(response);
+                    })
+                    .catch(error => {
+                        logger.log(error, req, 'IC-AC-2');
+                        let err = new ErrorResponseBuilder('Unable to update issue activity').status(500).errorCode('IC-AC-2').errorType('UnknownError').build();
+                        return next(err);
+                    })
+            })
+            .catch(error => {
+                logger.log(error, req, 'IC-AC-1');
+                let err = new ErrorResponseBuilder().status(500).errorCode('IC-AC-1').errorType('UnknownError').build();
+                return next(err);
+            })
+}
+
+function updateIssueActivity(message, issueId, date) {
+    const activityObj = {
+        summary: message,
+        dateLog: date
+    };
+    return new Promise((resolve, reject) => {
+        Issue.findByIdAndUpdate(issueId,
+            {$push: {'activity': activityObj}})
+            .exec()
+            .then(result => resolve(result))
+            .catch(err => reject(err));
+    });
+}
+
 module.exports = {
     createIssue: createIssue,
     getIssueById: getIssueById,
     constructQueryForIssues: constructQueryForIssues,
     getIssues: getIssues,
     getAvailableLabels: getAvailableLabels,
-    getStatistics: getStatistics
+    getStatistics: getStatistics,
+    addComment: addComment
 }

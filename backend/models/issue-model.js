@@ -14,6 +14,7 @@ const issueSchema = mongoose.Schema({
         title: {type: String, required: true}
     },
     lastModifiedOn: {type: Date, required: true, default: Date.now},
+    completionDate: {type: Date, required: false},
     watchers: [{
       userId: {type:String, required: true},
       firstName: {type: String, required: true},
@@ -32,7 +33,7 @@ const issueSchema = mongoose.Schema({
     labels: [{type: String}],
     activity: [{
         summary: {type: String, required: true},
-        dateLog: {type: String, require: true}
+        dateLog: {type: Date, require: true, default: Date.now}
     }]
 });
 
