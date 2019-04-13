@@ -186,4 +186,10 @@ aside {
             color: $black;
         }
     }
+    select {
+        padding: .75rem;
+    }
+    p.error {
+        background: red;
+    }
 }

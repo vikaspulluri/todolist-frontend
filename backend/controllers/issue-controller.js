@@ -209,6 +209,26 @@ const getStatistics = (req, res, next) => {
         })
 }
 
+const getWatchingIssueIds = (req, res, next) => {
+    Issue.find({$or: [{"assignee.userId": req.userData.userId},
+                        {"reporter.userId": req.userData.userId},
+                        {watchers: {$elemMatch: {userId: {$in: [req.userData.userId]}}}}
+                ]}, {_id: 1})
+                .then(docs => {
+                    let ids = docs.map(doc => doc._id);
+                    let response = new SuccessResponseBuilder('Watching issues fetched successfully!!!')
+                            .status(200)
+                            .data(ids)
+                            .build();
+                    return res.status(200).send(response);
+                })
+                .catch(error => {
+                    logger.log(error, req, 'IC-GWII-1');
+                    let err = new ErrorResponseBuilder().status(500).errorCode('IC-GWII-1').errorType('UnknownError').build();
+                    return next(err);
+                })
+}
+
 const addComment = (req, res, next) => {
     const comment = new Comment({
         userName: req.body.userName,
@@ -218,40 +238,62 @@ const addComment = (req, res, next) => {
     });
     comment.save()
             .then(doc => {
-                updateIssueActivity(doc.summary, doc.issueId, doc.createdDate)
-                    .then(result => {
-                        let response = new SuccessResponseBuilder('Comment added successfully!!!')
+                let response = new SuccessResponseBuilder('Comment added successfully!!!')
                             .status(200)
                             .data(doc)
                             .build();
-                        return res.status(200).send(response);
-                    })
-                    .catch(error => {
-                        logger.log(error, req, 'IC-AC-2');
-                        let err = new ErrorResponseBuilder('Unable to update issue activity').status(500).errorCode('IC-AC-2').errorType('UnknownError').build();
-                        return next(err);
-                    })
+                return res.status(200).send(response);
             })
             .catch(error => {
                 logger.log(error, req, 'IC-AC-1');
-                let err = new ErrorResponseBuilder().status(500).errorCode('IC-AC-1').errorType('UnknownError').build();
+                let err = new ErrorResponseBuilder('We are Sorry, Unable to add comment, please try again later!!!').status(500).errorCode('IC-AC-1').errorType('UnknownError').build();
                 return next(err);
             })
 }
 
-function updateIssueActivity(message, issueId, date) {
+const updateIssueActivity = (req, res, next) => {
     const activityObj = {
-        summary: message,
-        dateLog: date
+        summary: req.body.summary,
+        dateLog: new Date()
     };
-    return new Promise((resolve, reject) => {
-        Issue.findByIdAndUpdate(issueId,
-            {$push: {'activity': activityObj}})
-            .exec()
-            .then(result => resolve(result))
-            .catch(err => reject(err));
-    });
+    Issue.findByIdAndUpdate(req.body.issueId,
+        {$push: {'activity': activityObj}})
+        .exec()
+        .then(result => {
+            let response = new SuccessResponseBuilder('Activity updated successfully!!!')
+                            .status(200)
+                            .data(result)
+                            .build();
+            return res.status(200).send(response);
+        })
+        .catch(error => {
+            logger.log(error, req, 'IC-UIA-1');
+            let err = new ErrorResponseBuilder('We are Sorry, Unable to update issue activity, please try again later!!!').status(500).errorCode('IC-UIA-1').errorType('UnknownError').build();
+            return next(err);
+        });
 }
+
+const updateIssue = (req, res, next) => {
+    let updateField = req.body.updateField;
+    let updateValue = req.body.content;
+    let obj = {};
+    obj[updateField] = updateValue;    
+    Issue.findOneAndUpdate({_id: req.body.issueId}, {$set: obj}, {new: true})
+        .then(result => {
+            let response = new SuccessResponseBuilder('Issue updated successfully!!!')
+                            .status(200)
+                            .data(result)
+                            .build();
+            return res.status(200).send(response);
+        })
+        .catch(error => {
+            console.log(error);
+            logger.log(error, req, 'IC-UI-1');
+            let err = new ErrorResponseBuilder('We are Sorry, Unable to update issue, please try again later!!!').status(500).errorCode('IC-UI-1').errorType('UnknownError').build();
+            return next(err);
+        })
+}
+
 
 module.exports = {
     createIssue: createIssue,
@@ -260,5 +302,8 @@ module.exports = {
     getIssues: getIssues,
     getAvailableLabels: getAvailableLabels,
     getStatistics: getStatistics,
-    addComment: addComment
+    addComment: addComment,
+    getWatchingIssueIds: getWatchingIssueIds,
+    updateIssueActivity: updateIssueActivity,
+    updateIssue: updateIssue
 }

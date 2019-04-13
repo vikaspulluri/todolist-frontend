@@ -4,6 +4,9 @@ import { AutoCompleteTag } from './interface';
 import { UsersResponse, ProjectsResponse, SimpleUser } from './response.interface';
 import { AuthService } from '../auth/shared/auth.service';
 import * as moment from 'moment';
+import { Notification } from './models';
+import { SocketService } from './socket.service';
+import { AppHttpService } from './app-http.service';
 @Injectable()
 
 // provided in AppComponent
@@ -11,7 +14,9 @@ export class UtilService {
 
     public config = config;
     private currentUserId = this.authService.getUserId();
-    constructor(private authService: AuthService) {}
+    constructor(private authService: AuthService,
+                private socketService: SocketService,
+                private appHttpService: AppHttpService) {}
 
     /**
      * getShortName(title, length)
@@ -212,4 +217,31 @@ export class UtilService {
         return null;
     }
 
+    public sendNotification(message: string, type: string, data: {id: string, title: string}, receivers: SimpleUser[]) {
+        const notification: Notification = {
+            message: message,
+            type: type,
+            status: 'unread',
+            sender: {
+                firstName: this.authService.getUserFirstName(),
+                userId: this.authService.getUserId(),
+                lastName: this.authService.getUsername().split(' ')[1]
+            }
+        };
+        notification[type] = {
+            id: data.id,
+            title: data.title
+        };
+        notification.receivers = receivers;
+        this.socketService.sendNotification(notification);
+        this.appHttpService.addNotifications(notification).subscribe(response => {
+            console.log(response);
+        });
+    }
+
+    public updateDefaultMsg(msg: string, username: string, typeName: string) {
+        let message = msg.replace('***', username);
+        message = message.replace('###', typeName);
+        return message;
+    }
 }

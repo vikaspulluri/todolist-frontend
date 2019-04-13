@@ -44,3 +44,19 @@ export interface Issue {
         dateLog: string
     }[];
 }
+
+export interface Notification {
+    message: string;
+    type: string; // issue or project or other
+    status: string; // unread or read or later
+    issue?: {
+        title: string,
+        id: string
+    }; // incase of type == issue
+    project?: {
+        title: string,
+        id: string
+    }; // incase of type == project
+    sender: SimpleUser;
+    receivers?: SimpleUser[];
+}

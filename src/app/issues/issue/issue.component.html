@@ -54,9 +54,12 @@
             </tag-input>
             <span>
               <span class="fa-wrap"><fa name="check" size="2x" class="save" (click)="onUpdateAssignee(null, true)"></fa></span>
-              <span class="fa-wrap"><fa name="times" size="2x" class="cancel" (click)="isAssigneeEditing = false"></fa></span>
+              <span class="fa-wrap"><fa name="times" size="2x" class="cancel" (click)="onCancelUpdateAssignee()"></fa></span>
             </span>
           </span>
+          <p *ngIf="isAssigneeEditing && isAssignee()" class="error">
+            *Note that your privilieges to this issue will be affected once you update this!!!
+          </p>
         </div>
         <div>
           <span>Status: </span>

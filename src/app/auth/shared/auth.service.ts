@@ -101,6 +101,7 @@ export class AuthService {
       this.loginCount = authInfo.loginCount;
       this.setAuthTimer(expiresIn / 1000);
       this.authStatusListener.next(true);
+      this.socketService.setWatcher();
     }
   }
 

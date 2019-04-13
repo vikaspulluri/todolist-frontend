@@ -114,12 +114,50 @@ export class IssueComponent implements OnInit {
     }
     if (isSaveBtn) {
       this.isAssigneeEditing = false;
+      // check if the assignee is changed, if not return
+      if (this.issueDetails.assignee.userId === this.issueDetails.formAssignee[0].value) {
+        return;
+      }
       this.issueDetails.assignee.userId = this.issueDetails.formAssignee[0].value;
-      let username = this.issueDetails.formAssignee[0].display.split(' ');
-      this.issueDetails.assignee.firstName = username[0];
-      this.issueDetails.assignee.lastName = username[1];
+      let assigneeName = this.issueDetails.formAssignee[0].display.split(' ');
+      this.issueDetails.assignee.firstName = assigneeName[0];
+      this.issueDetails.assignee.lastName = assigneeName[1];
+
       // update issue with assignee
+      this.loaderService.start();
+      this.httpService.updateIssueAssignee(this.issueDetails.assignee, this.issueDetails.issueId).subscribe(response => {
+        this.toastrService.success(response.message);
+        this.loaderService.stop();
+        const defaultMsg = '*** has updated the assignee for ###';
+        // realtime message to watchers
+        const receivers = this.getNotificationReceivers();
+        this.utilService.sendNotification(defaultMsg, 'issue',
+                        {id: this.issueDetails.issueId, title: this.issueDetails.title}, receivers);
+        // update issue activity
+        let readableMsg = this.utilService.updateDefaultMsg(defaultMsg, this.authService.getUsername(), this.issueDetails.title);
+        this.updateActivity(this.issueDetails.issueId, readableMsg);
+      }, err => this.loaderService.stop());
+
     }
+  }
+
+  onCancelUpdateAssignee() {
+    this.isAssigneeEditing = false;
+    this.issueDetails.formAssignee[0].display = this.issueDetails.assignee.firstName + ' ' + this.issueDetails.assignee.lastName;
+    this.issueDetails.formAssignee[0].value = this.issueDetails.assignee.userId;
+  }
+
+  updateActivity(issueId: string, summary: string) {
+    this.httpService.updateIssueActivity(issueId, summary).subscribe(response => {
+      console.log('successfully updated activity');
+    });
+  }
+
+  addNotifications() {
+  }
+
+  getNotificationReceivers() {
+    return [this.issueDetails.assignee, this.issueDetails.reporter, ...this.issueDetails.watchers];
   }
 
   updatePrivilieges() {

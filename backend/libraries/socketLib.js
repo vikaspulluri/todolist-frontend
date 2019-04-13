@@ -1,6 +1,5 @@
 //imprt modules
 const socketio = require('socket.io');
-const eventEmitter = require("../events/events");
 const tokenLib = require('./token-library');
 const socketRoomName = 'itracker';
 
@@ -22,8 +21,8 @@ let setServer=(server)=>{
             }
             let currentUser = user;
             socket.userId = currentUser.id;
-            socket.room=socketRoomName;
-            socket.join(socketRoomName);
+            socket.room=socket.userId;
+            socket.join(socket.userId);
             let fullName = `${currentUser.firstName} ${currentUser.lastName}`;
             let userObj = {userId:currentUser.id, fullName: fullName};
             allOnlineUsers.push(userObj);
@@ -33,10 +32,25 @@ let setServer=(server)=>{
       });
     });//end set user part
 
+    // function that will create room for each issueId and all watchers will join this room
+    socket.on('setWatchingIssues', data => {
+      if (data && data.length > 0) {
+        for (let issueId of data) {
+          socket.join(issueId);
+        }
+      }
+    })
+
     // method to get online user list
     socket.on('getOnlineUsers', () => {
       socket.emit('onlineUserList', allOnlineUsers);
     }); // end getOnlineUsers
+
+    socket.on('sendNotification', (data) => {
+      let sender = data.sender.userId;
+      let clientRoomId = data.issue ? data.issue.id : (data.project ? data.project.id : data.clientId);
+      socket.broadcast.to(clientRoomId).emit('receivedNotification', data);
+    });
 
 
     //disconnect socket
@@ -58,7 +72,7 @@ let setServer=(server)=>{
         console.log(allOnlineUsers)
 
         myIo.emit('onlineUserList', allOnlineUsers);
-        socket.leave(socketRoomName);
+        socket.leave(socket.userId);
         socket.disconnect(0);
     }) // end of on disconnect
 

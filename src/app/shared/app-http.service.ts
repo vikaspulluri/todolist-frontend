@@ -6,8 +6,9 @@ import { UsersResponse,
         ContribProjects,
         ProjectsResponse, IssueDetailsResponse,
         FilteredIssuesResponse,
-        IssueStatsResponse} from './response.interface';
-import { Project, Issue } from './models';
+        IssueStatsResponse,
+        SimpleUser} from './response.interface';
+import { Project, Issue, Notification } from './models';
 
 @Injectable({providedIn: 'root'})
 export class AppHttpService {
@@ -69,5 +70,27 @@ export class AppHttpService {
     // function to get statistics either for project or user
     public getIssueStats(data: {userId: string} | {projectId: string}) {
         return this.http.post<IssueStatsResponse>(`${this.config.apiUrl}/api/issue/stats`, data);
+    }
+
+    public updateIssueAssignee(user: SimpleUser, issueId: string) {
+        let obj = {
+            updateField: 'assignee',
+            content: user,
+            issueId: issueId
+        };
+        return this.http.post<{error: boolean, message: string, data: any[]}>(`${this.config.apiUrl}/api/issue/update`, obj);
+    }
+
+    public getWatchingIssueIds() {
+        return this.http.get(`${this.config.apiUrl}/api/issue/watching`);
+    }
+
+    public updateIssueActivity(issueId: string, summary: string) {
+        let activity = {issueId: issueId, summary: summary};
+        return this.http.post(`${this.config.apiUrl}/api/issue/update-activity`, activity);
+    }
+
+    public addNotifications(data: Notification) {
+        return this.http.post(`${this.config.apiUrl}/api/notification/add`, data);
     }
 }

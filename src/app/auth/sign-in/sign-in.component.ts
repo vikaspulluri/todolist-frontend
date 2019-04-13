@@ -34,6 +34,7 @@ export class SignInComponent implements OnInit  {
           authToken: this.authService.getToken(),
         };
         this.socketService.setUser(userData);
+        this.socketService.setWatcher();
         this.router.navigate(['/dashboard']);
       }
     }, err => this.loaderService.stop());

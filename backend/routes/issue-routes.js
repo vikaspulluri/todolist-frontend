@@ -31,4 +31,13 @@ router.post('/stats', decodeToken,
 
 router.get('/labels', decodeToken, checkUser, issueController.getAvailableLabels);
 
+router.post('/update', decodeToken, checkUser, validateRequest('IC-UI-1', 'updateField', 'content'), issueController.updateIssue);
+
+router.post('/update-activity', decodeToken,
+                                checkUser,
+                                validateRequest('IC-UIA-1', 'issueId', 'summary'),
+                                issueController.updateIssueActivity);
+
+router.get('/watching', decodeToken, checkUser, issueController.getWatchingIssueIds);
+
 module.exports = router;
