@@ -81,6 +81,24 @@ export class AppHttpService {
         return this.http.post<{error: boolean, message: string, data: any[]}>(`${this.config.apiUrl}/api/issue/update`, obj);
     }
 
+    public updateWatchers(issueId: string, users: SimpleUser[]) {
+        let obj = {
+            updateField: 'watchers',
+            content: users,
+            issueId: issueId
+        };
+        return this.http.post(`${this.config.apiUrl}/api/issue/update`, obj);
+    }
+
+    public updateLabels(issueId: string, labels: string[]) {
+        let obj = {
+            updateField: 'labels',
+            content: labels,
+            issueId: issueId
+        };
+        return this.http.post(`${this.config.apiUrl}/api/issue/update`, obj);
+    }
+
     public getWatchingIssueIds() {
         return this.http.get(`${this.config.apiUrl}/api/issue/watching`);
     }

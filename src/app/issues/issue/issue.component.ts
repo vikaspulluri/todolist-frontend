@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/auth/shared/auth.service';
 import {  NgxGalleryImage } from 'ngx-gallery';
 import { config } from '../../app.config';
 import { TagModel } from 'ngx-chips/core/accessor';
+import { AutoCompleteTag } from 'src/app/shared/interface';
 
 @Component({
   selector: 'app-issue',
@@ -27,6 +28,7 @@ export class IssueComponent implements OnInit {
   public issueDuration; // holds duration of issue in active state
   public textEditorConfig = textEditorConfig;
   public currentUserId = this.authService.getUserId();
+  public currentUserName = this.authService.getUsername();
   public galleryOptions = galleryConfig;
   public galleryImages: NgxGalleryImage[];
   public statusGroup = config.filtersForm.issueGroup.slice();
@@ -149,11 +151,61 @@ export class IssueComponent implements OnInit {
 
   updateActivity(issueId: string, summary: string) {
     this.httpService.updateIssueActivity(issueId, summary).subscribe(response => {
-      console.log('successfully updated activity');
+      console.log('Activity updated successfully!!!');
     });
   }
 
-  addNotifications() {
+  onAddWatcher($event) {
+    this.loaderService.start();
+    let currentWatchers = this.issueDetails.formWatchers || [];
+    let updatedWatchersTagFormat = [$event, ...currentWatchers];
+    let updatedWatchers = this.utilService.unmapUserDataFromForm(updatedWatchersTagFormat);
+    this.httpService.updateWatchers(this.issueDetails.issueId, updatedWatchers).subscribe(response => {
+      this.loaderService.stop();
+      this.issueDetails.formWatchers = updatedWatchersTagFormat;
+      this.issueDetails.watchers = this.utilService.unmapUserDataFromForm(this.issueDetails.formWatchers);
+    }, err => this.loaderService.stop());
+  }
+
+  onRemoveWatcher($event) {
+    let userId = $event.value;
+    let index = this.issueDetails.formWatchers.findIndex(user => user.value === userId);
+    if (index > -1) {
+      this.loaderService.start();
+      this.issueDetails.formWatchers.splice(index, 1);
+      let updatedUsers = this.utilService.unmapUserDataFromForm(this.issueDetails.formWatchers);
+      this.httpService.updateWatchers(this.issueDetails.issueId, updatedUsers).subscribe(response => {
+        this.loaderService.stop();
+        this.issueDetails.watchers = updatedUsers;
+      }, error => this.loaderService.stop());
+    } else {
+      this.loaderService.stop();
+    }
+  }
+
+  onAddLabel($event) {
+    this.loaderService.start();
+    let currentLabels = this.issueDetails.labels || [];
+    let updatedLabels = [$event.value, ...currentLabels];
+    this.httpService.updateLabels(this.issueDetails.issueId, updatedLabels).subscribe(response => {
+      this.loaderService.stop();
+      this.issueDetails.labels = updatedLabels;
+    }, err => this.loaderService.stop());
+  }
+
+  onRemoveLabel($event) {
+    this.loaderService.start();
+    let currentLabels = this.issueDetails.labels || [];
+    let updatedLabel = $event;
+    let index = currentLabels.findIndex(label => label === updatedLabel);
+    if (index > -1) {
+      this.issueDetails.labels.splice(index, 1);
+      this.httpService.updateLabels(this.issueDetails.issueId, this.issueDetails.labels).subscribe(response => {
+        this.loaderService.stop();
+      }, err => this.loaderService.stop());
+    } else {
+      this.loaderService.stop();
+    }
   }
 
   getNotificationReceivers() {

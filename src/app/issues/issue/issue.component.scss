@@ -102,6 +102,45 @@ aside {
     }
     .watchers-wrap {
         max-width: 30%;
+        h4 {display: inline;}
+        fa + span {
+            opacity: 0;
+            height: 0;
+            width: 0;
+            position: absolute;
+            transition: .3s all ease-in-out;
+        }
+        fa {
+            margin: 0 .25rem;
+            color: $white;
+            &:hover {
+                &+ span {
+                    opacity: 1;
+                    height: auto;
+                    width: auto;
+                    padding: .4rem;
+                    background: $white;
+                    color: $primary-bg;
+                    z-index: 10;
+                    border-radius: .2rem;
+                }
+            }
+        }
+        p span {
+            display: flex;
+            align-items: center;
+            padding: .5rem 0;
+            fa {
+                color: $black;
+                background: $white;
+                margin-left: .75rem;
+                cursor: pointer;
+                transition: .3s all ease-in;
+                &:hover {
+                    background: transparent;
+                }
+            }
+        }
     }
 
     // Activity and comments styles

@@ -55,6 +55,9 @@ html, body {
       outline: 1px solid $secondary-pink;
     }
   }
+  input[type="password"] {
+    font-family: monospace;
+  }
   textarea {
     resize: none;
   }

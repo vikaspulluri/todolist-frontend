@@ -100,6 +100,10 @@
             <tag-input [ngModel]="issueDetails.labels"
                        [placeholder]="'Add label'"
                        [secondaryPlaceholder]="'Add label'"
+                       (onAdd)="onAddLabel($event)"
+                       (onRemove)="onRemoveLabel($event)"
+                       [removable]="isReporter() || isAssignee()"
+                       [maxItems]="(isReporter() || isAssignee()) ? 10 : issueDetails.labels.length"
                        theme="foundation-theme">
               <tag-input-dropdown [autocompleteItems]="labels" [showDropdownIfEmpty]="true" [keepOpen]="false">
                 </tag-input-dropdown>
@@ -118,15 +122,32 @@
     </div>
     <div class="watchers-wrap">
       <h4>Watchers</h4>
+      <span>
+        <fa name="info-circle"></fa>
+        <span>By default assignee and reporter will get all updates about this issue</span>
+      </span>
       <div class="watchers-box">
           <tag-input [ngModel]="issueDetails.formWatchers"
                      [placeholder]="'Add a watcher...'"
                      [secondaryPlaceholder]="'Add a watcher'"
+                     (onRemove)="onRemoveWatcher($event)"
+                     (onAdd)="onAddWatcher($event)"
+                     [removable]="isReporter()"
                      theme="foundation-theme">
               <tag-input-dropdown [autocompleteItems]="users" [showDropdownIfEmpty]="true" [keepOpen]="false">
                 </tag-input-dropdown>
           </tag-input>
       </div>
+      <p *ngIf="!isReporter() && !isAssignee()" class="p-0">
+        <span *ngIf="isWatcher()">
+          Stop watching this issue
+          <fa name="eye-slash" size="2x" (click)="onRemoveWatcher({display: currentUserName, value: currentUserId})"></fa>
+        </span>
+        <span *ngIf="!isWatcher()">
+          Start watching this issue
+          <fa name="eye" size="2x" (click)="onAddWatcher({display: currentUserName, value: currentUserId})"></fa>
+        </span>
+      </p>
     </div>
   </div>
 

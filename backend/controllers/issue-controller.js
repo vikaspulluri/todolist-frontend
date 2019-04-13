@@ -277,7 +277,7 @@ const updateIssue = (req, res, next) => {
     let updateField = req.body.updateField;
     let updateValue = req.body.content;
     let obj = {};
-    obj[updateField] = updateValue;    
+    obj[updateField] = updateValue;
     Issue.findOneAndUpdate({_id: req.body.issueId}, {$set: obj}, {new: true})
         .then(result => {
             let response = new SuccessResponseBuilder('Issue updated successfully!!!')
