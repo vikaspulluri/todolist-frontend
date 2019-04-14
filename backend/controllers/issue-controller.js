@@ -12,8 +12,9 @@ const createIssue = (req, res, next) => {
     const project = parseJSON(req.body.project) || {projectId: config.defaultProject.id, title: 'Default'};
     const assignee = parseJSON(req.body.assignee);
     const reporter = parseJSON(req.body.reporter);
-    if (!(project && assignee && reporter)) {
-        logger.log({name: 'Invalid format for project, assignee, reporter'}, req, 'IC-CI-1');
+    const activity = parseJSON(req.body.activity);
+    if (!(project && assignee && reporter && activity)) {
+        logger.log({name: 'Invalid format for project, assignee, reporter, activity'}, req, 'IC-CI-1');
         let err = new ErrorResponseBuilder('Invalid format for project, assignee, reporter').status(400).errorCode('IC-CI-1').errorType('DataValidationError').build();
         return next(err);
     }
@@ -24,7 +25,8 @@ const createIssue = (req, res, next) => {
         project: project,
         assignee: assignee,
         reporter: reporter,
-        createdDate: dateUtility.formatDate()
+        createdDate: dateUtility.formatDate(),
+        activity: activity
     };
     if (req.body.watchers && parseJSON(req.body.watchers)) {
         issue.watchers = parseJSON(req.body.watchers);
@@ -74,7 +76,8 @@ const getIssueById = (req, res, next) => {
                 watchers: doc.watchers,
                 labels: doc.labels,
                 lastModifiedOn: doc.lastModifiedOn,
-                createdDate: doc.createdDate
+                createdDate: doc.createdDate,
+                activity: doc.activity
             };
             let response = new SuccessResponseBuilder('Issue fetched successfully!!!')
                             .status(200)
@@ -229,27 +232,7 @@ const getWatchingIssueIds = (req, res, next) => {
                 })
 }
 
-const addComment = (req, res, next) => {
-    const comment = new Comment({
-        userName: req.body.userName,
-        userId: req.body.userId,
-        summary: req.body.summary,
-        issueId: req.body.issueId
-    });
-    comment.save()
-            .then(doc => {
-                let response = new SuccessResponseBuilder('Comment added successfully!!!')
-                            .status(200)
-                            .data(doc)
-                            .build();
-                return res.status(200).send(response);
-            })
-            .catch(error => {
-                logger.log(error, req, 'IC-AC-1');
-                let err = new ErrorResponseBuilder('We are Sorry, Unable to add comment, please try again later!!!').status(500).errorCode('IC-AC-1').errorType('UnknownError').build();
-                return next(err);
-            })
-}
+
 
 const updateIssueActivity = (req, res, next) => {
     const activityObj = {
@@ -257,7 +240,7 @@ const updateIssueActivity = (req, res, next) => {
         dateLog: new Date()
     };
     Issue.findByIdAndUpdate(req.body.issueId,
-        {$push: {'activity': activityObj}})
+        {$push: {'activity': activityObj}}, {new: true})
         .exec()
         .then(result => {
             let response = new SuccessResponseBuilder('Activity updated successfully!!!')
@@ -302,7 +285,6 @@ module.exports = {
     getIssues: getIssues,
     getAvailableLabels: getAvailableLabels,
     getStatistics: getStatistics,
-    addComment: addComment,
     getWatchingIssueIds: getWatchingIssueIds,
     updateIssueActivity: updateIssueActivity,
     updateIssue: updateIssue

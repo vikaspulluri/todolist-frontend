@@ -88,5 +88,4 @@ export class ProjectComponent implements OnInit {
     }, err => this.loaderService.stop());
   }
 
-
 }

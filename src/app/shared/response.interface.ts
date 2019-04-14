@@ -1,5 +1,5 @@
 import { Response } from './interface';
-import { Project, Issue } from './models';
+import { Project, Issue, Comment } from './models';
 
 export interface SimpleUser {
     userId: string;
@@ -49,4 +49,8 @@ export interface IssueStatsResponse extends Response {
             progress?: number
         }
     };
+}
+
+export interface CommentsResponse extends Response {
+    data: Comment[];
 }

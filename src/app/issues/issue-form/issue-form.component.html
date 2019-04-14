@@ -115,6 +115,8 @@
         [secondaryPlaceholder]="'Add assignee'"
         [onlyFromAutocomplete]="true"
         [maxItems]="1"
+        (onRemove)="onRemoveAssignee($event)"
+        (onAdd)="onAddAssignee($event)"
         theme="foundation-theme">
         <tag-input-dropdown [autocompleteItems]="users" [showDropdownIfEmpty]="true" [keepOpen]="false">
           </tag-input-dropdown>

@@ -5,13 +5,11 @@ import { AppHttpService } from 'src/app/shared/app-http.service';
 import { IssueDetailsResponse, UsersResponse } from 'src/app/shared/response.interface';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { ToastrService } from 'ngx-toastr';
-import { Issue } from 'src/app/shared/models';
+import { Issue, Comment } from 'src/app/shared/models';
 import { textEditorConfig, galleryConfig } from 'src/app/shared/libraries.config';
 import { AuthService } from 'src/app/auth/shared/auth.service';
 import {  NgxGalleryImage } from 'ngx-gallery';
 import { config } from '../../app.config';
-import { TagModel } from 'ngx-chips/core/accessor';
-import { AutoCompleteTag } from 'src/app/shared/interface';
 
 @Component({
   selector: 'app-issue',
@@ -26,14 +24,17 @@ export class IssueComponent implements OnInit {
   public labels;
   public issueDetails: Issue;
   public issueDuration; // holds duration of issue in active state
-  public textEditorConfig = textEditorConfig;
+  public textEditorConfig = Object.assign({}, textEditorConfig);
+  public commentConfig = Object.assign({}, textEditorConfig);
   public currentUserId = this.authService.getUserId();
   public currentUserName = this.authService.getUsername();
   public galleryOptions = galleryConfig;
   public galleryImages: NgxGalleryImage[];
   public statusGroup = config.filtersForm.issueGroup.slice();
   public priorityGroup = config.filtersForm.priorityGroup.slice();
-  public isAssigneeEditing = false;
+  public isAssigneeEditing = false; // will be updated when user clicks on edit icon beside assignee
+  public issueComment; // two way binding with comment editor
+  public allComments; // holds all comments of issue
   constructor(private route: ActivatedRoute,
     private router: Router,
     private utilService: UtilService,
@@ -41,6 +42,7 @@ export class IssueComponent implements OnInit {
     private loaderService: NgxUiLoaderService,
     private toastrService: ToastrService,
     private authService: AuthService) {
+      this.commentConfig.heightMin = 150;
   }
 
   ngOnInit() {
@@ -60,8 +62,12 @@ export class IssueComponent implements OnInit {
     this.getAllLabels();
   }
 
+  // ############################################################################### //
+  // *************************** MAIN METHODS ************************************* //
+  // ############################################################################## //
   getIssueById() {
     this.httpService.getIssueById(this.issueId).subscribe((response: IssueDetailsResponse) => {
+      this.getComments();
       this.issueDetails = {
         issueId: response.data.issueId,
         title: response.data.title,
@@ -77,7 +83,11 @@ export class IssueComponent implements OnInit {
         labels: response.data.labels,
         imageUrl: response.data.imageUrl,
         createdDate: this.utilService.formatDate(response.data.createdDate),
-        lastModifiedOn: this.utilService.formatDate(response.data.lastModifiedOn)
+        lastModifiedOn: this.utilService.formatDate(response.data.lastModifiedOn),
+        activity: response.data.activity.map(obj => {
+          obj.readableDate = this.utilService.formatDate(new Date(obj.dateLog).toISOString());
+          return obj;
+        }).reverse()
       };
       this.updatePrivilieges();
       if (this.issueDetails.completionDate) {
@@ -85,9 +95,20 @@ export class IssueComponent implements OnInit {
       } else {
         this.issueDuration = this.utilService.getDuration(response.data.createdDate, null);
       }
-      this.galleryImages = [{medium: this.issueDetails.imageUrl, small: this.issueDetails.imageUrl, big: this.issueDetails.imageUrl}];
+      if (this.issueDetails.imageUrl) {
+        this.galleryImages = [{medium: this.issueDetails.imageUrl, small: this.issueDetails.imageUrl, big: this.issueDetails.imageUrl}];
+      }
       this.loaderService.stop();
     }, err => this.router.navigate(['/issues']));
+  }
+
+  getComments() {
+    this.httpService.getComments(this.issueId).subscribe(response => {
+      this.allComments = response.data.map(comment => {
+        comment.createdDate = this.utilService.formatDate(comment.createdDate);
+        return comment;
+      });
+    });
   }
 
   getAllUsers() {
@@ -109,6 +130,10 @@ export class IssueComponent implements OnInit {
     }, err => this.loaderService.stop());
   }
 
+
+  // ############################################################################### //
+  // ************************* USER INTERACTION METHODS **************************** //
+  // ############################################################################## //
   onUpdateAssignee($event, isSaveBtn = false) {
     if ($event) {
       this.issueDetails.formAssignee[0].display = $event.display;
@@ -134,10 +159,8 @@ export class IssueComponent implements OnInit {
         // realtime message to watchers
         const receivers = this.getNotificationReceivers();
         this.utilService.sendNotification(defaultMsg, 'issue',
-                        {id: this.issueDetails.issueId, title: this.issueDetails.title}, receivers);
-        // update issue activity
-        let readableMsg = this.utilService.updateDefaultMsg(defaultMsg, this.authService.getUsername(), this.issueDetails.title);
-        this.updateActivity(this.issueDetails.issueId, readableMsg);
+                        {id: this.issueDetails.issueId, title: this.issueDetails.title}, receivers, 'high');
+        this.updateIssueActivity(this.issueDetails.issueId, `${this.authService.getUsername()} updated assignee`);
       }, err => this.loaderService.stop());
 
     }
@@ -149,13 +172,8 @@ export class IssueComponent implements OnInit {
     this.issueDetails.formAssignee[0].value = this.issueDetails.assignee.userId;
   }
 
-  updateActivity(issueId: string, summary: string) {
-    this.httpService.updateIssueActivity(issueId, summary).subscribe(response => {
-      console.log('Activity updated successfully!!!');
-    });
-  }
 
-  onAddWatcher($event) {
+  onAddWatcher($event, selfWatching = false) {
     this.loaderService.start();
     let currentWatchers = this.issueDetails.formWatchers || [];
     let updatedWatchersTagFormat = [$event, ...currentWatchers];
@@ -164,10 +182,21 @@ export class IssueComponent implements OnInit {
       this.loaderService.stop();
       this.issueDetails.formWatchers = updatedWatchersTagFormat;
       this.issueDetails.watchers = this.utilService.unmapUserDataFromForm(this.issueDetails.formWatchers);
+      let defaultMsg = '*** has added new watcher to ###';
+      let activityMsg = `${this.authService.getUsername()} added new watcher`;
+      if (selfWatching) {
+        defaultMsg = '*** has started watching the ###';
+        activityMsg = `${this.authService.getUsername()} started watching this issue`;
+      }
+      // realtime message to watchers
+      const receivers = this.getNotificationReceivers();
+      this.utilService.sendNotification(defaultMsg, 'issue',
+                      {id: this.issueDetails.issueId, title: this.issueDetails.title}, receivers);
+      this.updateIssueActivity(this.issueDetails.issueId, activityMsg);
     }, err => this.loaderService.stop());
   }
 
-  onRemoveWatcher($event) {
+  onRemoveWatcher($event, selfWatching = false) {
     let userId = $event.value;
     let index = this.issueDetails.formWatchers.findIndex(user => user.value === userId);
     if (index > -1) {
@@ -177,6 +206,17 @@ export class IssueComponent implements OnInit {
       this.httpService.updateWatchers(this.issueDetails.issueId, updatedUsers).subscribe(response => {
         this.loaderService.stop();
         this.issueDetails.watchers = updatedUsers;
+        let defaultMsg = '*** has removed a watcher from ###';
+        let activityMsg = `${this.authService.getUsername()} removed a watcher`;
+        if (selfWatching) {
+          defaultMsg = '*** has stopped watching the ###';
+          activityMsg = `${this.authService.getUsername()} stopped watching this issue`;
+        }
+        // realtime message to watchers
+        const receivers = this.getNotificationReceivers();
+        this.utilService.sendNotification(defaultMsg, 'issue',
+                        {id: this.issueDetails.issueId, title: this.issueDetails.title}, receivers);
+        this.updateIssueActivity(this.issueDetails.issueId, activityMsg);
       }, error => this.loaderService.stop());
     } else {
       this.loaderService.stop();
@@ -190,6 +230,12 @@ export class IssueComponent implements OnInit {
     this.httpService.updateLabels(this.issueDetails.issueId, updatedLabels).subscribe(response => {
       this.loaderService.stop();
       this.issueDetails.labels = updatedLabels;
+      const defaultMsg = '*** has added new label to ###';
+      // realtime message to watchers
+      const receivers = this.getNotificationReceivers();
+      this.utilService.sendNotification(defaultMsg, 'issue',
+                      {id: this.issueDetails.issueId, title: this.issueDetails.title}, receivers);
+      this.updateIssueActivity(this.issueDetails.issueId, `${this.authService.getUsername()} added new label`);
     }, err => this.loaderService.stop());
   }
 
@@ -202,14 +248,81 @@ export class IssueComponent implements OnInit {
       this.issueDetails.labels.splice(index, 1);
       this.httpService.updateLabels(this.issueDetails.issueId, this.issueDetails.labels).subscribe(response => {
         this.loaderService.stop();
+        const defaultMsg = '*** has removed a label from ###';
+        // realtime message to watchers
+        const receivers = this.getNotificationReceivers();
+        this.utilService.sendNotification(defaultMsg, 'issue',
+                        {id: this.issueDetails.issueId, title: this.issueDetails.title}, receivers);
+        this.updateIssueActivity(this.issueDetails.issueId, `${this.authService.getUsername()} removed a label`);
       }, err => this.loaderService.stop());
     } else {
       this.loaderService.stop();
     }
   }
 
+  onPriorityChange($event) {
+    this.loaderService.start();
+    this.issueDetails.priority = $event.target.value;
+    this.httpService.updateIssue(this.issueDetails.issueId, 'priority', this.issueDetails.priority).subscribe(response => {
+    this.loaderService.stop();
+    const defaultMsg = `*** has updated priority to ${this.issueDetails.priority} for ###`;
+    // realtime message to watchers
+    const receivers = this.getNotificationReceivers();
+    this.utilService.sendNotification(defaultMsg, 'issue',
+                    {id: this.issueDetails.issueId, title: this.issueDetails.title}, receivers, 'high');
+    this.updateIssueActivity(this.issueDetails.issueId,
+        `${this.authService.getUsername()} updated priority to ${this.issueDetails.priority}`);
+  }, err => this.loaderService.stop());
+  }
+
+  onStatusChange($event) {
+    this.issueDetails.status = $event.target.value;
+    this.httpService.updateIssue(this.issueDetails.issueId, 'status', this.issueDetails.status).subscribe(response => {
+      this.loaderService.stop();
+      const defaultMsg = `*** has updated status to ${this.issueDetails.status} for ###`;
+      // realtime message to watchers
+      const receivers = this.getNotificationReceivers();
+      this.utilService.sendNotification(defaultMsg, 'issue',
+                      {id: this.issueDetails.issueId, title: this.issueDetails.title}, receivers, 'high');
+      this.updateIssueActivity(this.issueDetails.issueId,
+          `${this.authService.getUsername()} updated status to ${this.issueDetails.status}`);
+    }, err => this.loaderService.stop());
+  }
+
+  onAddComment() {
+    let summary = this.issueComment;
+    if (!summary) { return; }
+    this.loaderService.start();
+    let comment: Comment = {
+      issueId: this.issueId,
+      summary: summary,
+      userName: this.currentUserName,
+      userId: this.currentUserId
+    };
+    this.httpService.addComment(comment).subscribe(response => {
+      this.loaderService.stop();
+      comment.createdDate = this.utilService.formatDate(new Date().toISOString());
+      this.allComments.unshift(comment);
+      this.issueComment = '';
+    }, err => this.loaderService.stop());
+  }
+
+  // ############################################################################### //
+  // *************************** UTILITY METHODS *********************************** //
+  // ############################################################################## //
   getNotificationReceivers() {
-    return [this.issueDetails.assignee, this.issueDetails.reporter, ...this.issueDetails.watchers];
+    return [...this.issueDetails.watchers];
+  }
+
+  updateIssueActivity(issueId, msg: string) {
+    let date = this.utilService.getCurrentDate();
+    // update issue activity
+    this.utilService.updateActivity(issueId, msg);
+    this.issueDetails.activity.unshift({
+      summary: msg,
+      dateLog: date,
+      readableDate: this.utilService.formatDate(date.toISOString())
+    });
   }
 
   updatePrivilieges() {
@@ -221,6 +334,14 @@ export class IssueComponent implements OnInit {
         }
       };
     }
+    let updatedWatchers = this.issueDetails.formWatchers.map(watcher => {
+      if (watcher.value === this.issueDetails.reporter.userId ||
+          watcher.value === this.issueDetails.assignee.userId) {
+            watcher.readonly = true;
+      }
+      return watcher;
+    });
+    this.issueDetails.formWatchers = updatedWatchers;
   }
 
   isAssignee() {

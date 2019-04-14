@@ -8,6 +8,7 @@ const validateRequest = require('../libraries/validate-request');
 const dateUtility = require('../libraries/date-formatter');
 const logger = require('../libraries/log-message');
 const mailService = require('../libraries/mail-service');
+const { addMemberToDefaultProject } = require('./project-controller');
 
 const createUser = (req, res, next) => {
   const isAdmin = (req.headers.isadmin) ? true : false;
@@ -27,8 +28,9 @@ const createUser = (req, res, next) => {
                   userId: result._id,
                   firstName: result.firstName,
                   lastName: result.lastName,
-                  email: result.email
                 };
+                addMemberToDefaultProject(data);
+                data.email = result.email;
                 let response = new SuccessResponseBuilder('User created successfully!!!')
                                   .status(201)
                                   .data(data)
@@ -194,15 +196,10 @@ const getUserNotifications = (req, res, next) => {
 }
 
 const sendUserFeedback = (req, res, next) => {
-  let reqValidity = validateRequest(req, 'experience','userName','feedback');
-  if(reqValidity.includes(false)) {
-      let error = new ErrorResponseBuilder('Invalid request').errorType('DataValidationError').status(400).errorCode('UC-SUF-1').build();
-      return next(error);
-  }
   const feedbackData = {
     name: req.body.userName,
-    experience: req.body.experience,
-    feedback: req.body.feedback,
+    query: req.body.query,
+    description: req.body.description,
     userId: req.userData.userId,
     email: req.userData.email
   };
@@ -210,7 +207,7 @@ const sendUserFeedback = (req, res, next) => {
   feedback.save()
     .then(result => {
       mailService.sendFeedback(feedbackData);
-      let jsonResponse = new SuccessResponseBuilder('Thanks for your time!!!').data().build();
+      let jsonResponse = new SuccessResponseBuilder('Thanks for your time, We will reach out to you soon!!!').data().build();
       res.status(200).send(jsonResponse);
     })
     .catch(error => {

@@ -21,6 +21,7 @@ const userRoutes = require('./routes/user-routes');
 const projectRoutes = require('./routes/project-routes');
 const issueRoutes = require('./routes/issue-routes');
 const notificationRoutes = require('./routes/notification-routes');
+const commentRoutes = require('./routes/comment-routes');
 
 app.use(helmet());
 
@@ -39,6 +40,7 @@ app.use('/api/user', userRoutes);
 app.use('/api/project', projectRoutes);
 app.use('/api/issue', issueRoutes);
 app.use('/api/notification', notificationRoutes);
+app.use('/api/comment', commentRoutes);
 
 app.use((err, req, res, next) => {
   let status = err.status || 500;

@@ -41,7 +41,8 @@ export interface Issue {
     labels?: string[];
     activity?: {
         summary: string,
-        dateLog: string
+        dateLog: Date,
+        readableDate?: string
     }[];
 }
 
@@ -49,6 +50,7 @@ export interface Notification {
     message: string;
     type: string; // issue or project or other
     status: string; // unread or read or later
+    priority?: string; // low or high
     issue?: {
         title: string,
         id: string
@@ -59,4 +61,18 @@ export interface Notification {
     }; // incase of type == project
     sender: SimpleUser;
     receivers?: SimpleUser[];
+}
+
+export interface Comment {
+    issueId: string;
+    summary: string;
+    userName: string;
+    userId: string;
+    createdDate?: string;
+}
+
+export interface Feedback {
+    userName: string;
+    query: string;
+    description: string;
 }

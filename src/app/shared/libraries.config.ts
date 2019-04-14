@@ -42,6 +42,8 @@ export const toastrConfig = {
 export const textEditorConfig = {
     theme: 'royal',
     charCounterCount: false,
+    heightMin: 200,
+    heightMax: 300,
     placeholder: 'Add Description about the issue',
     toolbarButtons: ['undo', 'redo' , '|', 'bold', 'italic', 'underline',
                         'strikeThrough', 'subscript', 'superscript', 'outdent',

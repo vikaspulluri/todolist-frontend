@@ -8,6 +8,7 @@ const addNotification = (req, res, next) => {
         sender: req.body.sender,
         type: req.body.type,
         status: req.body.status,
+        priority: req.body.priority
     };
     if (req.body.issue) {
         notification.issue = req.body.issue;

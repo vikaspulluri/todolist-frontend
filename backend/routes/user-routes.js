@@ -249,7 +249,7 @@ router.get('/notifications', decodeToken, checkUser, userController.getUserNotif
  *      "errorType": "UnknownError"
  *    }
  */
-router.post('/feedback', decodeToken, checkUser, userController.sendUserFeedback);
+router.post('/feedback', decodeToken, checkUser, validateRequest('UC-SUF', 'userName', 'description', 'query'), userController.sendUserFeedback);
 
 /**
  * @apiVersion 1.0.0

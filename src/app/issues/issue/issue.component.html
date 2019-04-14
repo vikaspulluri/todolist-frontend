@@ -64,7 +64,7 @@
         <div>
           <span>Status: </span>
           <span class="position-relative">
-            <select [ngModel]="issueDetails.status" [disabled]="!(isAssignee() || isReporter())">
+            <select [ngModel]="issueDetails.status" [disabled]="!(isAssignee() || isReporter())" (change)="onStatusChange($event)">
               <option *ngFor="let option of statusGroup" value="{{option.value}}">{{ option.name }}</option>
             </select>
           </span>
@@ -72,7 +72,7 @@
         <div>
           <span>Priority: </span>
           <span class="position-relative">
-            <select [ngModel]="issueDetails.priority" [disabled]="!isReporter()">
+            <select [ngModel]="issueDetails.priority" [disabled]="!isReporter()" (change)="onPriorityChange($event)">
               <option *ngFor="let option of priorityGroup" value="{{option.value}}">{{ option.name }}</option>
             </select>
           </span>
@@ -141,11 +141,11 @@
       <p *ngIf="!isReporter() && !isAssignee()" class="p-0">
         <span *ngIf="isWatcher()">
           Stop watching this issue
-          <fa name="eye-slash" size="2x" (click)="onRemoveWatcher({display: currentUserName, value: currentUserId})"></fa>
+          <fa name="eye-slash" size="2x" (click)="onRemoveWatcher({display: currentUserName, value: currentUserId}, true)"></fa>
         </span>
         <span *ngIf="!isWatcher()">
           Start watching this issue
-          <fa name="eye" size="2x" (click)="onAddWatcher({display: currentUserName, value: currentUserId})"></fa>
+          <fa name="eye" size="2x" (click)="onAddWatcher({display: currentUserName, value: currentUserId}, true)"></fa>
         </span>
       </p>
     </div>
@@ -161,50 +161,19 @@
     <div class="comments-wrap">
       <h4>Comments</h4>
       <div class="comments-box">
-        <div class="comments">
-          <div class="comment">
+        <div class="comments" *ngIf="allComments && allComments.length > 0">
+          <div class="comment" *ngFor="let comment of allComments">
             <div class="header">
-              <span>Vikas Pulluri</span>
-              <span>Jan 31, 8:00 PM</span>
+              <span>{{ comment.userName }}</span>
+              <span>{{ comment.createdDate }}</span>
             </div>
-            <div class="body">
-              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                  when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-                  It has survived not only five centuries
-              </p>
-            </div>
-          </div>
-          <div class="comment">
-            <div class="header">
-              <span>Vikas Pulluri</span>
-              <span>Jan 31, 8:00 PM</span>
-            </div>
-            <div class="body">
-              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                  when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-                  It has survived not only five centuries
-              </p>
-            </div>
-          </div>
-          <div class="comment">
-            <div class="header">
-              <span>Vikas Pulluri</span>
-              <span>Jan 31, 8:00 PM</span>
-            </div>
-            <div class="body">
-              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                  when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-                  It has survived not only five centuries
-              </p>
+            <div class="body" [innerHTML]="comment.summary">
             </div>
           </div>
         </div>
         <div class="input-box">
-          <textarea rows="4" title="Add Comment" placeholder="Add Comment"></textarea>
-          <button class="btn action-btn">Add</button>
+            <p [froalaEditor]="commentConfig" class="comment-editor" [(froalaModel)]="issueComment"></p>
+          <button class="btn action-btn" (click)="onAddComment()">Add</button>
         </div>
       </div>
     </div>
@@ -212,14 +181,8 @@
       <h4>Activity Log</h4>
       <div class="activity-box">
         <div class="activities">
-          <div class="activity">
-            <p>Vikas Pulluri has updated the status to in-progress on Jan 31 7:30 PM</p>
-          </div>
-          <div class="activity">
-            <p>Vikas Pulluri has added a comment on Jan 31 7:30 PM</p>
-          </div>
-          <div class="activity">
-            <p>Vikas Pulluri has added a watcher on Jan 31 7:30 PM</p>
+          <div class="activity" *ngFor="let activity of issueDetails?.activity">
+            <p>{{ activity.summary }} on {{ activity.readableDate }}</p>
           </div>
         </div>
       </div>

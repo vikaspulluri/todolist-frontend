@@ -7,13 +7,13 @@
         <form #contactForm="ngForm" (submit)="onContactFormSubmit(contactForm)">
           <div class="form-group">
             <label for="query">What kind of query you have?</label>
-            <select class="form-control" id="query" required [(ngModel)]="query" name="query">
+            <select class="form-control" id="query" required name="query" [ngModel]="queries[0].value">
               <option [value]="option.value" *ngFor="let option of queries">{{option.name}}</option>
             </select>
           </div>
           <div class="form-group">
             <label for="description">Description:</label>
-            <textarea name="description" rows="8" class="form-control" id="description" required [(ngModel)]="description"></textarea>
+            <textarea [froalaEditor]="textEditorConfig"  name="description" rows="8" class="form-control" id="description" required ngModel></textarea>
           </div>
           <button class="btn action-btn" name="submit-btn" type="submit">Submit</button>
         </form>

@@ -217,11 +217,12 @@ export class UtilService {
         return null;
     }
 
-    public sendNotification(message: string, type: string, data: {id: string, title: string}, receivers: SimpleUser[]) {
+    public sendNotification(message: string, type: string, data: {id: string, title: string}, receivers: SimpleUser[], priority?: string) {
         const notification: Notification = {
             message: message,
             type: type,
             status: 'unread',
+            priority: priority || 'low',
             sender: {
                 firstName: this.authService.getUserFirstName(),
                 userId: this.authService.getUserId(),
@@ -235,7 +236,13 @@ export class UtilService {
         notification.receivers = receivers;
         this.socketService.sendNotification(notification);
         this.appHttpService.addNotifications(notification).subscribe(response => {
-            console.log(response);
+            console.log('notification done');
+        });
+    }
+
+    public updateActivity(issueId: string, summary: string) {
+        this.appHttpService.updateIssueActivity(issueId, summary).subscribe(response => {
+            console.log('Activity updated successfully!!!');
         });
     }
 

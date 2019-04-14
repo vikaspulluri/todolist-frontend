@@ -33,7 +33,7 @@ const issueSchema = mongoose.Schema({
     labels: [{type: String}],
     activity: [{
         summary: {type: String, required: true},
-        dateLog: {type: Date, require: true, default: Date.now}
+        dateLog: {type: Date, required: true, default: Date.now}
     }]
 });
 

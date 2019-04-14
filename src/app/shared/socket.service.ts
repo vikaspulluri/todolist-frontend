@@ -27,10 +27,6 @@ export class SocketService {
     this.socket.emit('setUser', data);
   } // end setUser
 
-  public setFriends = (data) => {
-    this.socket.emit('setFriends', data);
-  } // end setFriends
-
   public getOnlineUserlist = () => {
     this.socket.emit('getOnlineUsers', '');
   }
@@ -42,33 +38,9 @@ export class SocketService {
     });
   } // end onlineUserList
 
-  public sendFreindRequest = (reqData) => {
-    this.socket.emit('sendFriendRequest', reqData);
-  } // end sendFriendRequest
-
-  public receiveFriendRequest = () => {
-    return Observable.create(observer => {
-      this.socket.on('receivedFriendRequest', data => {
-        observer.next(data);
-      });
-    });
-  }
-
   public notificationAlert = () => {
     return Observable.create(observer => {
       this.socket.on('notificationAlert', data => {
-        observer.next(data);
-      });
-    });
-  }
-
-  public acceptFriendRequest = (reqData) => {
-    this.socket.emit('acceptFriendRequest', reqData);
-  } // end acceptFriendRequest
-
-  public acceptedFriendRequest = () => {
-    return Observable.create(observer => {
-      this.socket.on('acceptedFriendRequest', data => {
         observer.next(data);
       });
     });

@@ -10,6 +10,7 @@ import { UsersResponse, ProjectsResponse } from 'src/app/shared/response.interfa
 import { Issue } from 'src/app/shared/models';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { SocketService } from 'src/app/shared/socket.service';
 @Component({
   selector: 'app-issue-form',
   templateUrl: './issue-form.component.html',
@@ -29,14 +30,15 @@ export class IssueFormComponent implements OnInit {
   public reporter; // active reporter
   public watcher; // active watcher
   public assignee; // active assignee
-  public textEditorConfig = textEditorConfig;
+  public textEditorConfig = Object.assign({}, textEditorConfig);
   private currentUserId = this.authService.getUserId();
   constructor(private authService: AuthService,
               private httpService: AppHttpService,
               private utilService: UtilService,
               private loaderService: NgxUiLoaderService,
               private router: Router,
-              private toastrService: ToastrService) {
+              private toastrService: ToastrService,
+              private socketService: SocketService) {
   }
 
   ngOnInit() {
@@ -51,7 +53,7 @@ export class IssueFormComponent implements OnInit {
       title: new FormControl(null, {validators: [Validators.required, Validators.minLength(3)]}),
       description: new FormControl(null, {validators: [Validators.required]}),
       attachment: new FormControl(null, {asyncValidators: [mimeType]}),
-      priority: new FormControl('Medium', {validators: [Validators.required]}),
+      priority: new FormControl('medium', {validators: [Validators.required]}),
       project: new FormControl(null, {validators: [Validators.required]}),
       reporter: new FormControl(null, {validators: [Validators.required]}),
       assignee: new FormControl(null, {validators: [Validators.required]}),
@@ -72,6 +74,9 @@ export class IssueFormComponent implements OnInit {
         let currentUser = Object.create(this.users[currentUserIndex]);
         currentUser.readonly = true;
         this.updateFormValue('reporter', currentUser, true);
+
+        // update watchers
+        this.updateFormValue('watchers', currentUser, true);
       }
       this.loaderService.stop();
     }, err => this.loaderService.stop());
@@ -110,6 +115,9 @@ export class IssueFormComponent implements OnInit {
   }
 
   onFormSubmit() {
+    if (this.issueForm.invalid) {
+      return;
+    }
     this.loaderService.start();
     let issue: Issue = {
       title: this.issueForm.value.title,
@@ -120,7 +128,11 @@ export class IssueFormComponent implements OnInit {
         title: this.issueForm.value.project[0].display
       },
       assignee: this.utilService.formatToSimpleUser(this.issueForm.value.assignee)[0],
-      reporter: this.utilService.formatToSimpleUser(this.issueForm.value.reporter)[0]
+      reporter: this.utilService.formatToSimpleUser(this.issueForm.value.reporter)[0],
+      activity: [
+        {summary: `${this.authService.getUsername()} created this issue`,
+        dateLog: new Date()}
+      ]
     };
     if (this.issueForm.get('attachment').value) {
       issue.attachment = this.issueForm.get('attachment').value;
@@ -132,13 +144,41 @@ export class IssueFormComponent implements OnInit {
       issue.watchers = this.utilService.formatToSimpleUser(this.issueForm.value.watchers);
     }
     this.httpService.createIssue(issue).subscribe(response => {
-      this.loaderService.stop();
       if (response.data && response.data.issueId) {
+        this.socketService.setWatcher();
+        let message = '*** has created an issue named ###';
+        this.utilService.sendNotification(message, 'issue',
+              {id: response.data.issueId, title: issue.title}, issue.watchers, 'high');
         this.router.navigate(['/issue', response.data.issueId]).then(success => this.toastrService.success(response.message));
       }
+      this.loaderService.stop();
     }, err => {
       this.loaderService.stop();
     });
+  }
+
+  onAddAssignee($event) {
+    let reporter = this.issueForm.value.reporter[0];
+    if ($event.value === reporter.value) { return; } // if assignee is same as reporter and removed, do nothing to watchers
+    let watchers = this.issueForm.value.watchers;
+    let index = watchers.findIndex(user => user.value === $event.value);
+    if (index < 0) {
+      let newWatcher = Object.assign({}, $event);
+      newWatcher.readonly = true;
+      watchers.push(newWatcher);
+      this.updateFormValue('watchers', watchers);
+    }
+  }
+
+  onRemoveAssignee($event) {
+    let reporter = this.issueForm.value.reporter[0];
+    if ($event.value === reporter.value) { return; } // if assignee is same as reporter and removed, do nothing to watchers
+    let watchers = this.issueForm.value.watchers;
+    let index = watchers.findIndex(user => user.value === $event.value);
+    if (index > -1) {
+      watchers.splice(index, 1);
+      this.updateFormValue('watchers', watchers);
+    }
   }
 
 }

@@ -160,10 +160,22 @@ const getAllUserIds = () => {
     });
 }
 
+const addMemberToDefaultProject = (user) => {
+    return new Promise((resolve, reject) => {
+        Project.findOneAndUpdate({_id: config.defaultProject.id},
+            {$push: {members: user}})
+            .then(doc => resolve(true))
+            .catch(error => {
+                logger.log(error, '*', 'PC-AMTDP');
+                reject(false);
+            });
+    });                 
+}
 
 module.exports = {
     createProject: createProject,
     getProject: getProject,
     getProjects: getProjects,
-    constructQueryForGetProjects: constructQueryForGetProjects
+    constructQueryForGetProjects: constructQueryForGetProjects,
+    addMemberToDefaultProject: addMemberToDefaultProject
 }

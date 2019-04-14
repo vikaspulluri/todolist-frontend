@@ -11,7 +11,7 @@ export class SubscriptionService {
                 private toastrService: ToastrService,
                 private utilService: UtilService) {
     }
-    private isRecommendationsPresent = this.authService.getLoginCount() > 2 ? false : true;
+    private isRecommendationsPresent = this.authService.getLoginCount() > 1 ? false : true;
 
     clearRecommendations() {
         this.isRecommendationsPresent = false;
